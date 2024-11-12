@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title></title>
+    <link rel="stylesheet" href="splash.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light chatbot-container flex-column">
+    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light flex-column background-container ">
         <h3 class="chatbot-title position-absolute top-0 start-0 m-3">Seocho-gu chatbot</h3>
-        <!-- Chatbot UI -->
-        <div class="d-flex flex-column align-items-center w-100">
             <div class="chatbot-card mb-4">
                 <div class="chatbot-intro">
                     <p>안녕하세요 서초구청 챗봇 "서봇"입니다.<br>무엇을 도와드릴까요?</p>
@@ -30,11 +28,8 @@
                     <button class="btn btn-left">
                         <img src="clip.png" alt="Clip Icon" class="icon-image">
                     </button>
-                  
-                
                     <!-- Text Input -->
                     <input type="text" class="form-control" placeholder="Enter your message" aria-label="Enter your message">
-                    
                     <!-- send button-->
                     <button class="btn btn-right">
                         <img src="send.png" alt="Send Icon" class="icon-image">
@@ -49,6 +44,11 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
+    <script>
+        function redirectToChat() {
+            window.location.href = "main.html"; // Send 버튼 클릭 시 대화 페이지로 이동
+        }
+    </script>
+</body>
 </body>
 </html>

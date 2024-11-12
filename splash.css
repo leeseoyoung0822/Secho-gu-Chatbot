@@ -6,7 +6,7 @@ body, html {
     height: 100%;
 }
 
-.chatbot-container {
+.background-container {
     background-image:url('background.png') ;
     background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
     background-position: center; /* 이미지 위치를 중앙으로 */
@@ -16,6 +16,7 @@ body, html {
     justify-content: center; /* 가로 중앙 정렬 */
     align-items: center; /* 세로 중앙 정렬 */
     margin: 0; /* 페이지 기본 여백 제거 */
+    flex-direction: column;
 }
 
 /* Chatbot Title */
@@ -61,12 +62,11 @@ body, html {
 
 /* 입력 그룹 컨테이너 */
 .custom-input-container {
-    width: 100%;
-    max-width: 900px;
-    margin-top: 20px;
+    width: 95%;
+    max-width: 800px;
+    margin-top: 30px;
     display: flex;
     justify-content: center; /* 가로 중앙 정렬 */
-    padding: 0 20px; /* 좌우 여백 추가 */
 }
 
 /* Input Group */
