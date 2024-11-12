@@ -39,10 +39,74 @@ body, html {
     width: 100%;
 }
 
-.chatbot-intro {
-    font-size: 1.5rem;
-    color: rgb(83, 83, 83);
-    margin-top: 15px;
+.chat-bubble {
+    background-color: #DAB6F4; /* 말풍선 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 300px;
+    min-height: 50px; 
+    text-align: center;
+    margin: 0 auto 15px; /* 아래 여백 추가 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    position: relative;
+}
+
+/* 말풍선 꼬리 */
+.chat-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: 30px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: #DAB6F4 transparent transparent transparent;
+}
+
+/* 타이핑 애니메이션 */
+#typing-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink 0.5s step-end infinite;
+    font-size: 1.2rem;
+    position: relative;
+    vertical-align: middle;
+}
+
+/* 커서 스타일 */
+#typing-text::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 1em; /* 텍스트 높이에 맞게 설정 */
+    background-color: white; /* 커서 색상 */
+    margin-left: 3px; /* 커서와 텍스트 간격 */
+    animation: blink 1s step-end infinite;
+    position: absolute;
+    top: 0; /* 커서를 텍스트 높이에 맞춤 */
+    left: 100%; 
+}
+
+/* 타이핑 효과 */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* 커서 깜박임 */
+@keyframes blink {
+    from, to {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 .robot-logo {
@@ -64,7 +128,7 @@ body, html {
 .custom-input-container {
     width: 95%;
     max-width: 800px;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     justify-content: center; /* 가로 중앙 정렬 */
 }
