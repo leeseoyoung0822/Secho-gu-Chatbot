@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // 타이핑 애니메이션 텍스트
     const text = "안녕하세요 서초구청 챗봇 '서봇'입니다.<br> 무엇을 도와드릴까요?";
     const typingElement = document.getElementById("typing-text");
+    const clipButton = document.querySelector(".btn-left");
+    const sendButton = document.querySelector(".btn-right");
+    const fileInput = document.createElement("input");
 
     let i = 0;
 
@@ -27,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
     typeWriter();
 
     // Send 버튼 클릭 이벤트
-    const sendButton = document.querySelector(".btn-right");
     sendButton.addEventListener("click", function () {
         const userInput = document.querySelector(".form-control").value;
         console.log("User Message:", userInput);
@@ -35,10 +37,20 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "main.html";
     });
 
+    fileInput.type = "file";
+    fileInput.style.display = "none";
+
+    fileInput.addEventListener("change", function () {
+        const selectedFile = fileInput.files[0];
+        if (selectedFile) {
+            console.log("파일 선택됨:", selectedFile.name);
+            alert(`파일이 선택되었습니다: ${selectedFile.name}`);
+        }
+    });
+
     // Clip 버튼 클릭 이벤트
-    const clipButton = document.querySelector(".btn-left");
     clipButton.addEventListener("click", function () {
         console.log("Clip 버튼 클릭됨");
-        // 파일 업로드 이벤트 추가 가능
+        fileInput.click(); 
     });
 });

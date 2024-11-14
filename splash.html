@@ -12,31 +12,35 @@
 </head>
 <body>
     <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light flex-column background-container ">
-        <h3 class="chatbot-title position-absolute top-0 start-0 m-3">Seocho-gu chatbot</h3>
-            <div class="chatbot-card mb-4">
-                <div class="chat-bubble">
-                    <div class="bubble-content">
-                        <span id="typing-text"></span> <!-- 타이핑 애니메이션을 위한 영역 -->
-                    </div>
-                </div>
-                <div class="chatbot-logo">
-                    <img src="chatbot.png" alt="Chatbot Logo" class="robot-logo">
+        <div class="chatbot-header d-flex justify-content-between align-items-center w-100 px-3">
+            <h3 class="chatbot-title">Seocho-gu chatbot</h3>
+            <button class="btn btn-outline-secondary custom-button">
+                <img src="newpage.png" alt="Custom Button" class="button-image">
+            </button>
+        </div>
+        <div class="chatbot-card mb-4">
+            <div class="chat-bubble">
+                <div class="bubble-content">
+                    <span id="typing-text"></span> <!-- 타이핑 애니메이션을 위한 영역 -->
                 </div>
             </div>
-            <div class="custom-input-container">
-                <!-- Input Group -->
-                <div class="input-group">
-                    <!-- clip button -->
-                    <button class="btn btn-left">
-                        <img src="clip.png" alt="Clip Icon" class="icon-image">
-                    </button>
-                    <!-- Text Input -->
-                    <input type="text" class="form-control" placeholder="Enter your message" aria-label="Enter your message">
-                    <!-- send button-->
-                    <button class="btn btn-right">
-                        <img src="send.png" alt="Send Icon" class="icon-image">
-                    </button>
-                </div>
+            <div class="chatbot-logo">
+                <img src="chatbot.png" alt="Chatbot Logo" class="robot-logo">
+            </div>
+        </div>
+        <div class="custom-input-container">
+            <!-- Input Group -->
+            <div class="input-group">
+                <!-- clip button -->
+                <button class="btn btn-left">
+                    <img src="clip.png" alt="Clip Icon" class="icon-image">
+                </button>
+                <!-- Text Input -->
+                <input type="text" class="form-control" placeholder="Enter your message" aria-label="Enter your message">
+                <!-- send button-->
+                <button class="btn btn-right">
+                    <img src="send.png" alt="Send Icon" class="icon-image">
+                </button>
             </div>
         </div>
     </div>
