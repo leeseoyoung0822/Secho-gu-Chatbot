@@ -18,24 +18,43 @@
                 <img src="newpage.png" alt="Custom Button" class="button-image">
             </button>
         </div>
+
+        <div id="chatArea" class="chat-area">
+        </div>
+
         <div class="custom-input-container">
-            <!-- Input Group -->
-            <div class="input-group">
-                <!-- clip button -->
-                <button class="btn btn-left">
-                    <img src="clip.png" alt="Clip Icon" class="icon-image">
-                </button>
-                <!-- Text Input -->
-                <input type="text" class="form-control" placeholder="Enter your message" aria-label="Enter your message">
-                <!-- send button-->
-                <button class="btn btn-right">
-                    <img src="send.png" alt="Send Icon" class="icon-image">
-                </button>
-            </div>
+            <form id="chatForm" class="w-full flex items-center space-x-4 p-4 bg-white rounded-md shadow-md">
+                <!-- Dynamic File Display Area -->
+                <div id="fileDisplay" class="hidden items-center p-2 bg-purple-100 rounded-md flex-grow space-x-2">
+                    <img src="file.png" alt="File Icon" class="w-5 h-5">
+                    <div id="fileName" class="truncate text-gray-700">
+                        <span class="file-type"></span>
+                        <span class="file-name"></span>
+                    </div>
+                </div>
+
+                <!-- 입력 필드와 버튼 -->
+                <div class="input-group">
+                    <!-- Clip 버튼 -->
+                    <button type="button" class="btn btn-left" id="clipButton">
+                        <img src="clip.png" alt="Clip Icon" class="icon-image">
+                    </button>
+
+                    <!-- Text Input -->
+                    <input type="text" id="messageInput" placeholder="Enter your message"
+                        class="flex-grow p-2 rounded-md focus:ring focus:ring-purple-300 outline-none">
+
+                    <!-- send button-->
+                    <button class="btn btn-right" id="sendButton">
+                        <img src="send.png" alt="Send Icon" class="icon-image">
+                    </button>
+                </div>
+            </form>
+            
         </div>
     </div>
     
-    
+    <script src="App.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
