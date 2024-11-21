@@ -1,3 +1,16 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* 기본 설정 */
 body, html {
     margin: 0;
@@ -30,8 +43,8 @@ body, html {
 /* Chatbot Title */
 .chatbot-title {
     font-size: 1.1rem;
-    font-weight: bold;
     color: #A4A4A4;
+    font-family: 'SUITE-Regular';
     margin: 0;
     white-space: nowrap; /* 줄바꿈 방지 */
     margin-top: 4px;
@@ -65,7 +78,7 @@ body, html {
     color: white; /* 텍스트 색상 */
     padding: 18px;
     border-radius: 50px;
-    max-width: 280px;
+    max-width: 80%;
     min-height: 50px; 
     text-align: center;
     margin: 0 auto 40px; /* 아래 여백 추가 */
@@ -95,6 +108,7 @@ body, html {
     position: relative;
     padding: 5px;
     vertical-align: middle;
+    font-family: 'SUITE-Regular';
 }
 
 /* 커서 스타일 */
@@ -263,6 +277,7 @@ form {
     font-size: 0.85rem;
     color: #333;
     gap: 0.2rem;
+    font-family: 'SUITE-Regular';
 }
 
 #fileName .file-type {
@@ -303,6 +318,7 @@ form {
     font-style: italic;
     color: rgb(130, 130, 130);
     outline: none; 
+    font-family: 'SUITE-Regular';
 }
 
 #messageInput:focus {

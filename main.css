@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
 /* 기본 설정 */
 body, html {
     margin: 0;
@@ -24,7 +30,6 @@ body, html {
 }
 
 
-
 .chatbot-header {
     height: 60px; /* 고정된 헤더 높이 */
     display: flex;
@@ -42,6 +47,7 @@ body, html {
     margin: 0;
     white-space: nowrap; /* 줄바꿈 방지 */
     margin-top: 4px;
+    font-family: 'SUITE-Regular';
 }
 
 .custom-button {
@@ -83,6 +89,7 @@ body, html {
     line-height: 1.5;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
+    font-family: 'SUITE-Regular';
 }
 
 /* 사용자 메시지 (오른쪽 정렬) */
@@ -269,12 +276,14 @@ form {
     font-size: 0.85rem;
     color: #333;
     gap: 0.2rem;
+    font-family: 'SUITE-Regular';
 }
 
 #fileName .file-type {
     font-size: 0.9rem;
     font-weight: bold;
     color: #5a3e8e;
+    font-family: 'SUITE-Regular';
 }
 
 #fileName .file-name {
@@ -309,6 +318,7 @@ form {
     font-style: italic;
     color: rgb(130, 130, 130);
     outline: none; 
+    font-family: 'SUITE-Regular';
 }
 
 #messageInput:focus {
