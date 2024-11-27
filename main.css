@@ -29,32 +29,42 @@ body, html {
     height: 100%;
 }
 
-
 .chatbot-header {
-    height: 60px; /* 고정된 헤더 높이 */
+    position: absolute;
+    top: 15px; /* 상단 간격 */
+    left: 18px; /* 왼쪽 간격 */
+    right: 20px; /* 오른쪽 간격 */
     display: flex;
     align-items: center; /* 세로 중앙 정렬 */
-    justify-content: space-between; /* 좌우 여백 균형 */
-    padding: 0 20px;
-    z-index: 10; /* 다른 요소 위에 표시 */
+
 }
+
 
 /* Chatbot Title */
 .chatbot-title {
     font-size: 1.1rem;
-    font-weight: bold;
     color: #A4A4A4;
-    margin: 0;
-    white-space: nowrap; /* 줄바꿈 방지 */
-    margin-top: 4px;
     font-family: 'SUITE-Regular';
+    margin: 0;
+    margin-top: 4px;
+}
+/* 작은 화면에서 폰트 크기 축소 */
+@media (max-width: 768px) {
+    .chatbot-title {
+        font-size: 0.9rem; /* 화면이 작아지면 폰트 크기 줄이기 */
+    }
+}
+
+@media (max-width: 480px) {
+    .chatbot-title {
+        font-size: 0.8rem; /* 더 작은 화면에서는 더 작게 */
+    }
 }
 
 .custom-button {
     background-color: transparent; /* 배경 투명 */
     border: none; /* 테두리 없음 */
     display: flex;
-    align-items: center;
     cursor: pointer; /* 포인터 스타일 */
     margin-left: 10px;
 }
@@ -77,6 +87,7 @@ body, html {
     width: 90%; /* 부모 컨테이너에 꽉 채움 */
     margin: 0 auto;
     max-width: 900px; /* 입력창과 동일한 너비 */
+    padding-top: 70px;
 }
 
 .chat-bubble {
@@ -121,8 +132,6 @@ body, html {
     border-color: #ffffff transparent transparent transparent; /* 사용자 말풍선 색상 */
 }
 
-
-
 /* 챗봇 메시지 (왼쪽 정렬) */
 .bot-message {
     background-color: #ECECEC; /* 말풍선 색상 */
@@ -133,7 +142,6 @@ body, html {
     max-width: 60%; /* 최대 너비 */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     word-wrap: break-word; /* 긴 단어 줄바꿈 */
- 
 }
 
 /* 챗봇 메시지의 꼬리 */
@@ -164,10 +172,11 @@ body, html {
     max-width: 900px;
     margin-top: 20px;
     display: flex;
-    margin:30px; /* 가로 중앙 정렬 및 아래 여백 */
+    flex-direction: column;
+    margin:10px; /* 가로 중앙 정렬 및 아래 여백 */
     justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;
 }
-
 
 
 /* 왼쪽 버튼 (Custom Icon) */
@@ -179,7 +188,6 @@ body, html {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    flex-shrink: 0; 
 }
 /* 오른쪽 버튼 (Custom Icon) */
 .btn-right {
@@ -190,8 +198,6 @@ body, html {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    flex-shrink: 0; /* 버튼 크기 고정 */
-    margin-left: auto; /* 오른쪽 끝으로 배치 */
 }
 
 
@@ -235,7 +241,7 @@ form {
     align-items: flex-start;
     padding: 0;
     background-color: rgb(255, 255, 255);
-    border-radius: 16px;
+    border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 95%;
     max-width: 900px; /* 최대 너비 설정 */
@@ -251,7 +257,6 @@ form {
     margin-top: 10px;
     justify-content: flex-start;
     display: none; /* 기본적으로 숨김 */
-    display: flex; /* Flexbox로 내부 아이템 정렬 */
     align-items: center; /* 세로 중앙 정렬 */
     padding: 0.5rem;
     background-color: #f3e8ff;
@@ -325,3 +330,74 @@ form {
     border-color:none;
     box-shadow:none;
 }
+
+
+.alert-light-purple {
+    color: #a99beb; /* 연보라색 텍스트 */
+    background-color: #e3c8f6; /* 어두운 배경 */
+    border: 1px solid #d3bbe4; /* 연보라색 테두리 */
+    border-radius: 10px; /* 둥근 모서리 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    padding: 8px 15px; /* 내부 여백 */
+    max-width: 200px; /* 가로 길이 제한 */
+    font-size: 12px; /* 텍스트 크기 조정 */
+    font-family: 'SUITE-Regular'; 
+    line-height: 1; /* 텍스트 라인 높이를 1로 설정 */
+    margin:0; /* 상하 여백 */
+}
+
+.alert-light-purple .bi {
+    font-size: 15px; /* 아이콘 크기 */
+    color: #a99beb; /* 아이콘 색상 */
+    margin-right: 10px;
+    visibility: visible; 
+}
+
+
+.file-bubble {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #f3e8ff; /* 배경색 */
+    border-radius: 10px; /* 둥근 모서리 */
+    gap: 0.5rem;
+    width: auto; /* 가로 크기 조정 */
+    margin-top: 10px;
+    margin-left: 50px;
+    flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+/* 파일 아이콘 */
+.file-bubble img {
+    width: 20px;
+    height: 20px;
+    background-color: #d1b6f2; /* 아이콘 배경색 */
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+/* 파일 이름과 파일 형식 텍스트 */
+.file-bubble .file-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 긴 텍스트는 말줄임 처리 */
+    font-family: 'SUITE-Regular';
+}
+
+.file-bubble .file-type {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #5a3e8e;
+    margin-left: 8px;
+    font-family: 'SUITE-Regular';
+}
+
+
+
