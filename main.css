@@ -91,13 +91,12 @@ body, html {
 }
 
 .chat-bubble {
-    padding: 15px 15px;
+    padding: 0px;
     width: 100%;
     border-radius: 15px;
     max-width: 60%; /* 최대 너비 */
     word-wrap: break-word;
     font-size: 14px;
-    line-height: 1.5;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
     font-family: 'SUITE-Regular';
@@ -110,8 +109,8 @@ body, html {
     background-color: #ffffff; /* 말풍선 색상 */
     color: rgb(255, 255, 255);
     align-self: flex-end; /* 오른쪽 정렬 */
-    padding: 10px 20px; /* 내부 여백 */
-    border-radius: 30px;
+    padding: 8px 8px; /* 내부 여백 */
+    border-radius: 20px;
     max-width: 60%; /* 최대 너비 제한 */
     width: fit-content; /* 텍스트 길이에 따라 너비 조정 */
     word-wrap: break-word; /* 긴 단어 줄바꿈 */
