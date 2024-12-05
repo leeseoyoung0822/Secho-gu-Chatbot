@@ -6,23 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="splash.css">
+    <link rel="stylesheet" href="sidebar.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
+    <div id="sidebar-container"></div>
+                
+    </div>
     <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light flex-column background-container ">
         <div class="chatbot-header d-flex justify-content-between align-items-center w-100 px-3">
-            <button class="btn btn-outline-secondary custom-button" id="newChatButton">
-                <img src="newpage.png" alt="Custom Button" class="button-image">
+            
+            <button class="menu-toggle">
+                <img src="menu.png"class="button-image">
+            </button>
             </button>
             <button class="btn btn-outline-secondary custom-button" id="newChatButton">
                 <img src="newpage.png" alt="Custom Button" class="button-image">
             </button>
-            <h3 class="chatbot-title">Seocho-gu chatbot</h3>
-            <button class="btn btn-outline-secondary custom-button" id="newChatButton">
-                <img src="newpage.png" alt="Custom Button" class="button-image">
-            </button>
+            <div class="title-help-container">
+                <h3 class="chatbot-title">Seocho-gu chatbot</h3>
+                <button class="help-button">
+                    <img src="question.png" class="button-image">
+                </button>
+            </div>
+            
         </div>
         <div class="chatbot-card mb-4">
             <div class="chat-bubble">

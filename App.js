@@ -111,6 +111,8 @@ function initSplash() {
             // 파일이 선택되지 않았을 때
             showErrorMessage("파일을 선택해주세요.");
         }
+
+        
     });
     
 
@@ -168,6 +170,39 @@ function initSplash() {
         errorDisplay.classList.add("active"); // 필요하다면 active 클래스 추가
         
     }
+
+    const sidebarContainer = document.getElementById("sidebar-container");
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+
+    menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+    });
+
+    document.getElementById("helpButton").addEventListener("click", function () {
+        alert("안녕하세요! 도움말 버튼을 눌렀습니다.");
+    });
+    // sidebar.html 파일을 가져와 로드
+    fetch("sidebar.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to load sidebar.html");
+            return response.text();
+        })
+        .then(html => {
+            sidebarContainer.innerHTML = html;
+
+            // 사이드바 토글 이벤트
+            const sidebar = document.getElementById("sidebar");
+            const menuToggle = document.querySelector(".menu-toggle");
+
+            menuToggle.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+            });
+        })
+        .catch(error => console.error(error));
+      
+
 }
 
 
@@ -381,6 +416,34 @@ function initMain() {
         errorDisplay.style.display = "block"; // 오류 메시지 표시
         errorDisplay.classList.add("active"); // 필요하다면 active 클래스 추가
     }
+
+    const sidebarContainer = document.getElementById("sidebar-container");
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+
+    menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+    });
+    // sidebar.html 파일을 가져와 로드
+    fetch("sidebar.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to load sidebar.html");
+            return response.text();
+        })
+        .then(html => {
+            sidebarContainer.innerHTML = html;
+
+            // 사이드바 토글 이벤트
+            const sidebar = document.getElementById("sidebar");
+            const menuToggle = document.querySelector(".menu-toggle");
+
+            menuToggle.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+            });
+        })
+        .catch(error => console.error(error));
+      
 
 
 }

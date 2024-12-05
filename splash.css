@@ -42,13 +42,32 @@ body, html {
     align-items: center; /* 세로 중앙 정렬 */
 }
 
+.title-help-container {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 5px; /* 제목과 버튼 간격 */
+    position: relative; /* 필요 시 추가로 위치 조정 */
+    width: 100%; 
+}
+
 /* Chatbot Title */
 .chatbot-title {
-    font-size: 1.1rem;
-    color: #A4A4A4;
-    font-family: 'SUITE-Regular';
+   /* 자신의 너비의 50%만큼 왼쪽으로 이동하여 완전히 가운데 정렬 */
+    font-size: 1em;
     margin: 0;
-    margin-top: 4px;
+    color: #5C5C5C;
+    text-align: center;
+    font-family: 'SUITE-Regular';
+}
+
+.help-button {
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 마우스 포인터 */
+    display: flex;
+    align-items: center; /* 아이콘 중앙 정렬 */
+    justify-content: center;
 }
 
 /* 작은 화면에서 폰트 크기 축소 */
@@ -64,12 +83,31 @@ body, html {
     }
 }
 
-.custom-button {
+.menu-toggle, .custom-button{
     background-color: transparent; /* 배경 투명 */
     border: none; /* 테두리 없음 */
+    cursor: pointer; /* 포인터 커서 */
     display: flex;
-    cursor: pointer; /* 포인터 스타일 */
-    margin-left: 10px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002; /* 헤더보다 위에 표시 */
+    width: 40px; /* 버튼 너비 */
+    height: 40px; /* 버튼 높이 (menu-toggle과 custom-button 동일) */
+    margin: 0; /* 외부 여백 제거 */
+    padding: 0; /* 내부 여백 제거 */
+}
+
+/* 메뉴 버튼의 아이콘 */
+.menu-toggle i {
+    font-size: 1.5rem; /* 아이콘 크기 */
+    color: #5C5C5C; /* 아이콘 색상 */
+    transition: transform 0.3s ease, color 0.3s ease; /* 애니메이션 */
+}
+
+/* 메뉴 버튼 호버 효과 */
+.menu-toggle:hover i {
+    color: #000; /* 호버 시 색상 변경 */
+    transform: scale(1.1); /* 약간 커지는 효과 */
 }
 
 /* 버튼 안의 이미지 */
