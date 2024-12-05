@@ -1,0 +1,54 @@
+/* sidebar.css */
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: #EFCEEB;
+    color: #5C5C5C;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: 0.3s; /* 부드러운 열고 닫기 효과 */
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+    padding-top: 20px;
+    z-index: 1000;
+    display: flex; /* Flexbox 설정 */
+    flex-direction: column; /* 세로 정렬 */
+    padding: 20px 0; /* 위아래 여백 추가 */
+    
+  }
+
+
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 570px;
+    font-family: 'SUITE-Regular';
+  }
+  
+  .sidebar ul li {
+    padding: 10px 20px;
+
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidebar ul li a:hover {
+    background-color: #34495e;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  

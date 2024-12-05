@@ -52,18 +52,19 @@ body,html {
   
   .input-group {
     margin-bottom: 15px;
+    width: 100%;
   }
-  
+  input[type="text"],
   input[type="email"],
   input[type="password"] {
-
     width: 100%;
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 1em;
     outline: none;
   }
-  
+
+  input[type="text"]:focus,
   input[type="email"]:focus,
   input[type="password"]:focus {
     border-color: #888;
@@ -87,4 +88,3 @@ body,html {
   button:active {
     background-color: #d4a6c2; /* 클릭 시 더 진한 분홍색 */
   }
-  
