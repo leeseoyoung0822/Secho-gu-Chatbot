@@ -369,7 +369,6 @@ form {
     flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
-
 /* 파일 아이콘 */
 .file-bubble img {
     width: 20px;
@@ -379,21 +378,31 @@ form {
     padding: 0.5rem;
 }
 
+.file-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    color: #333;
+    gap: 0.2rem;
+    font-family: 'SUITE-Regular';
+}
+
+
 /* 파일 이름과 파일 형식 텍스트 */
-.file-bubble .file-name {
+.file-info.file-name {
     font-size: 0.85rem;
     font-weight: bold;
-    color: #333;
+    color: #5C5C5C;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; /* 긴 텍스트는 말줄임 처리 */
     font-family: 'SUITE-Regular';
 }
 
-.file-bubble .file-type {
+.file-info .file-type {
     font-size: 0.8rem;
     font-weight: normal;
-    color: #5a3e8e;
+    color: #5C5C5C;
     margin-left: 8px;
     font-family: 'SUITE-Regular';
 }

@@ -322,6 +322,11 @@ function initMain() {
             fileIcon.src = "file.png"; // 파일 아이콘 경로
             fileIcon.alt = "File Icon";
 
+            // 파일 정보 컨테이너 (file-info)
+            const fileInfo = document.createElement("div");
+            fileInfo.className = "file-info";
+
+
             // 파일 이름 텍스트
             const fileNameElement = document.createElement("span");
             fileNameElement.textContent = fileName;
@@ -345,8 +350,11 @@ function initMain() {
 
             // 파일 디스플레이 요소 추가
             fileBubble.appendChild(fileIcon);
+            fileBubble.appendChild(fileInfo);
+
             fileBubble.appendChild(fileNameElement);
             fileBubble.appendChild(fileTypeElement);
+
             userBubble.appendChild(fileBubble);
         }
 
