@@ -1,4 +1,4 @@
-/* login.css */
+/* signup.css */
 @font-face {
   font-family: 'SUITE-Regular';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-.login-container {
+.signup-container {
   background-image: url('background.png');
   background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
   background-position: center; /* 이미지 위치를 중앙으로 */
@@ -18,20 +18,22 @@
   margin: 0; /* 페이지 기본 여백 제거 */
   flex-direction: column;
 }
-.login-container h2 {
+
+.signup-container h2 {
   color: #5c5c5c; /* 원하는 색상 코드 */
   font-size: 1.5rem; /* 텍스트 크기 */
   font-weight: bold; /* 굵은 글씨 */
   text-align: center; /* 중앙 정렬 */
   font-family: 'SUITE-Regular';
-  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .logo-image {
   width: 200px;
+  margin-bottom: 20px; /* 로고와 폼 사이 여백 추가 */
 }
 
-.login-form {
+.signup-form {
   width: 100%;
   max-width: 400px;
   display: flex;
@@ -46,7 +48,7 @@
 
 .input-group {
   width: 100%;
-  margin-bottom: 20px;
+  
 }
 
 .input-field {
@@ -55,6 +57,11 @@
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 1rem;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #888;
 }
 
 .button-group {
@@ -65,8 +72,8 @@
   
 }
 
-.login-button,
-.signup-button {
+.signup-submit-button,
+.cancel-signup-button {
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
@@ -74,23 +81,22 @@
   font-size: 1rem;
   transition: background-color 0.3s ease;
   font-family: 'SUITE-Regular';
-  
 }
 
-.login-button {
+.signup-submit-button {
   background-color: #d5befd;
   color: #5c5c5c;
 }
 
-.login-button:hover {
+.signup-submit-button:hover {
   background-color: #4b2e6f;
 }
 
-.signup-button {
+.cancel-signup-button {
   background-color: #d5befd;
   color: #5c5c5c;
 }
 
-.signup-button:hover {
+.cancel-signup-button:hover {
   background-color: #c0c0c0;
 }

@@ -1,9 +1,16 @@
-
-// 사이드바와 버튼 가져오기
-const sidebarContainer = document.getElementById("sidebar-container");
-const menuToggleButton = document.querySelector(".menu-toggle");
-
-// 버튼 클릭 시 사이드바 토글
-menuToggleButton.addEventListener("click", () => {
-  sidebarContainer.classList.toggle("open"); // open 클래스 추가/제거
-});
+function initSidebar() {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const themeToggle = document.getElementById("themeToggle");
+  
+    // 메뉴 버튼 클릭 이벤트
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+    });
+  
+    // 테마 전환 이벤트
+    themeToggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark-theme", themeToggle.checked);
+    });
+  }
+  
