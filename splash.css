@@ -112,8 +112,8 @@ body, html {
 
 /* 버튼 안의 이미지 */
 .button-image {
-    width: 20px; /* 이미지 너비 */
-    height: 20px; /* 이미지 높이 */ 
+    width: 25px; /* 이미지 너비 */
+    height: 25px; /* 이미지 높이 */ 
 }
 
 /* Chatbot Card */
@@ -252,6 +252,7 @@ body, html {
     justify-content: center;
     width: 40px;
     height: 40px;
+    margin-right: 8px;
 }
 
 /* 반응형 스타일 */
