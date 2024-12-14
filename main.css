@@ -39,18 +39,34 @@ body, html {
 
 }
 
+.title-help-container {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 5px; /* 제목과 버튼 간격 */
+    position: relative; /* 필요 시 추가로 위치 조정 */
+    width: 100%; 
+}
 
 /* Chatbot Title */
 .chatbot-title {
-    position: absolute; /* 절대 위치로 설정 */
-    left: 50%; /* 부모 요소의 50% 위치 */
-    transform: translateX(-50%); /* 자신의 너비의 50%만큼 왼쪽으로 이동하여 완전히 가운데 정렬 */
+   /* 자신의 너비의 50%만큼 왼쪽으로 이동하여 완전히 가운데 정렬 */
     font-size: 1em;
     margin: 0;
     color: #5C5C5C;
     text-align: center;
     font-family: 'SUITE-Regular';
 }
+
+.help-button {
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 마우스 포인터 */
+    display: flex;
+    align-items: center; /* 아이콘 중앙 정렬 */
+    justify-content: center;
+}
+
 /* 작은 화면에서 폰트 크기 축소 */
 @media (max-width: 768px) {
     .chatbot-title {

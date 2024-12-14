@@ -59,7 +59,7 @@ body,html {
 
     width: 100%;
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 1em;
     outline: none;
   }
@@ -70,14 +70,11 @@ body,html {
   }
   
   /* 버튼 스타일 */
-  button {
-    padding: 10px 20px;
-    background-color: #f5d0e1; /* 연한 분홍색 배경 */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    color: #333;
+  .button {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+   
   }
   
   button:hover {
@@ -86,5 +83,13 @@ body,html {
   
   button:active {
     background-color: #d4a6c2; /* 클릭 시 더 진한 분홍색 */
+  }
+
+  .login-button,
+  .signup-button {
+    padding: 10px 20px;
+    background-color: #f5d0e1;
+    border: 1px solid #000;
+    cursor: pointer;
   }
   

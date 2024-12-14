@@ -6,7 +6,33 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (currentPath.includes("main.html")) {
         initMain();
     }
+
+    initSidebar();
 });
+
+// 공통 사이드바 초기화 함수
+function initSidebar() {
+    const sidebarContainer = document.getElementById("sidebar-container");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    // sidebar.html 로드 및 삽입
+    fetch("sidebar.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to load sidebar.html");
+            return response.text();
+        })
+        .then(html => {
+            sidebarContainer.innerHTML = html; // 사이드바 HTML 삽입
+
+            // 사이드바 열기/닫기 토글 이벤트
+            const sidebar = document.getElementById("sidebar");
+            menuToggle.addEventListener("click", () => {
+                sidebar.classList.toggle("open"); // 'open' 클래스 토글
+            });
+        })
+        .catch(error => console.error(error));
+}
+
 
 const SUPPORTED_FILE_TYPES = ["PDF", "DOCX", "DOC", "XLSX", "XLS", "HW"];
 
@@ -171,37 +197,7 @@ function initSplash() {
         
     }
 
-    const sidebarContainer = document.getElementById("sidebar-container");
-    const sidebar = document.getElementById("sidebar");
-    const menuToggle = document.querySelector(".menu-toggle");
-
-
-    menuToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-    });
-
-    document.getElementById("helpButton").addEventListener("click", function () {
-        alert("안녕하세요! 도움말 버튼을 눌렀습니다.");
-    });
-    // sidebar.html 파일을 가져와 로드
-    fetch("sidebar.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Failed to load sidebar.html");
-            return response.text();
-        })
-        .then(html => {
-            sidebarContainer.innerHTML = html;
-
-            // 사이드바 토글 이벤트
-            const sidebar = document.getElementById("sidebar");
-            const menuToggle = document.querySelector(".menu-toggle");
-
-            menuToggle.addEventListener("click", () => {
-                sidebar.classList.toggle("open");
-            });
-        })
-        .catch(error => console.error(error));
-      
+   
 
 }
 
@@ -416,34 +412,6 @@ function initMain() {
         errorDisplay.style.display = "block"; // 오류 메시지 표시
         errorDisplay.classList.add("active"); // 필요하다면 active 클래스 추가
     }
-
-    const sidebarContainer = document.getElementById("sidebar-container");
-    const sidebar = document.getElementById("sidebar");
-    const menuToggle = document.querySelector(".menu-toggle");
-
-
-    menuToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-    });
-    // sidebar.html 파일을 가져와 로드
-    fetch("sidebar.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Failed to load sidebar.html");
-            return response.text();
-        })
-        .then(html => {
-            sidebarContainer.innerHTML = html;
-
-            // 사이드바 토글 이벤트
-            const sidebar = document.getElementById("sidebar");
-            const menuToggle = document.querySelector(".menu-toggle");
-
-            menuToggle.addEventListener("click", () => {
-                sidebar.classList.toggle("open");
-            });
-        })
-        .catch(error => console.error(error));
-      
 
 
 }
