@@ -1,98 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="splash.css">
-    <link rel="stylesheet" href="sidebar.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-</head>
-<body>
-    <div id="sidebar-container"></div>
-                
+
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light flex-column background-container ">
+    
+    <div class="chatbot-card mb-4">
+        <div class="chat-bubble">
+            <div class="bubble-content">
+                <span id="typing-text">안녕하세요 서초구성 챗봇입니다</span> <!-- 타이핑 애니메이션을 위한 영역 -->
+            </div>
+        </div>
+        <div class="chatbot-logo">
+            <img src="chatbot.png" alt="Chatbot Logo" class="robot-logo">
+        </div>
     </div>
-    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light flex-column background-container ">
-        <div class="chatbot-header d-flex justify-content-between align-items-center w-100 px-3">
+    <div class="custom-input-container">
+        <!-- Input Group -->
+        <form class="w-full flex items-center space-x-4 p-4 bg-white rounded-md shadow-md">
+
+            <!-- Dynamic File Display Area -->
+            <div id="fileDisplay" class="hidden items-center p-2 bg-purple-100 rounded-md flex-grow space-x-2">
+                <img src="file.png" alt="File Icon" class="w-5 h-5">
+                <div id="fileName" class="truncate text-gray-700">
+                    <span class="file-type"></span>
+                    <span class="file-name"></span>
+                </div>
+                <button type="button" id="removeFileButton" class="text-red-500 hover:text-red-700">×</button>
+            </div>
             
-            <button class="menu-toggle">
-                <img src="menu.png"class="button-image">
-            </button>
-            </button>
-            <button class="btn btn-outline-secondary custom-button" id="newChatButton">
-                <img src="newpage.png" alt="Custom Button" class="button-image">
-            </button>
-            <div class="title-help-container">
-                <h3 class="chatbot-title">Seocho-gu chatbot</h3>
-                <button class="help-button">
-                    <img src="question.png" class="button-image">
+    
+            <!-- 입력 필드와 버튼 -->
+            <div class="input-group">
+                <!-- Clip 버튼 -->
+                <button type="button" class="btn btn-left" id="clipButton">
+                    <img src="clip.png" alt="Clip Icon" class="icon-image">
+                </button>
+
+                <!-- Text Input -->
+                <input type="text" id="messageInput" placeholder="Enter your message"
+                    class="flex-grow p-2 rounded-md focus:ring focus:ring-purple-300 outline-none">
+
+                <!-- send button-->
+                <button class="btn btn-right" id="sendButton">
+                    <img src="send.png" alt="Send Icon" class="icon-image">
                 </button>
             </div>
-            
-        </div>
-        <div class="chatbot-card mb-4">
-            <div class="chat-bubble">
-                <div class="bubble-content">
-                    <span id="typing-text"></span> <!-- 타이핑 애니메이션을 위한 영역 -->
-                </div>
-            </div>
-            <div class="chatbot-logo">
-                <img src="chatbot.png" alt="Chatbot Logo" class="robot-logo">
-            </div>
-        </div>
-        <div class="custom-input-container">
-            <!-- Input Group -->
-            <form class="w-full flex items-center space-x-4 p-4 bg-white rounded-md shadow-md">
-
-                <!-- Dynamic File Display Area -->
-                <div id="fileDisplay" class="hidden items-center p-2 bg-purple-100 rounded-md flex-grow space-x-2">
-                    <img src="file.png" alt="File Icon" class="w-5 h-5">
-                    <div id="fileName" class="truncate text-gray-700">
-                        <span class="file-type"></span>
-                        <span class="file-name"></span>
-                    </div>
-                    <button type="button" id="removeFileButton" class="text-red-500 hover:text-red-700">×</button>
-                </div>
-                
-        
-                <!-- 입력 필드와 버튼 -->
-                <div class="input-group">
-                    <!-- Clip 버튼 -->
-                    <button type="button" class="btn btn-left" id="clipButton">
-                        <img src="clip.png" alt="Clip Icon" class="icon-image">
-                    </button>
-
-                    <!-- Text Input -->
-                    <input type="text" id="messageInput" placeholder="Enter your message"
-                        class="flex-grow p-2 rounded-md focus:ring focus:ring-purple-300 outline-none">
-
-                    <!-- send button-->
-                    <button class="btn btn-right" id="sendButton">
-                        <img src="send.png" alt="Send Icon" class="icon-image">
-                    </button>
-                </div>
-            </form>
-            <!-- Error Message -->
-            <div id="fileError" class="alert alert-light-purple d-none align-items-center" >
-                <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                <span id="fileErrorText">지원하지 않는 파일 형식입니다.</span>
-            </div>
+        </form>
+        <!-- Error Message -->
+        <div id="fileError" class="alert alert-light-purple d-none align-items-center" >
+            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+            <span id="fileErrorText">지원하지 않는 파일 형식입니다.</span>
         </div>
     </div>
-    
-    
-    <script src="App.js"></script>
-    <script src="sidebar.js"></script>
-    <script src="help.js"></script>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    
-</body>
-</body>
-</html>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

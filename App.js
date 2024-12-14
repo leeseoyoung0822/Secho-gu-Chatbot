@@ -196,9 +196,6 @@ function initSplash() {
         errorDisplay.classList.add("active"); // 필요하다면 active 클래스 추가
         
     }
-
-   
-
 }
 
 
@@ -368,16 +365,7 @@ function initMain() {
             fileTypeElement.textContent = `(${fileType})`;
             fileTypeElement.className = "file-type";
             
-            /*
-            // 다운로드 링크
-            if (fileData) {
-                const downloadLink = document.createElement("a");
-                downloadLink.href = fileData; // Base64 데이터
-                downloadLink.download = fileName; // 다운로드 파일 이름
-                downloadLink.textContent = "다운로드";
-                downloadLink.className = "file-download-link";
-                fileBubble.appendChild(downloadLink);
-            }*/
+    
 
             // 파일 디스플레이 요소 추가
             fileBubble.appendChild(fileIcon);

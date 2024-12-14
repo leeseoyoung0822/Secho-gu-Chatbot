@@ -1,0 +1,30 @@
+/* login.css */
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+  }
+  
+  .help-container {
+    background-image: url('background.png');
+    background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
+    background-position: center; /* 이미지 위치를 중앙으로 */
+    background-repeat: no-repeat; /* 이미지 반복 방지 */
+    height: 100vh; /* 화면 높이를 100% 채움 */
+    display: flex; /* 중앙 정렬을 위한 Flexbox */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin: 0; /* 페이지 기본 여백 제거 */
+    flex-direction: column;
+  }
+  .help-container h1 {
+    color: #5c5c5c; /* 원하는 색상 코드 */
+    font-size: 1.5rem; /* 텍스트 크기 */
+    font-weight: bold; /* 굵은 글씨 */
+    text-align: center; /* 중앙 정렬 */
+    font-family: 'SUITE-Regular';
+    padding: 20px;
+  }
+
+  

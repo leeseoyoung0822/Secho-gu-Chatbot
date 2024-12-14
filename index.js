@@ -1,0 +1,498 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const mainContent = document.getElementById("main-content");
+
+    // 초기 페이지 로드 시 splash.html 로드
+    loadPage("splash.html", "splash.css", "page-style");
+
+    // Load header and sidebar
+    fetch("header.html")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("header-container").innerHTML = html;
+        initHeader();
+      })
+      .catch(error => console.error("header.html 로드 실패:", error));
+
+    fetch("sidebar.html")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
+        initSidebar();
+      })
+      .catch(error => console.error("sidebar.html 로드 실패:", error));
+
+    // loadPage 함수
+    function loadPage(url, cssFile, cssId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log(`${url} 로드 성공`);
+                mainContent.innerHTML = xhr.responseText;
+
+                // 기존 CSS 제거
+                if (cssId) {
+                    const existingCSS = document.getElementById(cssId);
+                    if (existingCSS) {
+                        existingCSS.parentNode.removeChild(existingCSS);
+                        console.log(`${cssId} CSS 제거됨`);
+                    }
+                }
+
+                // 새로운 CSS 로드
+                if (cssFile && cssId) {
+                    const link = document.createElement("link");
+                    link.rel = "stylesheet";
+                    link.href = cssFile;
+                    link.id = cssId;
+                    document.head.appendChild(link);
+                    console.log(`${cssFile} CSS 로드됨`);
+                }
+
+                // 페이지 별 초기화 함수 호출
+                if (url === "splash.html") {
+                    console.log("Splash 이벤트 초기화 호출됨");
+                    initSplashEvents();
+                } else if (url === "main.html") {
+                    console.log("Main 이벤트 초기화 호출됨");
+                    initMainEvents();
+                } else if (url === "login.html") {
+                    console.log("Login 이벤트 초기화 호출됨");
+                    initLoginEvents();
+                } else if (url === "signup.html") {
+                    console.log("Signup 이벤트 초기화 호출됨");
+                    initSignupEvents();
+                }
+            } else {
+                console.error(`Failed to load ${url}: ${xhr.statusText}`);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error(`Error occurred while loading ${url}`);
+        };
+
+        xhr.send();
+    }
+
+    const SUPPORTED_FILE_TYPES = ["PDF", "DOCX", "DOC", "XLSX", "XLS", "HW"];
+
+    // Splash 이벤트 초기화 함수
+    function initSplashEvents() {
+        console.log("Splash 화면 이벤트 초기화");
+
+        // 요소 가져오기
+        const typingElement = document.getElementById("typing-text");
+        const clipButton = document.getElementById("clipButton");
+        const sendButton = document.getElementById("sendButton");
+        const fileDisplay = document.getElementById("fileDisplay");
+        const fileTypeSpan = fileDisplay.querySelector(".file-type");
+        const fileNameSpan = fileDisplay.querySelector(".file-name");
+        const removeFileButton = document.getElementById("removeFileButton");
+        const errorDisplay = document.getElementById("fileError");
+        const errorText = document.getElementById("fileErrorText");
+        const messageInput = document.getElementById("messageInput");
+
+        // 타이핑 애니메이션
+        const text = "안녕하세요 서초구청 챗봇 '서봇'입니다.<br> 무엇을 도와드릴까요?";
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                if (text.charAt(i) === "<") {
+                    const endIndex = text.indexOf(">", i);
+                    typingElement.innerHTML = text.substring(0, i) + text.substring(i, endIndex + 1);
+                    i = endIndex + 1;
+                } else {
+                    typingElement.innerHTML = text.substring(0, i + 1);
+                    i++;
+                }
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        typingElement.innerHTML = "&nbsp;<br>&nbsp;";
+        typeWriter();
+
+        // 파일 입력 초기화
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "*/*";
+        fileInput.style.display = "none";
+        document.body.appendChild(fileInput);
+
+        // Clip 버튼 클릭 이벤트
+        clipButton.addEventListener("click", function () {
+            fileInput.click();
+        });
+
+        // 파일 선택 이벤트 처리
+        fileInput.addEventListener("change", () => {
+            errorDisplay.style.display = "none";
+            errorDisplay.classList.remove("active");
+
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const fileName = selectedFile.name;
+                const fileType = fileName.split(".").pop().toUpperCase();
+
+                if (SUPPORTED_FILE_TYPES.includes(fileType)) {
+                    // 유효한 파일 형식일 때
+                    fileTypeSpan.textContent = fileType;
+                    fileNameSpan.textContent = fileName;
+
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        fileInput.dataset.fileData = reader.result;
+                    };
+                    reader.readAsDataURL(selectedFile);
+
+                    fileDisplay.classList.remove("hidden");
+                    fileDisplay.style.display = "flex";
+                } else {
+                    // 지원하지 않는 파일 형식일 때
+                    showErrorMessage("지원하지 않는 파일 형식입니다.");
+                }
+            } else {
+                // 파일이 선택되지 않았을 때
+                showErrorMessage("파일을 선택해주세요.");
+            }
+        });
+
+        // 파일 제거 버튼 클릭 이벤트
+        removeFileButton.addEventListener("click", function () {
+            resetInputs();
+        });
+
+        // Send 버튼 클릭 이벤트: main.html 로드
+        sendButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            console.log("SendButton 클릭됨! Main 페이지 로드");
+
+            const message = messageInput.value.trim();
+            const fileName = fileNameSpan.textContent ? fileNameSpan.textContent : null;
+            const fileType = fileTypeSpan.textContent || null;
+            const fileData = fileInput.dataset.fileData || null;
+
+            // 메시지나 파일 정보가 없는 경우 경고
+            if (!message && !fileName) {
+                alert("메시지나 파일을 입력해주세요.");
+                return;
+            }
+
+            // 데이터 저장 및 main.html 로드
+            try {
+                const chatData = { 
+                    message,
+                    fileName, 
+                    fileType, 
+                    fileData };
+                localStorage.setItem("chatData", JSON.stringify(chatData));
+                console.log("데이터 저장 완료:", chatData);
+                loadPage("main.html", "main.css", "page-style");
+            } catch (error) {
+                console.error("데이터 저장 중 오류 발생:", error);
+                alert("데이터 저장에 문제가 발생했습니다.");
+            }
+        });
+
+        function resetInputs() {
+            messageInput.value = "";
+            fileNameSpan.textContent = "";
+            fileTypeSpan.textContent = "";
+            fileDisplay.style.display = "none";
+            fileDisplay.classList.add("hidden");
+            fileInput.value = "";
+            delete fileInput.dataset.fileData;
+            errorDisplay.style.display = "none";
+            errorDisplay.classList.remove("active");
+            localStorage.removeItem("chatData");
+        }
+
+        function showErrorMessage(message) {
+            errorText.textContent = message;
+            errorDisplay.style.display = "flex";
+            errorDisplay.classList.remove("d-none");
+            errorDisplay.classList.add("active");
+        }
+    }
+
+    // Main 이벤트 초기화 함수
+    function initMainEvents() {
+        console.log("Main 화면 이벤트 초기화");
+
+        // 요소 가져오기
+        const chatArea = document.getElementById("chatArea");
+        const sendButton = document.getElementById("sendButton");
+        const clipButton = document.getElementById("clipButton");
+        const messageInput = document.getElementById("messageInput");
+        const fileInput = document.createElement("input");
+        const fileDisplay = document.getElementById("fileDisplay");
+        const fileNameSpan = fileDisplay.querySelector(".file-name");
+        const fileTypeSpan = fileDisplay.querySelector(".file-type");
+        const errorDisplay = document.getElementById("fileError");
+        const errorText = document.getElementById("fileErrorText");
+        const removeFileButton = document.getElementById("removeFileButton");
+
+        // 초기 상태: fileError 숨기기
+        errorDisplay.style.display = "none";
+        errorDisplay.classList.remove("active");
+
+        // 파일 제거 버튼 클릭 이벤트
+        removeFileButton.addEventListener("click", function () {
+            resetInputs();
+        });
+
+        // 파일 입력 초기화
+        fileInput.type = "file";
+        fileInput.accept = "*/*";
+        fileInput.style.display = "none";
+        document.body.appendChild(fileInput);
+
+        // 파일 첨부 버튼 클릭 시 파일 선택 창 열기
+        clipButton.addEventListener("click", function () {
+            fileInput.click();
+        });
+
+        // 파일 선택 이벤트 핸들러
+        fileInput.addEventListener("change", () => {
+            errorDisplay.style.display = "none";
+            errorDisplay.classList.remove("active");
+
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const fileName = selectedFile.name;
+                const fileType = fileName.split(".").pop().toUpperCase();
+
+                if (SUPPORTED_FILE_TYPES.includes(fileType)) {
+                    // 유효한 파일 형식일 때
+                    fileTypeSpan.textContent = fileType;
+                    fileNameSpan.textContent = fileName;
+
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        fileInput.dataset.fileData = reader.result;
+                    };
+                    reader.readAsDataURL(selectedFile);
+
+                    fileDisplay.classList.remove("hidden");
+                    fileDisplay.style.display = "flex";
+                } else {
+                    // 지원하지 않는 파일 형식일 때
+                    showErrorMessage("지원하지 않는 파일 형식입니다.");
+                }
+            } else {
+                // 파일이 선택되지 않았을 때
+                showErrorMessage("파일을 선택해주세요.");
+            }
+        });
+
+        // 로컬 스토리지에서 데이터 로드 및 사용자 메시지 출력
+        const chatData = JSON.parse(localStorage.getItem("chatData"));
+
+        if (chatData) {
+            const { message, fileName, fileType, fileData } = chatData;
+
+            const userBubble = createUserBubble(message, fileName, fileType, fileData);
+            chatArea.appendChild(userBubble);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            localStorage.removeItem("chatData");
+        }
+
+        // Send 버튼 클릭 이벤트: 메시지 추가
+        sendButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const message = messageInput.value.trim();
+            const fileName = fileTypeSpan.textContent ? fileNameSpan.textContent : null;
+            const fileType = fileTypeSpan.textContent || null;
+            const fileData = fileInput.dataset.fileData || null;
+
+            // 메시지 또는 파일 없이도 버블 생성
+            const userBubble = createUserBubble(message, fileName, fileType, fileData);
+            chatArea.appendChild(userBubble);
+
+            // 채팅 영역 스크롤 하단으로 이동
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+            // 입력 필드 및 파일 디스플레이 초기화
+            resetInputs();
+        });
+
+        // 사용자 메시지 버블 생성 함수
+        function createUserBubble(message, fileName, fileType, fileData) {
+            const userBubble = document.createElement("div");
+            userBubble.className = "user-message";
+
+            if (fileName) {
+                // 파일 디스플레이 영역
+                const fileBubble = document.createElement("div");
+                fileBubble.className = "file-bubble";
+
+                // 파일 아이콘
+                const fileIcon = document.createElement("img");
+                fileIcon.src = "file.png"; // 파일 아이콘 경로
+                fileIcon.alt = "File Icon";
+
+                // 파일 정보 컨테이너 (file-info)
+                const fileInfo = document.createElement("div");
+                fileInfo.className = "file-info";
+
+                // 파일 형식 텍스트
+                const fileTypeElement = document.createElement("span");
+                fileTypeElement.textContent = fileType;
+                fileTypeElement.className = "file-type";
+
+                // 파일 이름 텍스트
+                const fileNameElement = document.createElement("span");
+                fileNameElement.textContent = fileName;
+                fileNameElement.className = "file-name";
+
+                
+                // 파일 디스플레이 요소 추가
+                fileInfo.appendChild(fileTypeElement);
+                fileInfo.appendChild(fileNameElement);
+
+                fileBubble.appendChild(fileIcon);
+                fileBubble.appendChild(fileInfo);
+
+                userBubble.appendChild(fileBubble);
+            }
+
+            // 메시지 텍스트 추가
+            const messageText = document.createElement("p");
+            messageText.textContent = message || " "; // 공백으로 대체
+            userBubble.appendChild(messageText);
+
+            return userBubble;
+        }
+
+        // 입력 필드 및 파일 디스플레이 초기화 함수
+        function resetInputs() {
+            messageInput.value = "";
+            fileNameSpan.textContent = "";
+            fileTypeSpan.textContent = "";
+            fileDisplay.style.display = "none";
+            fileDisplay.classList.add("hidden");
+            fileInput.value = "";
+            delete fileInput.dataset.fileData;
+            errorDisplay.style.display = "none";
+            errorDisplay.classList.remove("active");
+            localStorage.removeItem("chatData");
+        }
+
+        // 오류 메시지 표시 함수
+        function showErrorMessage(message) {
+            errorText.textContent = message;
+            errorDisplay.style.display = "block";
+            errorDisplay.classList.add("active");
+        }
+    }
+
+    // Login 이벤트 초기화 함수
+    function initLoginEvents() {
+        console.log("Login 화면 이벤트 초기화");
+        const signupButton = document.getElementById("signupButton");
+
+        if (signupButton) {
+            console.log("signupButton 존재");
+            signupButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                console.log("회원가입 버튼 클릭됨! 회원가입 페이지 로드");
+                loadPage("signup.html", "signup.css", "page-style");
+            });
+        } else {
+            console.error("signupButton 요소를 찾을 수 없습니다.");
+        }
+
+        // 로그인 폼 제출 이벤트
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+            loginForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                // 서버 연결 없이 무조건 스플래시 페이지로 이동
+                console.log("로그인 폼 제출됨! 스플래시 페이지 로드");
+                localStorage.setItem("username", "Guest"); // 임시 사용자 이름 설정
+                loadPage("splash.html", "splash.css", "page-style"); // 스플래시 페이지 로드
+            });
+        } else {
+            console.error("loginForm 요소를 찾을 수 없습니다.");
+        }
+    }
+
+    // Signup 이벤트 초기화 함수
+    function initSignupEvents() {
+        console.log("Signup 화면 이벤트 초기화");
+
+        const signupForm = document.getElementById("signupForm");
+        const cancelSignupButton = document.getElementById("cancelSignupButton");
+
+        if (signupForm) {
+            console.log("signupForm 존재");
+            signupForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const username = document.getElementById("username").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("password").value.trim();
+
+                if (username === "" || email === "" || password === "") {
+                    alert("모든 필드를 입력해주세요.");
+                    return;
+                }
+
+                // 회원가입 로직 구현 (AJAX 요청 예시)
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/api/signup", true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+                xhr.onload = function () {
+                    if (xhr.status === 201) { // 일반적으로 회원가입 성공 시 201 상태 코드 사용
+                        console.log("회원가입 성공! Login 페이지 로드");
+                        loadPage("login.html", "login.css", "page-style");
+                    } else {
+                        console.error("회원가입 실패:", xhr.responseText);
+                        alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+                    }
+                };
+
+                xhr.onerror = function () {
+                    console.error("회원가입 요청 중 오류 발생");
+                    alert("회원가입 요청 중 오류가 발생했습니다.");
+                };
+
+                const data = JSON.stringify({ username: username, email: email, password: password });
+                xhr.send(data);
+            });
+        } else {
+            console.error("signupForm 요소를 찾을 수 없습니다.");
+        }
+
+        if (cancelSignupButton) {
+            console.log("cancelSignupButton 존재");
+            cancelSignupButton.addEventListener("click", function () {
+                console.log("회원가입 취소 버튼 클릭됨! Login 페이지 로드");
+                loadPage("login.html", "login.css", "page-style");
+            });
+        } else {
+            console.error("cancelSignupButton 요소를 찾을 수 없습니다.");
+        }
+    }
+
+    // Help 페이지 이벤트 초기화
+    function initHelpEvents() {
+        console.log("Help 화면 이벤트 초기화");
+
+        const backButton = document.getElementById("backButton");
+
+        if (backButton) {
+            backButton.addEventListener("click", function () {
+                console.log("Splash 화면으로 돌아가기");
+                loadPage("splash.html", "splash.css", "page-style");
+            });
+        } else {
+            console.error("backButton 요소를 찾을 수 없습니다.");
+        }
+    }
+
+});
