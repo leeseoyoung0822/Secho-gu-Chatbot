@@ -24,7 +24,6 @@ body, html {
     background-image: url('img/background.png');
     background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
     background-position: center; /* 이미지 위치를 중앙으로 */
-    background-repeat: no-repeat; /* 이미지 반복 방지 */
     height: 100vh; /* 화면 높이를 100% 채움 */
     display: flex; /* 중앙 정렬을 위한 Flexbox */
     justify-content: center; /* 가로 중앙 정렬 */
@@ -36,7 +35,7 @@ body, html {
 .chatbot-header {
     position: absolute;
     top: 15px; /* 상단 간격 */
-    left: 18px; /* 왼쪽 간격 */
+    left: 10px; /* 왼쪽 간격 */
     right: 20px; /* 오른쪽 간격 */
     display: flex;
     align-items: center; /* 세로 중앙 정렬 */
@@ -61,6 +60,14 @@ body, html {
     text-align: center;
     font-family: 'SUITE-Regular';
 }
+/* Hover 효과 */
+.chatbot-title:hover {
+    color: #575757; /* Hover 시 보라색으로 변경 */
+    transform: scale(1.03); /* 약간 확대 */
+  
+}
+
+
 
 .help-button {
     background-color: transparent; /* 배경 투명 */
@@ -100,7 +107,7 @@ body, html {
     width: 40px; /* 버튼 너비 */
     height: 40px; /* 버튼 높이 (menu-toggle과 custom-button 동일) */
     margin: 0; /* 외부 여백 제거 */
-    padding: 10px; /* 내부 여백 제거 */
+
 }
 
 /* 메뉴 버튼의 아이콘 */
@@ -268,6 +275,7 @@ body, html {
     flex-direction: column;
     justify-content: center; /* 가로 중앙 정렬 */
     align-items: center;
+    
 }
 
 /* 왼쪽 버튼 (Custom Icon) */
@@ -325,6 +333,7 @@ body, html {
     justify-content: flex-start; /* 왼쪽 정렬 */
     width: 100%;
     position: relative;
+    
 }
 
 form {
@@ -340,6 +349,7 @@ form {
     margin-bottom: 10px;
     padding: 2px;
     justify-content: flex-start;
+    
 }
 .hidden {
     display: none !important;
@@ -446,18 +456,27 @@ form {
 }
 
 
+  
+  .sidebar-btn:hover .button-icon {
+    transform: scale(1.1); /* 호버 시 아이콘 확대 */
+  }
+
+
 
 /* styles.css */
 
 /* 다크 테마 스타일 */
 .dark-theme .sidebar {
-    background-color: #1a252f;
+    background-color: #121b23;
   }
   
   .dark-theme .sidebar-btn {
-    background-color: #2c3e50;
     color: #bdc3c7;
   }
+
+  .dark-theme .sidebar-btn:hover {
+    background-color: #3a5568;
+}
   
   .dark-theme .file-item {
     background-color: #2c3e50;
@@ -471,4 +490,166 @@ form {
   .dark-theme .delete-button {
     background-color: #c0392b;
   }
-  
+/* 다크 테마 스타일 */
+.dark-theme {
+    background-color: #1a252f;
+    color: #bdc3c7;
+}
+
+/* 배경 컨테이너 */
+.dark-theme .background-container {
+    background-image: none;
+    background-color: #1a252f;
+}
+
+/* 헤더 */
+.dark-theme .chatbot-header {
+    color: #bdc3c7;
+}
+
+/* 제목 및 도움말 버튼 */
+.dark-theme .chatbot-title {
+    color: #ecf0f1;
+}
+
+.dark-theme .chatbot-title:hover {
+    color: #bdc3c7;
+}
+
+/* 버튼 이미지 */
+.dark-theme .button-image {
+    filter: invert(1); /* 색 반전 */
+}
+
+/* 사용자 정보 컨테이너 */
+.dark-theme .username-box {
+    color: #bdc3c7;
+}
+
+.dark-theme .logout-button {
+    background-color: #34495e;
+    color: #bdc3c7;
+}
+
+.dark-theme .logout-button:hover {
+    background-color: #3a5568;
+}
+
+/* 말풍선 */
+.dark-theme .chat-bubble {
+    background-color: #34495e;
+    color: #ecf0f1;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .chat-bubble::after {
+    border-color: #34495e transparent transparent transparent;
+}
+
+
+/* 입력 폼 */
+.dark-theme form {
+    background-color: #2c3e50;
+    border: 1px solid #34495e;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 입력 필드 */
+.dark-theme #messageInput {
+    background-color: #34495e;
+    color: #ecf0f1;
+    border: 1px solid #2c3e50;
+}
+
+.dark-theme #messageInput::placeholder {
+    color: #7f8c8d;
+}
+
+
+
+
+/* 파일 디스플레이 */
+.dark-theme #fileDisplay {
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+
+/* 파일 이름과 파일 형식 텍스트 */
+.dark-theme #fileName .file-type {
+    color: #bdc3c7; /* 밝은 색상 */
+    font-weight: bold;
+}
+
+.dark-theme #fileName .file-name {
+    color: #bdc3c7; /* 약간 어두운 밝은 색상 */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.dark-theme #fileDisplay img {
+    background-color: #2c3e50;
+}
+
+.dark-theme #removeFileButton {
+    color: #1a252f;
+}
+
+.dark-theme #removeFileButton:hover {
+    color: #1a252f;
+}
+
+/* 알림 박스 */
+.dark-theme .alert-light-purple {
+    background-color: #3a5568;
+    color: #ecf0f1;
+    border-color: #2c3e50;
+}
+
+.dark-theme .alert-light-purple .bi {
+    color: #ecf0f1;
+}
+
+/* 파일 버블 */
+.dark-theme .file-bubble {
+    background-color: #2c3e50;
+    color: #bdc3c7;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .file-bubble img {
+    background-color: #34495e;
+}
+
+.dark-theme .file-info {
+    color: #bdc3c7;
+}
+
+.dark-theme .file-info .file-name {
+    color: #ecf0f1;
+}
+
+.dark-theme .file-info .file-type {
+    color: #7f8c8d;
+}
+
+/* 사용자 메시지 */
+.dark-theme .user-message {
+    background-color: #2c3e50;
+    color: #bdc3c7;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 챗봇 메시지 */
+.dark-theme .bot-message {
+    background-color: #34495e;
+    color: #ecf0f1;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 다크 모드의 기본 배경 및 텍스트 색상 */
+.dark-theme body,
+.dark-theme html {
+    background-color: #1a252f;
+    color: #bdc3c7;
+}

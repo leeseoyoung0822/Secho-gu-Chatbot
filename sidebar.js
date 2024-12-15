@@ -5,15 +5,32 @@ function initSidebar() {
     const fileInput = document.getElementById("fileInput");
     const fileList = document.getElementById("fileList");
 
+    // FAQ, Issue, Notice 버튼 초기화
+    const faqButton = document.getElementById("faqButton");
+    const issueButton = document.getElementById("issueButton");
+    const noticeButton = document.getElementById("noticeButton");
+
 
     // 메뉴 버튼 클릭 이벤트
     menuToggle.addEventListener("click", () => {
       sidebar.classList.toggle("open");
     });
+
+    // 로컬 스토리지에서 테마 상태 로드
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-theme");
+        themeToggle.checked = true; // 토글 상태 업데이트
+    } else {
+        document.body.classList.remove("dark-theme");
+        themeToggle.checked = false; // 기본값 설정
+    }
   
     // 테마 전환 이벤트
     themeToggle.addEventListener("change", () => {
-      document.body.classList.toggle("dark-theme", themeToggle.checked);
+        const isDark = themeToggle.checked;
+        document.body.classList.toggle("dark-theme", isDark);
+        localStorage.setItem("theme", isDark ? "dark" : "light"); // 테마 상태 저장
     });
   
 
@@ -39,6 +56,13 @@ function initSidebar() {
         console.log("서초이슈 버튼 클릭됨");
         window.loadPage("issue.html", "issue.css", "issue-style"); // faq.html 로드
     });
+
+    noticeButton.addEventListener("click", () => {
+        console.log("공지사항 버튼 클릭됨");
+        window.loadPage("notice.html", "notice.css", "issue-style"); // faq.html 로드
+    });
+
+    
 
     
 
