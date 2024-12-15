@@ -1,28 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const mainContent = document.getElementById("main-content");
 
-    // 초기 페이지 로드 시 splash.html 로드
-    loadPage("splash.html", "splash.css", "page-style");
-
-    // Load header and sidebar
-    fetch("header.html")
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById("header-container").innerHTML = html;
-        initHeader();
-      })
-      .catch(error => console.error("header.html 로드 실패:", error));
-
-    fetch("sidebar.html")
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById("sidebar-container").innerHTML = html;
-        initSidebar();
-      })
-      .catch(error => console.error("sidebar.html 로드 실패:", error));
-
     // loadPage 함수
-    function loadPage(url, cssFile, cssId) {
+    window.loadPage = function (url, cssFile, cssId) {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
 
@@ -63,6 +43,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (url === "signup.html") {
                     console.log("Signup 이벤트 초기화 호출됨");
                     initSignupEvents();
+                } else if (url === "faq.html") {
+                    console.log("FAQ 이벤트 초기화 호출됨");
+                    initFaqEvents(); // FAQ 초기화 함수 호출
+                }
+                else if (url === "issue.html") {
+                    console.log("서초이슈 초기화 호출됨");
+                    initIssueEvents(); // FAQ 초기화 함수 호출
                 }
             } else {
                 console.error(`Failed to load ${url}: ${xhr.statusText}`);
@@ -75,6 +62,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
         xhr.send();
     }
+
+    // 초기 페이지 로드 시 splash.html 로드
+    window.loadPage("splash.html", "splash.css", "page-style");
+
+    // Load header and sidebar
+    fetch("header.html")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("header-container").innerHTML = html;
+        initHeader();
+      })
+      .catch(error => console.error("header.html 로드 실패:", error));
+
+    fetch("sidebar.html")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
+        initSidebar();
+      })
+      .catch(error => console.error("sidebar.html 로드 실패:", error));
+
+
 
     const SUPPORTED_FILE_TYPES = ["PDF", "DOCX", "DOC", "XLSX", "XLS", "HW"];
 
@@ -494,5 +503,124 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("backButton 요소를 찾을 수 없습니다.");
         }
     }
+
+    function initFaqEvents() {
+        console.log("FAQ 화면 이벤트 초기화");
+    
+        let faqData = []; // JSON 데이터
+        let loadedCount = 0; // 현재까지 불러온 항목 수
+        const loadSize = 5; // 한 번에 불러올 항목 수
+        const faqContainer = document.getElementById("faq-container");
+        let currentCategory = "clean"; // 현재 선택된 카테고리 추적
+    
+        // JSON 파일 경로 매핑
+        const fileMap = {
+            clean: "./json/faqClean.json",
+            tax: "./json/faqTax.json",
+            civil: "./json/faqComplain.json",
+        };
+    
+        // JSON 데이터를 불러오는 함수
+        async function fetchFAQData(category) {
+            console.log(`fetchFAQData 호출됨: ${category}`);
+            currentCategory = category; // 현재 카테고리 설정
+            try {
+                const response = await fetch(fileMap[category]);
+                console.log(`JSON 파일 로드 시도: ${fileMap[category]}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                faqData = await response.json();
+                console.log(`JSON 데이터 로드 성공:`, faqData);
+                loadedCount = 0; // 불러온 항목 초기화
+                faqContainer.innerHTML = ""; // 기존 내용 비우기
+                loadMoreFAQs();
+            } catch (error) {
+                console.error("FAQ 데이터를 불러오는 중 오류 발생:", error);
+            }
+        }
+    
+        // FAQ 항목 추가 함수
+        function loadMoreFAQs() {
+            console.log("loadMoreFAQs 호출됨");
+            const endIndex = loadedCount + loadSize;
+    
+            for (let i = loadedCount; i < endIndex && i < faqData.length; i++) {
+                const item = faqData[i];
+                console.log(`FAQ 항목 추가:`, item);
+                const groupDiv = document.createElement("div");
+                groupDiv.classList.add("faq-item");
+    
+                // 카테고리 조건부 표시
+                const categoryText =
+                    currentCategory === "civil"
+                        ? item.first_category || "카테고리 없음"
+                        : item.second_category || "카테고리 없음";
+    
+                groupDiv.innerHTML = `
+                    <div class="faq-header">
+                        <span class="category">${categoryText}</span>
+                        <p class="question">${item.question}</p>
+                        <img src="./img/Expand Arrow.png" class="expand-arrow" alt="Expand Arrow" />
+                    </div>
+                    <div class="faq-content">
+                        <p class="answer">${item.answer.replace(/\n/g, "<br>")}</p>
+                    </div>
+                `;
+    
+                faqContainer.appendChild(groupDiv);
+    
+                // 클릭 이벤트 추가
+                const expandArrow = groupDiv.querySelector(".expand-arrow");
+                const faqContent = groupDiv.querySelector(".faq-content");
+    
+                expandArrow.addEventListener("click", () => {
+                    faqContent.classList.toggle("show");
+                    expandArrow.classList.toggle("rotate");
+                    console.log("FAQ 항목 확장/축소됨");
+                });
+            }
+    
+            loadedCount = Math.min(endIndex, faqData.length); // 항목 수 업데이트
+            console.log(`loadedCount 업데이트: ${loadedCount}`);
+        }
+    
+        // 무한 스크롤 이벤트
+        window.addEventListener("scroll", () => {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+    
+            // 스크롤이 페이지 끝에 도달하면 더 많은 항목 불러오기
+            if (scrollTop + windowHeight >= documentHeight - 10) {
+                console.log("무한 스크롤 트리거됨");
+                loadMoreFAQs();
+            }
+        });
+    
+        // 카테고리 버튼 클릭 이벤트
+        const categoryButtons = document.querySelectorAll(".first-category");
+        categoryButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                console.log(`카테고리 버튼 클릭됨: ${btn.dataset.category}`);
+                categoryButtons.forEach((b) => b.classList.remove("selected"));
+                btn.classList.add("selected");
+                const category = btn.dataset.category;
+                fetchFAQData(category);
+            });
+        });
+    
+        // 초기 데이터 로드
+        fetchFAQData("clean");
+    }
+
+    // Help 페이지 이벤트 초기화
+    function initIssueEvents() {
+        console.log("issue 화면 이벤트 초기화");
+
+   
+
+    }
+    
 
 });
