@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="sidebar.css">
-  <title>ChatGPT 스타일 사이드바</title>
+  <title>사이드바</title>
 </head>
 <body>
   <!-- 사이드바 -->
   <div id="sidebar" class="sidebar">
- 
     <ul>
         <li>
             <button class="sidebar-btn">FQA</button>
         </li>
+        
         <li>
             <div class="theme-toggle-container">
                 <button class="sidebar-btn">테마 선택</button>
@@ -25,6 +25,24 @@
         </li>
         <li>
             <button class="sidebar-btn">서초이슈</button>
+        </li>
+        <!-- 파일 업로드 섹션 추가 -->
+        <li>
+          <div class="file-upload-container">
+            <!-- 파일 선택 버튼 -->
+            <label for="fileInput" class="file-upload-button" aria-label="파일 업로드">
+              <img src="img/add.png" alt="파일 추가" class="plus-icon">
+              파일 업로드
+            </label>
+            <input type="file" id="fileInput" class="file-input" multiple hidden>
+            <!-- 선택된 파일 없음 메시지 -->
+          </div>
+        </li>
+        <!-- 업로드된 파일 목록 -->
+        <li>
+          <div id="fileList" class="file-list">
+            <!-- 파일 항목이 여기에 추가됩니다 -->
+          </div>
         </li>
         
     </ul>
