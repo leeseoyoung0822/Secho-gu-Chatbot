@@ -19,7 +19,6 @@
     z-index: 1000;
     display: flex; /* Flexbox 설정 */
     flex-direction: column; /* 세로 정렬 */
-    border-radius: 20px;
     
   }
   .sidebar-btn {
@@ -48,6 +47,9 @@
     border-radius: 5px; /* 모서리를 둥글게 */
     padding: 8px; /* 아이콘 주변 여백 */
     
+  }
+  .dark-theme .sidebar-btn .button-icon {
+    background-color: #2c3e50; /* 배경색 */
   }
 
   /* 토글 스위치 */
@@ -182,7 +184,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color:transparent;
+    background-color: #e2c2da;
     color: #5C5C5C;
     padding: 8px 12px;
     margin-bottom: 4px;
