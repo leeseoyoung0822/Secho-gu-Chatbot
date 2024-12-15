@@ -10,22 +10,38 @@
   <!-- 사이드바 -->
   <div id="sidebar" class="sidebar">
     <ul>
+      <li>
+        <button class="sidebar-btn" id="noticeButton">
+          <img src="img/notice.png" alt="공지 아이콘" class="button-icon">
+          공지사항
+        </button>
+      </li>
         <li>
-            <button class="sidebar-btn" id="faqButton">FQA</button>
+            <button class="sidebar-btn" id="faqButton">
+              <img src="img/faq.png" alt="FAQ 아이콘" class="button-icon"> 
+              FQA
+            </button>
+        </li>
+        <li>
+          <button class="sidebar-btn" id="issueButton">
+            <img src="img/issue.png" alt="이슈 아이콘" class="button-icon">
+            서초이슈
+          </button>
         </li>
         
         <li>
             <div class="theme-toggle-container">
-                <button class="sidebar-btn">테마 선택</button>
+                <button class="sidebar-btn">
+                  <img src="img/theme.png" alt="테마 아이콘" class="button-icon">
+                  테마 선택
+                </button>
                 <label class="switch">
                 <input type="checkbox" id="themeToggle">
                 <span class="slider"></span>
                 </label>
             </div>
         </li>
-        <li>
-            <button class="sidebar-btn" id="issueButton">서초이슈</button>
-        </li>
+    
         <!-- 파일 업로드 섹션 추가 -->
         <li>
           <div class="file-upload-container">

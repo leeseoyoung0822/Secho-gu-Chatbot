@@ -51,6 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("서초이슈 초기화 호출됨");
                     initIssueEvents(); // FAQ 초기화 함수 호출
                 }
+                else if (url === "notice.html") {
+                    console.log("공지사항 초기화 호출됨");
+                    initNoticeEvents(); // FAQ 초기화 함수 호출
+                }
             } else {
                 console.error(`Failed to load ${url}: ${xhr.statusText}`);
             }
@@ -617,9 +621,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Help 페이지 이벤트 초기화
     function initIssueEvents() {
         console.log("issue 화면 이벤트 초기화");
+    }
 
-   
-
+    function initNoticeEvents() {
+        console.log("공지사항 화면 이벤트 초기화");
     }
     
 
