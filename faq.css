@@ -1,0 +1,166 @@
+/* 전체 페이지 스타일 */
+.faq {
+    background-image: url('img/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .faq .overlap-wrapper {
+    max-width: 1280px;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .faq .overlap {
+    position: relative;
+    padding: 20px;
+  }
+  
+  .faq .text-wrapper {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #A4A4A4;
+  }
+  
+  .faq .div {
+    font-size: 40px;
+    font-weight: Medium;
+    color: #555;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  /* FAQ 컨테이너 스타일 */
+  #faq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 0 auto;
+    width: 90%;
+  }
+  
+  /* FAQ 아이템 스타일 */
+  .faq-item {
+    background-color: #FFFAFC;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 상하 요소 사이 여백 */
+  }
+  
+  /* FAQ 헤더 스타일 */
+  .faq-header {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 좌우 여백 */
+    padding-bottom: 10px; /* 선과 내용 사이 여백 */
+  }
+  
+  .faq-header::after {
+    content: "";
+    display: none; /* 기본적으로 숨김 */
+    width: 1px;
+    height: 40px; /* 세로선 높이 */
+    background-color: #5C5C5C; /* 선 색상 */
+    position: absolute;
+    left: 100px; /* 카테고리 옆 여백 설정 */
+    top: 50%; /* 수직 중앙 정렬 */
+    transform: translateY(-50%);
+  }
+  
+  
+  .category-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .first-category {
+    width: 176px;
+    height: 55px;
+    background-color: #FFFAFC;
+    color: #A4A4A4;
+    border-radius: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .first-category.selected {
+    background-color: #dab6f4;
+    color: #fff;
+  }
+  
+  
+  .category {
+    width: 130px;
+    text-align: center;
+    background-color: #dab6f4;
+    color: #fff;
+    padding: 10px 10px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  }
+  
+  .question {
+    font-size: 20px;
+    font-weight: Medium;
+    color: #5C5C5C;
+    flex-grow: 1; /* 나머지 공간을 채우도록 설정 */
+    text-align: left;
+    margin: 0; /* 기본 마진 제거 */
+  }
+  
+  .faq-content {
+    display: none; /* 초기 상태: 숨김 */
+    margin-top: 10px;
+    font-size: 18px;
+    color: #5C5C5C;
+    line-height: 1.5;
+    white-space: pre-line; /* 줄바꿈 유지 */
+  }
+  
+  .faq-content.show {
+    display: block; /* 열기 상태 */
+  }
+  
+  .expand-arrow {
+    width: 20px;
+    height: 20px;
+    cursor: pointer; /* 클릭 가능한 포인터 표시 */
+    transition: transform 0.3s ease; /* 회전 애니메이션 */
+  }
+  
+  .expand-arrow.rotate {
+    transform: rotate(180deg); /* 아래 방향 화살표 회전 */
+  }
+  
+  
+  /* 질문과 답변 스타일
+  .question {
+    font-size: 24px;
+    font-weight: Medium;
+    color: #5C5C5C;
+    margin-bottom: 10px;
+  }
+  
+  .answer {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: Medium;
+    color: #5C5C5C;
+    white-space: pre-line; 
+  } */
+  
