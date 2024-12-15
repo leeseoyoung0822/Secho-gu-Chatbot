@@ -21,7 +21,7 @@ body, html {
 }
 
 .background-container {
-    background-image: url('background.png');
+    background-image: url('img/background.png');
     background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
     background-position: center; /* 이미지 위치를 중앙으로 */
     background-repeat: no-repeat; /* 이미지 반복 방지 */
