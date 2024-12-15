@@ -29,6 +29,23 @@ function initSidebar() {
         fileInput.value = "";
     });
 
+    // FAQ 버튼 클릭 이벤트
+    faqButton.addEventListener("click", () => {
+        console.log("FAQ 버튼 클릭됨");
+        window.loadPage("faq.html", "faq.css", "faq-style"); // faq.html 로드
+    });
+
+    issueButton.addEventListener("click", () => {
+        console.log("서초이슈 버튼 클릭됨");
+        window.loadPage("issue.html", "issue.css", "issue-style"); // faq.html 로드
+    });
+
+    
+
+
+
+
+
 
 
 
