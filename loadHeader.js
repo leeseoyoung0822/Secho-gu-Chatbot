@@ -54,10 +54,10 @@ function initHeader() {
   });
 
   // 챗봇 타이틀 클릭 이벤트
-  chatbotTitle.addEventListener("click", function () {
-    console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
-    loadPage("splash.html", "splash.css", "page-style");
-});
+    chatbotTitle.addEventListener("click", function () {
+        console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
+        loadPage("splash.html", "splash.css", "page-style");
+    });
 
 
 
