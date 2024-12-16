@@ -39,7 +39,7 @@ function initSidebar() {
         const files = Array.from(fileInput.files);
 
         files.forEach((file) => {
-        addFileToList(file);
+            addFileToList(file);
         });
 
         // 파일 입력 초기화
@@ -63,16 +63,6 @@ function initSidebar() {
     });
 
     
-
-    
-
-
-
-
-
-
-
-
     // 파일을 목록에 추가하는 함수
     function addFileToList(file) {
         const fileItem = document.createElement("div");
@@ -133,76 +123,51 @@ function initSidebar() {
         fileList.appendChild(fileItem);
     }
 
-    // 파일을 filedisplay로 이동하는 함수
-    function moveToFileDisplay(file) {
-        // 현재 활성화된 화면의 fileDisplay 요소를 찾습니다.
-        const mainContent = document.getElementById("main-content");
-        if (!mainContent) {
-          console.error("main-content 요소를 찾을 수 없습니다.");
-          return;
-        }
+    // // 파일을 filedisplay로 이동하는 함수
+    // function moveToFileDisplay(file) {
+    //     // `fileDisplay` 요소 가져오기
+    //     const fileDisplay = document.getElementById("fileDisplay");
     
-        const fileDisplay = mainContent.querySelector("#fileDisplay");
-        if (!fileDisplay) {
-          console.error("현재 활성화된 화면의 fileDisplay 요소를 찾을 수 없습니다.");
-          return;
-        }
+    //     // 파일 정보를 초기화
+    //     fileDisplay.innerHTML = "";
     
-        // 중복 추가 방지: 동일한 파일명이 이미 있는지 확인
-        const existingFiles = Array.from(fileDisplay.querySelectorAll(".file-display-item .file-name"));
-        if (existingFiles.some(span => span.textContent === file.name)) {
-          alert(`"${file.name}" 파일이 이미 선택되었습니다.`);
-          return;
-        }
+    //     // 파일 형식 및 이름 설정
+    //     const fileType = file.name.split(".").pop().toUpperCase();
+    //     const fileName = file.name;
     
-        const displayItem = document.createElement("li");
-        displayItem.classList.add("file-display-item");
+    //     // 파일 아이콘 (고정된 이미지)
+    //     const fileIcon = document.createElement("img");
+    //     fileIcon.src = "img/file.png"; // 파일 아이콘 경로
+    //     fileIcon.alt = "File Icon";
+    //     fileIcon.classList.add("w-5", "h-5");
     
-        // 파일 아이콘
-        const fileIcon = document.createElement("img");
-        fileIcon.src = "file.png"; // 파일 아이콘 이미지 경로
-        fileIcon.alt = "File Icon";
-        fileIcon.classList.add("file-icon");
+    //     // 파일 정보 영역
+    //     const fileInfo = document.createElement("div");
+    //     fileInfo.classList.add("file-info");
+    //     fileInfo.innerHTML = `
+    //         <span class="file-type">${fileType}</span>
+    //         <span class="file-name">${fileName}</span>
+    //     `;
     
-        const fileInfo = document.createElement("div");
-        fileInfo.classList.add("file-info");
+    //     // 삭제 버튼
+    //     const removeButton = document.createElement("button");
+    //     removeButton.textContent = "×";
+    //     removeButton.classList.add("text-red-500", "hover:text-red-700");
+    //     removeButton.addEventListener("click", () => {
+    //         fileDisplay.classList.add("hidden");
+    //         fileDisplay.innerHTML = ""; // 내용 제거
+    //     });
     
-        const fileTypeSpan = document.createElement("span");
-        fileTypeSpan.classList.add("file-type");
-        fileTypeSpan.textContent = file.name.split(".").pop().toUpperCase();
+    //     // `fileDisplay`에 요소 추가
+    //     fileDisplay.appendChild(fileIcon);
+    //     fileDisplay.appendChild(fileInfo);
+    //     fileDisplay.appendChild(removeButton);
     
-        const fileNameSpan = document.createElement("span");
-        fileNameSpan.classList.add("file-name");
-        fileNameSpan.textContent = file.name;
+    //     // 숨겨진 `fileDisplay` 표시
+    //     fileDisplay.classList.remove("hidden");
+    //     fileDisplay.style.display = "flex";
+    // }
     
-        fileInfo.appendChild(fileTypeSpan);
-        fileInfo.appendChild(fileNameSpan);
-    
-        // 제거 버튼 (이미지)
-        const removeButton = document.createElement("img");
-        removeButton.src = "img/delete.png"; // 제거 아이콘 이미지 경로
-        removeButton.alt = "제거";
-        removeButton.title = "제거";
-    
-        // 제거 버튼 클릭 이벤트
-        removeButton.addEventListener("click", () => {
-          fileDisplay.removeChild(displayItem);
-        });
-    
-        displayItem.appendChild(fileIcon);
-        displayItem.appendChild(fileInfo);
-        displayItem.appendChild(removeButton);
-    
-        fileDisplay.appendChild(displayItem);
-
-        // `fileDisplay`가 숨겨져 있으면 표시
-        if (fileDisplay.classList.contains("hidden")) {
-            fileDisplay.classList.remove("hidden");
-            fileDisplay.style.display = "flex";
-        }
-      }
- 
-
 
   }
   
