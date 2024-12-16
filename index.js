@@ -765,8 +765,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Issue 이벤트 초기화 함수
     function initIssueEvents() {
-        console.log("issue 화면 이벤트 초기화");
         // 여기에 Issue 페이지 관련 이벤트를 추가하세요
+        console.log("issue 화면 이벤트 초기화");
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        function initApp() {
+            loadNewsData();
+            setupModal();
+        }
+
+        function loadNewsData() {
+            fetch('./json/newsData.json')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('news-container');
+                    data.forEach(item => {
+                        container.appendChild(createNewsItem(item));
+                    });
+                })
+                .catch(error => console.error('Error loading news data:', error));
+        }
+
+        function createNewsItem(item) {
+            const newsDiv = document.createElement('div');
+            newsDiv.className = 'news-item';
+
+            const imgDiv = document.createElement('div');
+            imgDiv.className = 'news-image';
+            imgDiv.style.backgroundImage = `url(https://www.seocho.go.kr${item.img})`;
+            imgDiv.addEventListener('click', () => {
+                showModal(item.img);
+            });
+
+            const title = document.createElement('a');
+            title.className = 'news-title';
+            title.textContent = item.title;
+            title.href = item.url ? item.url : "#";
+            title.target = '_blank';
+
+            newsDiv.appendChild(imgDiv);
+            newsDiv.appendChild(title);
+
+            return newsDiv;
+        }
+
+        function setupModal() {
+            const modal = document.getElementById("myModal");
+            const span = document.getElementsByClassName('close')[0];
+
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        }
+
+        function showModal(imgUrl) {
+            const modal = document.getElementById("myModal");
+            const modalImg = document.getElementById("modal-img");
+            modal.style.display = 'block';
+            modalImg.src = `https://www.seocho.go.kr${imgUrl}`;
+        }   
+        
+
     }
 
     // Notice 이벤트 초기화 함수
@@ -775,3 +842,4 @@ document.addEventListener("DOMContentLoaded", function () {
         // 여기에 Notice 페이지 관련 이벤트를 추가하세요
     }
 });
+
