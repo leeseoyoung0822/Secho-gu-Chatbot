@@ -589,7 +589,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         e.preventDefault();
                          // 로그인 성공 시 index.html로 이동
                         window.loadPage('splash.html', 'index.css', 'page-style');
-                        //initHeader(); 
+                        initHeader(); 
                     } else {
                         // 에러 메시지 표시
                          loginError.textContent = data.message;
@@ -654,7 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const data = JSON.parse(text); // JSON 파싱
                         if (data.status === 'success') {
                             alert(data.message);
-                            window.location.href = 'login.html';
+                            window.loadPage('login.html', 'login.css', 'page-style');
                         } else {
                             alert(data.message);
                             console.error("서버 오류:", data.message);
