@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fileList.appendChild(fileItem);
         }
 
-        // 기존 moveToFileDisplay 함수 제거
+       
     }
 
     // Splash 이벤트 초기화 함수
@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage.setItem("chatData", chatDataString);
                 console.log("데이터 저장 완료:", chatData);
                 
-                ("main.html", "main.css", "page-style");
+                window.loadPage("main.html", "main.css", "page-style");
             } catch (error) {
                 console.error("데이터 저장 중 오류 발생:", error);
                 alert(`데이터 저장에 문제가 발생했습니다: ${error.message}`);
