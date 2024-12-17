@@ -22,14 +22,30 @@ document.addEventListener("DOMContentLoaded", function () {
   
  // 헤더 초기화 함수
 function initHeader() {
+  console.log("Header 초기화");
   const usernameBox = document.getElementById("usernameBox");
   const logoutButton = document.getElementById("logoutButton");
   const newChatButton = document.getElementById("newChatButton"); 
   const helpButton = document.getElementById("helpButton");
 
   // 사용자 이름 설정
-  const username = localStorage.getItem("username") || "Guest";
-  usernameBox.textContent = `${username} 님`;
+  const nickname = localStorage.getItem("nickname") ;
+  if (nickname) {
+    const usernameBox = document.getElementById("usernameBox");
+    if (usernameBox) {
+        usernameBox.textContent = `${nickname}님`;
+        console.log(`헤더 닉네임 초기화됨: ${nickname}`);
+    } else {
+        console.error("usernameBox 요소를 찾을 수 없습니다.");
+    }
+  } else {
+      // 닉네임이 없을 경우 "Guest 님"으로 설정
+      const usernameBox = document.getElementById("usernameBox");
+      if (usernameBox) {
+          usernameBox.textContent = "Guest 님";
+      }
+  }
+  
 
   // 로그아웃 버튼 이벤트
   logoutButton.addEventListener("click", (event) => {
@@ -55,9 +71,9 @@ function initHeader() {
 
   // 챗봇 타이틀 클릭 이벤트
   chatbotTitle.addEventListener("click", function () {
-    console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
-    loadPage("splash.html", "splash.css", "page-style");
-});
+      console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
+      loadPage("splash.html", "splash.css", "page-style");
+  });
 
 
 

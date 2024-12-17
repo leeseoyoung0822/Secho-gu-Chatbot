@@ -135,8 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
         fileDisplay.style.display = "flex";
     }
 
-    
-
     // Sidebar 초기화 함수
     function initSidebar() {
         const menuToggle = document.querySelector(".menu-toggle");
@@ -550,17 +548,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 헤더에 닉네임을 업데이트하는 함수
-    function updateHeaderNickname(nickname) {
-        const usernameBox = document.getElementById("usernameBox");
-        if (usernameBox) {
-            usernameBox.textContent = `${nickname}님`;
-            console.log(`헤더 닉네임 업데이트됨: ${nickname}`);
-        } else {
-            console.error("usernameBox 요소를 찾을 수 없습니다.");
-        }
-    }
-
     // Login 이벤트 초기화 함수
     function initLoginEvents() {
         console.log("Login 화면 이벤트 초기화");
@@ -571,7 +558,7 @@ document.addEventListener("DOMContentLoaded", function () {
             signupButton.addEventListener("click", function (event) {
                 event.preventDefault();
                 console.log("회원가입 버튼 클릭됨! 회원가입 페이지 로드");
-                window.loadPage("signup.html", "signup.css", "page-style");
+                loadPage("signup.html", "signup.css", "page-style");
             });
         } else {
             console.error("signupButton 요소를 찾을 수 없습니다.");
@@ -582,58 +569,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (loginForm) {
             loginForm.addEventListener("submit", function (event) {
                 event.preventDefault();
-                const email = document.getElementById("email").value.trim();
-                const password = document.getElementById("password").value.trim();
-
-                if (email === "" || password === "") {
-                    alert("모든 필드를 입력해주세요.");
-                    return;
-                }
-
-                // 로그인 로직 구현 (AJAX 요청 예시)
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "/login.php", true); // 상대 경로로 수정
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); // 폼 데이터 형식에 맞게 설정
-
-                xhr.onload = function () {
-                    if (xhr.status === 200) { // 로그인 성공 시 200 상태 코드
-                        try {
-                            const response = JSON.parse(xhr.responseText);
-                            if (response.success) {
-                                console.log("로그인 성공!");
-                                // 헤더 닉네임 업데이트
-                                updateHeaderNickname(response.nickname);
-                                // 닉네임을 localStorage에 저장
-                                localStorage.setItem("nickname", response.nickname);
-                                // Splash 페이지 로드
-                                window.loadPage("splash.html", "index.css", "page-style");
-                            } else {
-                                console.error("로그인 실패:", response.error);
-                                alert("로그인에 실패했습니다: " + response.error);
-                            }
-                        } catch (e) {
-                            console.error("응답 JSON 파싱 오류:", e);
-                            alert("로그인 응답을 처리하는 중 오류가 발생했습니다.");
-                        }
-                    } else {
-                        console.error("로그인 요청 실패:", xhr.statusText);
-                        alert("로그인 요청에 실패했습니다.");
-                    }
-                };
-
-                xhr.onerror = function () {
-                    console.error("로그인 요청 중 오류 발생");
-                    alert("로그인 요청 중 오류가 발생했습니다.");
-                };
-
-                const data = `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-                xhr.send(data);
+                // 서버 연결 없이 무조건 스플래시 페이지로 이동
+                console.log("로그인 폼 제출됨! 스플래시 페이지 로드");
+                localStorage.setItem("nickname", "Guest"); // 임시 사용자 이름 설정
+                loadPage("splash.html", "index.css", "page-style"); // 스플래시 페이지 로드
             });
         } else {
             console.error("loginForm 요소를 찾을 수 없습니다.");
         }
     }
-
 
     // Signup 이벤트 초기화 함수
     function initSignupEvents() {
@@ -821,75 +765,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Issue 이벤트 초기화 함수
     function initIssueEvents() {
-        // 여기에 Issue 페이지 관련 이벤트를 추가하세요
         console.log("issue 화면 이벤트 초기화");
-        document.addEventListener('DOMContentLoaded', function() {
-            initApp();
-        });
-
-        function initApp() {
-            loadNewsData();
-            setupModal();
-        }
-
-        function loadNewsData() {
-            fetch('./json/newsData.json')
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('news-container');
-                    data.forEach(item => {
-                        container.appendChild(createNewsItem(item));
-                    });
-                })
-                .catch(error => console.error('Error loading news data:', error));
-        }
-
-        function createNewsItem(item) {
-            const newsDiv = document.createElement('div');
-            newsDiv.className = 'news-item';
-
-            const imgDiv = document.createElement('div');
-            imgDiv.className = 'news-image';
-            imgDiv.style.backgroundImage = `url(https://www.seocho.go.kr${item.img})`;
-            imgDiv.addEventListener('click', () => {
-                showModal(item.img);
-            });
-
-            const title = document.createElement('a');
-            title.className = 'news-title';
-            title.textContent = item.title;
-            title.href = item.url ? item.url : "#";
-            title.target = '_blank';
-
-            newsDiv.appendChild(imgDiv);
-            newsDiv.appendChild(title);
-
-            return newsDiv;
-        }
-
-        function setupModal() {
-            const modal = document.getElementById("myModal");
-            const span = document.getElementsByClassName('close')[0];
-
-            span.onclick = function() {
-                modal.style.display = 'none';
-            }
-
-            window.onclick = function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            }
-        }
-
-        function showModal(imgUrl) {
-            const modal = document.getElementById("myModal");
-            const modalImg = document.getElementById("modal-img");
-            modal.style.display = 'block';
-            modalImg.src = `https://www.seocho.go.kr${imgUrl}`;
-        }   
-        
-
+        // 여기에 Issue 페이지 관련 이벤트를 추가하세요
     }
 
     // Notice 이벤트 초기화 함수
@@ -898,4 +775,3 @@ document.addEventListener("DOMContentLoaded", function () {
         // 여기에 Notice 페이지 관련 이벤트를 추가하세요
     }
 });
-
