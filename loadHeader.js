@@ -28,24 +28,22 @@ function initHeader() {
   const newChatButton = document.getElementById("newChatButton"); 
   const helpButton = document.getElementById("helpButton");
 
-  // 사용자 이름 설정
-  const nickname = localStorage.getItem("nickname") ;
-  if (nickname) {
-    const usernameBox = document.getElementById("usernameBox");
-    if (usernameBox) {
-        usernameBox.textContent = `${nickname}님`;
-        console.log(`헤더 닉네임 초기화됨: ${nickname}`);
-    } else {
-        console.error("usernameBox 요소를 찾을 수 없습니다.");
-    }
-  } else {
-      // 닉네임이 없을 경우 "Guest 님"으로 설정
-      const usernameBox = document.getElementById("usernameBox");
-      if (usernameBox) {
-          usernameBox.textContent = "Guest 님";
+  // 서버에서 세션 정보를 가져와 닉네임 설정
+  fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+  .then(response => response.json())
+  .then(data => {
+      if (data.status === 'success') {
+          usernameBox.textContent = `${data.nickname}님`;
+          console.log(`헤더 닉네임 설정됨: ${data.nickname}`);
+      } else {
+          console.warn("세션에서 닉네임을 가져올 수 없습니다.");
+          usernameBox.textContent = " 님";
       }
-  }
-  
+  })
+  .catch(error => {
+      console.error("세션 정보를 가져오는 중 오류 발생:", error);
+      usernameBox.textContent = "Guest 님";
+  });
 
   // 로그아웃 버튼 이벤트
   logoutButton.addEventListener("click", (event) => {
