@@ -37,6 +37,7 @@
   }
   .sidebar-btn:hover {
     background-color: #e1b8cf;
+    border-radius: 10px;
   }
   .sidebar-btn .button-icon {
     flex-shrink: 0; /* 아이콘 크기 고정 */
@@ -44,7 +45,7 @@
     width: 20px; /* 아이콘 크기 */
     height: 20px;
     background-color: #e2c2da; /* 배경색 */
-    border-radius: 5px; /* 모서리를 둥글게 */
+    border-radius: 10px; /* 모서리를 둥글게 */
     padding: 8px; /* 아이콘 주변 여백 */
     
   }
@@ -188,7 +189,7 @@
     color: #5C5C5C;
     padding: 8px 12px;
     margin-bottom: 4px;
-    border-radius: 5px;
+    border-radius: 10px;
   }
   
   .file-name {

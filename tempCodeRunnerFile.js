@@ -135,8 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
         fileDisplay.style.display = "flex";
     }
 
-    
-
     // Sidebar 초기화 함수
     function initSidebar() {
         const menuToggle = document.querySelector(".menu-toggle");
@@ -369,8 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 localStorage.setItem("chatData", chatDataString);
                 console.log("데이터 저장 완료:", chatData);
-                
-                ("main.html", "main.css", "page-style");
+                loadPage("main.html", "main.css", "page-style");
             } catch (error) {
                 console.error("데이터 저장 중 오류 발생:", error);
                 alert(`데이터 저장에 문제가 발생했습니다: ${error.message}`);
@@ -551,132 +548,95 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 헤더에 닉네임을 업데이트하는 함수
-    function updateHeaderNickname(nickname) {
-        const usernameBox = document.getElementById("usernameBox");
-        if (usernameBox) {
-            usernameBox.textContent = `${nickname}님`;
-            console.log(`헤더 닉네임 업데이트됨: ${nickname}`);
-        } else {
-            console.error("usernameBox 요소를 찾을 수 없습니다.");
-        }
-    }
-
+    // Login 이벤트 초기화 함수
     function initLoginEvents() {
-        console.log("Login 이벤트 초기화");
-        const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
-        const signupButton = document.getElementById('signupButton');
-    
-        if (loginForm) {
-            loginForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const email = document.getElementById('email').value.trim();
-                const password = document.getElementById('password').value.trim();
-    
-                const formData = new FormData();
-                formData.append('email', email);
-                formData.append('password', password);
-    
-                // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
-                fetch('http://127.0.0.1:3000/login.php', {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'include'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        e.preventDefault();
-                         // 로그인 성공 시 index.html로 이동
-                        window.loadPage('splash.html', 'index.css', 'page-style');
-                        initHeader(); 
-                    } else {
-                        // 에러 메시지 표시
-                         loginError.textContent = data.message;
-                         loginError.style.display = 'block';
-                    }
-                  })
-                  .catch(error => {
-                    console.error('로그인 요청 오류:', error);
-                    loginError.textContent = '서버 오류가 발생했습니다.';
-                    loginError.style.display = 'block';
-                  });
-                
-                
-            });
-        }
-    
+        console.log("Login 화면 이벤트 초기화");
+        const signupButton = document.getElementById("signupButton");
+
         if (signupButton) {
             console.log("signupButton 존재");
             signupButton.addEventListener("click", function (event) {
                 event.preventDefault();
                 console.log("회원가입 버튼 클릭됨! 회원가입 페이지 로드");
-                window.loadPage("signup.html", "signup.css", "page-style");
+                loadPage("signup.html", "signup.css", "page-style");
             });
         } else {
             console.error("signupButton 요소를 찾을 수 없습니다.");
         }
+
+        // 로그인 폼 제출 이벤트
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+            loginForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                // 서버 연결 없이 무조건 스플래시 페이지로 이동
+                console.log("로그인 폼 제출됨! 스플래시 페이지 로드");
+                localStorage.setItem("nickname", "Guest"); // 임시 사용자 이름 설정
+                loadPage("splash.html", "index.css", "page-style"); // 스플래시 페이지 로드
+            });
+        } else {
+            console.error("loginForm 요소를 찾을 수 없습니다.");
+        }
     }
-    
-
-    
-
 
     // Signup 이벤트 초기화 함수
     function initSignupEvents() {
         console.log("Signup 화면 이벤트 초기화");
-    
-        const signupForm = document.getElementById('signupForm');
-        const signupError = document.getElementById('signupError');
-    
+
+        const signupForm = document.getElementById("signupForm");
+        const cancelSignupButton = document.getElementById("cancelSignupButton");
+
         if (signupForm) {
-            signupForm.addEventListener('submit', function (e) {
-                e.preventDefault(); // 기본 폼 제출 막기
-    
-                const nickname = document.getElementById('nickname').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const password = document.getElementById('password').value.trim();
-    
-                const formData = new FormData();
-                formData.append('nickname', nickname);
-                formData.append('email', email);
-                formData.append('password', password);
-    
-                fetch('http://127.0.0.1:3000/signup.php', {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'include'
-                })
-                .then(response => response.text()) // 응답을 먼저 텍스트로 받음
-                .then(text => {
-                    console.log("서버 응답:", text);
-                    try {
-                        const data = JSON.parse(text); // JSON 파싱
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            window.loadPage('login.html', 'login.css', 'page-style');
-                        } else {
-                            alert(data.message);
-                            console.error("서버 오류:", data.message);
-                        }
-                    } catch (error) {
-                        console.error('JSON 파싱 오류:', error, '응답:', text);
-                        alert("서버 오류: 올바른 JSON이 반환되지 않았습니다.");
+            console.log("signupForm 존재");
+            signupForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const nickname = document.getElementById("nickname").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("password").value.trim();
+
+                if (nickname === "" || email === "" || password === "") {
+                    alert("모든 필드를 입력해주세요.");
+                    return;
+                }
+
+                // 회원가입 로직 구현 (AJAX 요청 예시)
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://127.0.0.1:3000/signup.php", true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) { // 일반적으로 회원가입 성공 시 201 상태 코드 사용
+                        console.log("회원가입 성공! Login 페이지 로드");
+                        loadPage("login.html", "login.css", "page-style");
+                    } else {
+                        console.error("회원가입 실패:", xhr.responseText);
+                        alert("회원가입에 실패했습니다. 다시 시도해주세요.");
                     }
-               
-                })
-                .catch(err => {
-                    console.error('회원가입 오류:', err);
-                    signupError.textContent = '서버 오류가 발생했습니다.';
-                    signupError.style.display = 'block';
-                });
+                };
+
+                xhr.onerror = function () {
+                    console.error("회원가입 요청 중 오류 발생");
+                    alert("회원가입 요청 중 오류가 발생했습니다.");
+                };
+
+                const data = JSON.stringify({ nickname: nickname, email: email, password: password });
+                xhr.send(data);
             });
         } else {
             console.error("signupForm 요소를 찾을 수 없습니다.");
         }
+
+        if (cancelSignupButton) {
+            console.log("cancelSignupButton 존재");
+            cancelSignupButton.addEventListener("click", function () {
+                console.log("회원가입 취소 버튼 클릭됨! Login 페이지 로드");
+                loadPage("login.html", "login.css", "page-style");
+            });
+        } else {
+            console.error("cancelSignupButton 요소를 찾을 수 없습니다.");
+        }
     }
-    
+
     // Help 페이지 이벤트 초기화
     function initHelpEvents() {
         console.log("Help 화면 이벤트 초기화");
@@ -804,75 +764,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Issue 이벤트 초기화 함수
-
     function initIssueEvents() {
-        // Issue 페이지 관련 이벤트 초기화
         console.log("issue 화면 이벤트 초기화");
-        initApp(); // 바로 초기화 함수 호출
-    
-        function initApp() {
-            loadNewsData();
-            setupModal();
-        }
-    
-        function loadNewsData() {
-            fetch('./json/newsData.json')
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('news-container');
-                    data.forEach(item => {
-                        container.appendChild(createNewsItem(item));
-                    });
-                })
-                .catch(error => console.error('Error loading news data:', error));
-        }
-    
-        function createNewsItem(item) {
-            const newsDiv = document.createElement('div');
-            newsDiv.className = 'news-item';
-    
-            const imgDiv = document.createElement('div');
-            imgDiv.className = 'news-image';
-            imgDiv.style.backgroundImage = `url(https://www.seocho.go.kr${item.img})`;
-            imgDiv.addEventListener('click', () => {
-                showModal(item.img);
-            });
-    
-            const title = document.createElement('a');
-            title.className = 'news-title';
-            title.textContent = item.title;
-            title.href = item.url ? item.url : "#";
-            title.target = '_blank';
-    
-            newsDiv.appendChild(imgDiv);
-            newsDiv.appendChild(title);
-    
-            return newsDiv;
-        }
-    
-        function setupModal() {
-            const modal = document.getElementById("myModal");
-            const span = document.getElementsByClassName('close')[0];
-    
-            span.onclick = function() {
-                modal.style.display = 'none';
-            }
-    
-            window.onclick = function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            }
-        }
-    
-        function showModal(imgUrl) {
-            const modal = document.getElementById("myModal");
-            const modalImg = document.getElementById("modal-img");
-            modal.style.display = 'block';
-            modalImg.src = `https://www.seocho.go.kr${imgUrl}`;
-        }
+        // 여기에 Issue 페이지 관련 이벤트를 추가하세요
     }
-    
 
     // Notice 이벤트 초기화 함수
     function initNoticeEvents() {
@@ -880,4 +775,3 @@ document.addEventListener("DOMContentLoaded", function () {
         // 여기에 Notice 페이지 관련 이벤트를 추가하세요
     }
 });
-
