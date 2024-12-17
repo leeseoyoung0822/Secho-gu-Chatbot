@@ -231,6 +231,8 @@ body, html {
     left: 100%; 
 }
 
+
+
 /* 타이핑 효과 */
 @keyframes typing {
     from {
@@ -250,6 +252,8 @@ body, html {
         opacity: 0;
     }
 }
+
+
 
 .robot-logo {
     width: 200px;
