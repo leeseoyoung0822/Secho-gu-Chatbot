@@ -1,7 +1,6 @@
 .admin {
     background-image: url('img/admin_background.png');
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
     justify-content: center;
     padding: 40px 0;
@@ -10,12 +9,13 @@
 
 .count-container {
     background-color:#FFFAFC ;
-    width: 70%;
+    width: 75%;
     margin-top: 140px;
     margin-left: 40px;
     border-radius: 10px;
     color: #5C5C5C;
     font-size: 20px;
+    padding: 20px 30px;
 }
 
 .rating {
@@ -40,27 +40,77 @@ span {
     font-weight: bold;
 }
 
+/*알림*/
+.alret-container{
+    color: #5C5C5C;
+    background-color:#FFFAFC ;
+    margin-top: 140px;
+    margin-left: 40px;
+    border-radius: 10px;
+    width: 200px;   
+
+}
+
+
+
 /*공지사항*/
 .notice-container{
     background-color: #FFFAFC;
+    color:#5C5C5C;
     width: 40%;
     margin-top: 70px;
     margin-left: 40px;
+    border-radius: 10px;
+    padding: 15px;
 }
+
+.notice-header {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    font-size: 24px;
+}
+
+.notice-header img {
+    margin-right: 10px; /* 이미지와 텍스트 사이에 간격 추가 */
+}
+
+.notice-content{
+    margin-left: 30px;
+    margin-top: 20px;
+    padding-right: 30px;
+
+}
+
+.notice-content1, .notice-content2{
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.notice-content1, .notice-content2 {
+    display: flex;
+    justify-content: space-between; /* 항목 간 간격을 최대화 */
+    margin-bottom: 15px;
+}
+
+
+
+
 
 /*봇 알림*/
 
 .bot-alret{
+    margin-top: 90px;
     color:#FFFFFF;
     display: flex;
-    margin-left: 30px;
+    margin-left: px;
 }
 
 .bot-bubble {
     background-image: url('./img/Pbubble.png');
     background-size: contain; /* 이미지가 컨테이너 내에 전체적으로 맞추어지도록 */
     background-repeat: no-repeat; /* 이미지 반복 없음 */
-    padding: 20px; /* 텍스트와 경계 사이에 여유 공간 추가 */
+    padding: 30px 50px; /* 텍스트와 경계 사이에 여유 공간 추가 */
     color: white; /* 글자 색상 변경, 필요에 따라 조정 */
     font-size: 20px; /* 글자 크기 설정, 필요에 따라 조정 */
+    margin-left: 30px;
 }

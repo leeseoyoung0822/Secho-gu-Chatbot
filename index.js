@@ -880,4 +880,3 @@ document.addEventListener("DOMContentLoaded", function () {
         // 여기에 Notice 페이지 관련 이벤트를 추가하세요
     }
 });
-
