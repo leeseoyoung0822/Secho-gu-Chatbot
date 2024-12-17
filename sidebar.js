@@ -4,16 +4,17 @@ function initSidebar() {
     const themeToggle = document.getElementById("themeToggle");
     const fileInput = document.getElementById("fileInput");
     const fileList = document.getElementById("fileList");
+    const mainContent = document.getElementById("main-content"); 
 
     // FAQ, Issue, Notice 버튼 초기화
     const faqButton = document.getElementById("faqButton");
     const issueButton = document.getElementById("issueButton");
     const noticeButton = document.getElementById("noticeButton");
 
-
     // 메뉴 버튼 클릭 이벤트
     menuToggle.addEventListener("click", () => {
       sidebar.classList.toggle("open");
+      mainContent.classList.toggle("shifted"); // 메인 콘텐츠 이동
     });
 
     // 로컬 스토리지에서 테마 상태 로드
