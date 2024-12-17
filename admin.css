@@ -1,0 +1,66 @@
+.admin {
+    background-image: url('img/admin_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    justify-content: center;
+    padding: 40px 0;
+
+}
+
+.count-container {
+    background-color:#FFFAFC ;
+    width: 70%;
+    margin-top: 140px;
+    margin-left: 40px;
+    border-radius: 10px;
+    color: #5C5C5C;
+    font-size: 20px;
+}
+
+.rating {
+    margin-bottom: 10px;
+}
+
+.label {
+    font-size: 14px;
+    color: #5C5C5C;
+    
+}
+
+.bar {
+    height: 20px;
+    background-color: #DAB6F4;
+    text-align: right;
+    line-height: 40px;
+    color: white;
+}
+
+span {
+    font-weight: bold;
+}
+
+/*공지사항*/
+.notice-container{
+    background-color: #FFFAFC;
+    width: 40%;
+    margin-top: 70px;
+    margin-left: 40px;
+}
+
+/*봇 알림*/
+
+.bot-alret{
+    color:#FFFFFF;
+    display: flex;
+    margin-left: 30px;
+}
+
+.bot-bubble {
+    background-image: url('./img/Pbubble.png');
+    background-size: contain; /* 이미지가 컨테이너 내에 전체적으로 맞추어지도록 */
+    background-repeat: no-repeat; /* 이미지 반복 없음 */
+    padding: 20px; /* 텍스트와 경계 사이에 여유 공간 추가 */
+    color: white; /* 글자 색상 변경, 필요에 따라 조정 */
+    font-size: 20px; /* 글자 크기 설정, 필요에 따라 조정 */
+}
