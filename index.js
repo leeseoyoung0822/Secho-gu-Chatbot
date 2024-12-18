@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 파일 입력 초기화
         const fileInput = document.createElement("input");
         fileInput.type = "file";
-        fileInput.accept = "*/*";
+        fileInput.accept = ".pdf,.docx"; // 허용 파일 확장자 설정
         fileInput.style.display = "none";
         document.body.appendChild(fileInput);
 
@@ -317,12 +317,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
+                const allowedExtensions = ["pdf", "docx"];
+                const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+
+                
+
+                // 파일 확장자 체크
+                if (allowedExtensions.includes(fileExtension)) {
+                    fileNameSpan.textContent = selectedFile.name;
+                    fileDisplay.classList.remove("hidden");
+                    errorDisplay.classList.add("d-none");
+                } else {
+                    showErrorMessage("지원하지 않는 파일 형식입니다. PDF 또는 DOCX 파일만 업로드하세요.");
+                    fileInput.value = ""; // 입력 초기화
+                }
+
                 handleFileSelection(selectedFile); // 공통 함수 호출
             } else {
                 // 파일이 선택되지 않았을 때
                 showErrorMessage("파일을 선택해주세요.");
             }
         });
+
+
+
+
 
         // 파일 제거 버튼 클릭 이벤트
         removeFileButton.addEventListener("click", function () {
@@ -346,6 +365,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("메시지나 파일을 입력해주세요.");
                 return;
             }
+
+
+            const formData = new FormData();
+            formData.append("message", message);
+            if (fileInput.files.length > 0) {
+                formData.append("file", fileInput.files[0]);
+            }
+    
+            // PHP로 Ajax 요청 전송
+            fetch("upload.php", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    console.log("서버 응답:", data);
+                    alert("업로드 완료: " + data);
+    
+                    
+                })
+                .catch((error) => {
+                    console.error("업로드 실패:", error);
+                    alert("업로드 실패: 서버 오류가 발생했습니다.");
+                });
+
+
 
             // 데이터 저장 및 main.html 로드
             try {
