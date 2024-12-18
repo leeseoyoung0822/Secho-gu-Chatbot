@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'SUITE-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
 .issue {
   background-image: url('img/background.png');
   background-size: cover;
@@ -5,7 +11,7 @@
   background-repeat: no-repeat;
   display: flex;
   justify-content: center;
-  padding: 40px 0;
+  padding: 20px 0;
 }
 
 .issue .div {
@@ -14,6 +20,7 @@
   color: #5C5C5C;
   text-align: center;
   margin-bottom: 10px;
+  font-family: 'SUITE-Regular';
 
 }
 .issue .div2 {
@@ -21,7 +28,8 @@
   font-weight: Medium;
   color: #A4A4A4;
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
+  font-family: 'SUITE-Regular';
 }
 
 .issue .overlap-wrapper {
@@ -36,13 +44,13 @@
 .group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 50px;
+  gap: 20px;
   justify-content: center;
 }
 .news-item {
   background: #FFFFFF;
   border-radius: 20px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,7 +59,7 @@
 }
 .news-image {
   width: 100%;
-  height: 300px;
+  height: 250px;
   background-size: cover;
   background-position: center;
   border-radius: 20px 20px 0px 0px;
@@ -66,6 +74,7 @@
   padding: 10px;
   width: 70%;
   margin: 10px 20px;
+  font-family: 'SUITE-Regular';
 }
 .news-title:hover {
   font-weight: 700;
@@ -98,4 +107,48 @@
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+
+/* 다크 모드 스타일 */
+.dark-theme .issue {
+  background-color: #1a252f; /* 어두운 배경색 */
+  background-image: none; /* 배경 이미지 제거 */
+  color: #bdc3c7; /* 텍스트 색상 */
+}
+
+.dark-theme .issue .div {
+  color: #ecf0f1; /* 텍스트 색상 */
+}
+
+.dark-theme .issue .div2 {
+  color: #95a5a6; /* 약간 연한 텍스트 색상 */
+}
+
+.dark-theme .news-item {
+  background-color: #2c3e50; /* 카드 배경 */
+  border: 1px solid #34495e; /* 테두리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 */
+}
+
+.dark-theme .news-title {
+  color: #bdc3c7; /* 텍스트 색상 */
+}
+
+.dark-theme .news-title:hover {
+  color: #ecf0f1; /* 강조 텍스트 색상 */
+}
+
+.dark-theme .news-image {
+  background-size: cover;
+  border-radius: 20px 20px 0 0; /* 둥근 모서리 유지 */
+}
+
+.dark-theme .modal {
+  background-color: rgba(0, 0, 0, 0.8); /* 모달 배경 */
+}
+
+.dark-theme .modal-content {
+  background-color: #34495e; /* 모달 내부 배경 */
+  color: #ecf0f1; /* 모달 텍스트 */
 }
