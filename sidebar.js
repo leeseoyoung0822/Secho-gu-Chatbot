@@ -10,6 +10,7 @@ function initSidebar() {
     const faqButton = document.getElementById("faqButton");
     const issueButton = document.getElementById("issueButton");
     const noticeButton = document.getElementById("noticeButton");
+    const complainButton = document.getElementById("complainButton");
 
     // 메뉴 버튼 클릭 이벤트
     menuToggle.addEventListener("click", () => {
@@ -63,6 +64,12 @@ function initSidebar() {
         window.loadPage("notice.html", "notice.css", "issue-style"); // faq.html 로드
     });
 
+
+    complainButton.addEventListener("click", () => {
+        console.log("문의하기 버튼 클릭됨");
+        window.loadPage("complain.html", "complain.css", "complainCss"); 
+    });
+    
     
     // 파일을 목록에 추가하는 함수
     function addFileToList(file) {

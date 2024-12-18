@@ -81,16 +81,32 @@ span {
 
 }
 
-.notice-content1, .notice-content2{
-    display: flex;
-    margin-bottom: 15px;
+/* 공지사항 아이템의 기본 스타일 */
+.notice-item {
+    opacity: 1;
+    transition: opacity 1s ease-in-out; /* 1초 동안의 전환 효과 */
 }
 
-.notice-content1, .notice-content2 {
-    display: flex;
-    justify-content: space-between; /* 항목 간 간격을 최대화 */
-    margin-bottom: 15px;
+/* 숨김 상태 클래스 */
+.notice-item.hidden {
+    opacity: 0;
 }
+
+/* 추가 스타일 (필요에 따라 수정 가능) */
+.notice-item h3 {
+    margin: 0;
+    font-size: 18px;
+}
+.notice-item p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+.notice-date {
+    font-size: 14px;
+    color: #666;
+}
+
+
 
 
 
