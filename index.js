@@ -505,32 +505,84 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.removeItem("chatData");
         }
 
-        // Send 버튼 클릭 이벤트: 메시지 추가
-        sendButton.addEventListener("click", function (event) {
+        sendButton.addEventListener("click", async function (event) {
             event.preventDefault();
-
+        
             const message = messageInput.value.trim();
-            const fileName = fileNameSpan.textContent ? fileNameSpan.textContent : null;
-            const fileType = fileTypeSpan.textContent || null;
-            const fileData = fileDisplay.dataset.fileData || null;
-
-            console.log("전송할 데이터:", { message, fileName, fileType, fileData });
-
-            // 메시지 또는 파일 없이도 버블 생성
-            const userBubble = createUserBubble(message, fileName, fileType, fileData);
-            chatArea.appendChild(userBubble);
-
-            // 채팅 영역 스크롤 하단으로 이동
-            chatArea.scrollTop = chatArea.scrollHeight;
-
-            // 입력 필드 및 파일 디스플레이 초기화
+            const uploadedFilename = '1._2025년_상반기_배드민턴_정기배정_안내문.pdf'; // 파일명 하드코딩
+        
+            if (!message) {
+                alert("메시지를 입력해주세요.");
+                return;
+            }
+        
+            console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
+        
+            try {
+                const response = await fetch("http://127.0.0.1:5000/ask", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        question: message,
+                        filename: uploadedFilename,
+                    }),
+                });
+        
+                const data = await response.json();
+        
+                if (!response.ok) {
+                    console.error("서버 에러:", data);
+                    alert(`서버 응답 오류: ${data.answer}`);
+                    throw new Error(`서버 응답: ${response.statusText}`);
+                }
+        
+                console.log("서버 응답:", data);
+        
+                const answer = data.answer;
+        
+                // 사용자 메시지 버블 추가
+                addMessageToChatArea(message, 'user'); // 사용자 메시지 추가
+        
+                // GPT 답변 메시지 버블 추가
+                addMessageToChatArea(answer, 'bot'); // GPT 메시지 추가
+        
+                // 채팅 영역 스크롤 하단으로 이동
+                chatArea.scrollTop = chatArea.scrollHeight;
+        
+            } catch (error) {
+                console.error("에러 발생:", error);
+                alert("서버 요청 중 문제가 발생했습니다.");
+            }
+        
             resetInputs();
         });
-
+        
+        // 메시지 추가 함수
+        function addMessageToChatArea(message, sender) {
+            const chatArea = document.getElementById('chatArea');
+            const messageElement = document.createElement('div');
+            
+            // 사용자 메시지와 GPT 메시지 구분
+            if (sender === 'user') {
+                messageElement.classList.add('user-message'); // 사용자 메시지 스타일
+            } else if (sender === 'bot') {
+                messageElement.classList.add('bot-message'); // GPT 메시지 스타일
+            }
+        
+            // 메시지 텍스트 추가
+            const messageText = document.createElement('p');
+            messageText.textContent = message;
+            messageElement.appendChild(messageText);
+        
+            chatArea.appendChild(messageElement);
+        }
+        
         // 사용자 메시지 버블 생성 함수
         function createUserBubble(message, fileName, fileType, fileData) {
             const userBubble = document.createElement("div");
-            userBubble.className = "user-message";
+            userBubble.className = "user-message"; // 사용자 메시지와 동일한 클래스 사용
 
             if (fileName) {
                 // 파일 디스플레이 영역

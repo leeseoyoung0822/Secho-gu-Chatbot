@@ -409,3 +409,57 @@ form {
 .dark-theme .file-info .file-type {
     color: #7f8c8d; /* 파일 형식 색상 */
 }
+
+
+/* 챗봇 메시지 (왼쪽 정렬) */
+.bot-message {
+    background-color: #ECECEC; /* 말풍선 색상 */
+    color: black;
+    align-self: flex-start; /* 왼쪽 정렬 */
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 60%; /* 최대 너비 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+}
+
+/* 챗봇 메시지의 꼬리 */
+.bot-message::after {
+    content: "";
+    position: absolute;
+    bottom: 10px; /* 말풍선 하단에서 위치 */
+    left: -10px; /* 왼쪽 외부로 살짝 이동 */
+    border-width: 10px 10px 10px 0; /* 삼각형 크기 조정 */
+    border-style: solid;
+    border-color: transparent #ECECEC transparent transparent; /* 삼각형 색상 */
+}
+
+
+/* 사용자 메시지 (오른쪽 정렬) */
+.user-message {
+    position: relative; /* 가상 요소를 위한 상대 위치 */
+    background-color: #ffffff; /* 말풍선 색상 */
+    color: rgb(255, 255, 255);
+    align-self: flex-end; /* 오른쪽 정렬 */
+    padding: 8px 8px; /* 내부 여백 */
+    border-radius: 20px;
+    max-width: 60%; /* 최대 너비 제한 */
+    width: fit-content; /* 텍스트 길이에 따라 너비 조정 */
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    overflow-wrap: break-word;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    color: rgb(121, 121, 121);;
+}
+
+/* 사용자 메시지의 꼬리 */
+.user-message::after {
+    content: ''; /* 가상 요소 */
+    position: absolute;
+    bottom: -15px; /* 말풍선 아래로 위치 */
+    right: 15px; /* 오른쪽 아래로 맞춤 */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px 20px 0 0; /* 삼각형의 크기와 방향 */
+    border-color: #ffffff transparent transparent transparent; /* 사용자 말풍선 색상 */
+}
