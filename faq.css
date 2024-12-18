@@ -1,4 +1,10 @@
 /* 전체 페이지 스타일 */
+@font-face {
+  font-family: 'SUITE-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
 .faq {
     background-image: url('img/background.png');
     background-size: cover;
@@ -6,12 +12,13 @@
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
+    padding: 20px 0;
+  
   }
   
   .faq .overlap-wrapper {
     max-width: 1280px;
     width: 100%;
-    overflow: hidden;
   }
   
   .faq .overlap {
@@ -31,6 +38,8 @@
     color: #555;
     text-align: center;
     margin-bottom: 30px;
+    font-family: 'SUITE-Regular';
+
   }
   
   /* FAQ 컨테이너 스타일 */
@@ -94,6 +103,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'SUITE-Regular';
   }
   
   .first-category.selected {
@@ -112,6 +122,7 @@
     font-size: 16px;
     font-weight: 500;
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    font-family: 'SUITE-Regular';
   }
   
   .question {
@@ -121,6 +132,7 @@
     flex-grow: 1; /* 나머지 공간을 채우도록 설정 */
     text-align: left;
     margin: 0; /* 기본 마진 제거 */
+    font-family: 'SUITE-Regular';
   }
   
   .faq-content {
@@ -130,6 +142,7 @@
     color: #5C5C5C;
     line-height: 1.5;
     white-space: pre-line; /* 줄바꿈 유지 */
+    font-family: 'SUITE-Regular';
   }
   
   .faq-content.show {
@@ -163,4 +176,59 @@
     color: #5C5C5C;
     white-space: pre-line; 
   } */
+
+
+  /* FAQ 다크 모드 스타일 */
+.dark-theme .faq {
+  background-color: #1a252f; /* 어두운 배경 */
+  background-image: none; /* 배경 이미지 제거 */
+  color: #bdc3c7; /* 기본 텍스트 색상 */
+}
+
+.dark-theme .faq .div {
+  color: #ecf0f1; /* 헤더 텍스트 색상 */
+}
+
+.dark-theme .faq-item {
+  background-color: #2c3e50; /* FAQ 아이템 배경 */
+  border: 1px solid #34495e; /* 테두리 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 */
+}
+
+.dark-theme .faq-header {
+  color: #bdc3c7; /* 텍스트 색상 */
+}
+
+.dark-theme .faq-content {
+  color: #bdc3c7; /* 텍스트 색상 */
+  background-color: #2c3e50; /* 답변 배경 */
+  border-radius: 10px; /* 둥근 모서리 */
+  padding: 10px;
+}
+
+.dark-theme .first-category {
+  background-color: #34495e; /* 버튼 배경 */
+  color: #bdc3c7; /* 버튼 텍스트 */
+  border: 1px solid #2c3e50; /* 버튼 테두리 */
+}
+
+.dark-theme .first-category.selected {
+  background-color: #7b8084; /* 선택된 버튼 배경 */
+  color: #ffffff; /* 선택된 버튼 텍스트 */
+}
+
+.dark-theme .expand-arrow {
+  filter: invert(1); /* 화살표 색상 반전 */
+   color: #A4A4A4;
+}
+
+.dark-theme .question{
+  color: #bdc3c7;
+}
+
+.dark-theme .category{
+  background-color: #1a252f;
+}
+
+
   

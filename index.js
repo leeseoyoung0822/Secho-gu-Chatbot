@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (xhr.status === 200) {
                 console.log(`${url} 로드 성공`);
                 mainContent.innerHTML = xhr.responseText;
+                window.currentPage = url; // 현재 페이지 설정
 
                 // 기존 CSS 제거
                 if (cssId) {
@@ -54,32 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 else if (url === "notice.html") {
                     console.log("공지사항 초기화 호출");
                     initNoticeEvents();
-                }else if(url ==="admin.html"){
-                    console.log("관리자 페이지 호출")
-                    initAdminEvents();
-                }else if(url.startsWith("complainAdmin.html")){
-                    console.log("관리자 문의 페이지 호출")
-                    const urlObj = new URL(url, window.location.origin);
-                    const complainId = urlObj.searchParams.get('complainId');
-                    initAdminComplainEvents(complainId);
-                }else if(url === "complain.html"){
-                    console.log("사용자 문의 작성 페이지 호출")
-                    initComplainEvents();
-                }else if(url === "complainList.html"){
-                    console.log("사용자 문의 조회 페이지 호출")
-                    initComplainListEvents();
-                }else if(url === "noticeAdmin.html"){
-                    console.log("관리자 공지 페이지 호출")
-                    initAdminNoticeEvents();
-                }else if(url === "noticeWrite.html"){
-                    console.log("관리자 공지 작성 페이지 호출")
-                    initAdminNoticeWriteEvents();
-                }else if(url.startsWith("noticeDetail.html")){
-                    console.log("공지사항 상세 페이지 호출")
-                    const urlObj = new URL(url, window.location.origin);
-                    const noticeId = urlObj.searchParams.get('noticeId');
-                    initNoticeDetailEvents(noticeId);
                 }
+
+                // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
+                initHeader();
             } else {
                 console.error(`Failed to load ${url}: ${xhr.statusText}`);
             }
@@ -92,25 +71,30 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.send();
     }
 
-    // 초기 페이지 로드 시 splash.html 로드
-    window.loadPage("splash.html", "index.css", "page-style");
-
-    // Load header and sidebar
+    // 헤더 로드 및 초기화
     fetch("header.html")
       .then(response => response.text())
       .then(html => {
         document.getElementById("header-container").innerHTML = html;
+
+        // 헤더 초기화 함수 호출
         initHeader();
       })
       .catch(error => console.error("header.html 로드 실패:", error));
 
+    // 사이드바 로드 및 초기화
     fetch("sidebar.html")
       .then(response => response.text())
       .then(html => {
         document.getElementById("sidebar-container").innerHTML = html;
+
+        // 사이드바 초기화 함수 호출
         initSidebar();
       })
       .catch(error => console.error("sidebar.html 로드 실패:", error));
+
+    // 초기 페이지 로드 시 splash.html 로드
+    window.loadPage("splash.html", "splash.css", "page-style");
 
     const SUPPORTED_FILE_TYPES = ["PDF", "DOCX", "DOC", "XLSX", "XLS", "HW"];
 
@@ -332,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 파일 입력 초기화
         const fileInput = document.createElement("input");
         fileInput.type = "file";
-        fileInput.accept = "*/*";
+        fileInput.accept = ".pdf,.docx"; // 허용 파일 확장자 설정
         fileInput.style.display = "none";
         document.body.appendChild(fileInput);
 
@@ -348,12 +332,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
+                const allowedExtensions = ["pdf", "docx"];
+                const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+
+                
+
+                // 파일 확장자 체크
+                if (allowedExtensions.includes(fileExtension)) {
+                    fileNameSpan.textContent = selectedFile.name;
+                    fileDisplay.classList.remove("hidden");
+                    errorDisplay.classList.add("d-none");
+                } else {
+                    showErrorMessage("지원하지 않는 파일 형식입니다. PDF 또는 DOCX 파일만 업로드하세요.");
+                    fileInput.value = ""; // 입력 초기화
+                }
+
                 handleFileSelection(selectedFile); // 공통 함수 호출
             } else {
                 // 파일이 선택되지 않았을 때
                 showErrorMessage("파일을 선택해주세요.");
             }
         });
+
+
+
+
 
         // 파일 제거 버튼 클릭 이벤트
         removeFileButton.addEventListener("click", function () {
@@ -377,6 +380,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("메시지나 파일을 입력해주세요.");
                 return;
             }
+
+
+            const formData = new FormData();
+            formData.append("message", message);
+            if (fileInput.files.length > 0) {
+                formData.append("file", fileInput.files[0]);
+            }
+    
+            // PHP로 Ajax 요청 전송
+            fetch("upload.php", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    console.log("서버 응답:", data);
+                    alert("업로드 완료: " + data);
+    
+                    
+                })
+                .catch((error) => {
+                    console.error("업로드 실패:", error);
+                    alert("업로드 실패: 서버 오류가 발생했습니다.");
+                });
+
+
 
             // 데이터 저장 및 main.html 로드
             try {
@@ -491,32 +520,84 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.removeItem("chatData");
         }
 
-        // Send 버튼 클릭 이벤트: 메시지 추가
-        sendButton.addEventListener("click", function (event) {
+        sendButton.addEventListener("click", async function (event) {
             event.preventDefault();
-
+        
             const message = messageInput.value.trim();
-            const fileName = fileNameSpan.textContent ? fileNameSpan.textContent : null;
-            const fileType = fileTypeSpan.textContent || null;
-            const fileData = fileDisplay.dataset.fileData || null;
-
-            console.log("전송할 데이터:", { message, fileName, fileType, fileData });
-
-            // 메시지 또는 파일 없이도 버블 생성
-            const userBubble = createUserBubble(message, fileName, fileType, fileData);
-            chatArea.appendChild(userBubble);
-
-            // 채팅 영역 스크롤 하단으로 이동
-            chatArea.scrollTop = chatArea.scrollHeight;
-
-            // 입력 필드 및 파일 디스플레이 초기화
+            const uploadedFilename = '1._2025년_상반기_배드민턴_정기배정_안내문.pdf'; // 파일명 하드코딩
+        
+            if (!message) {
+                alert("메시지를 입력해주세요.");
+                return;
+            }
+        
+            console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
+        
+            try {
+                const response = await fetch("http://127.0.0.1:5000/ask", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        question: message,
+                        filename: uploadedFilename,
+                    }),
+                });
+        
+                const data = await response.json();
+        
+                if (!response.ok) {
+                    console.error("서버 에러:", data);
+                    alert(`서버 응답 오류: ${data.answer}`);
+                    throw new Error(`서버 응답: ${response.statusText}`);
+                }
+        
+                console.log("서버 응답:", data);
+        
+                const answer = data.answer;
+        
+                // 사용자 메시지 버블 추가
+                addMessageToChatArea(message, 'user'); // 사용자 메시지 추가
+        
+                // GPT 답변 메시지 버블 추가
+                addMessageToChatArea(answer, 'bot'); // GPT 메시지 추가
+        
+                // 채팅 영역 스크롤 하단으로 이동
+                chatArea.scrollTop = chatArea.scrollHeight;
+        
+            } catch (error) {
+                console.error("에러 발생:", error);
+                alert("서버 요청 중 문제가 발생했습니다.");
+            }
+        
             resetInputs();
         });
-
+        
+        // 메시지 추가 함수
+        function addMessageToChatArea(message, sender) {
+            const chatArea = document.getElementById('chatArea');
+            const messageElement = document.createElement('div');
+            
+            // 사용자 메시지와 GPT 메시지 구분
+            if (sender === 'user') {
+                messageElement.classList.add('user-message'); // 사용자 메시지 스타일
+            } else if (sender === 'bot') {
+                messageElement.classList.add('bot-message'); // GPT 메시지 스타일
+            }
+        
+            // 메시지 텍스트 추가
+            const messageText = document.createElement('p');
+            messageText.textContent = message;
+            messageElement.appendChild(messageText);
+        
+            chatArea.appendChild(messageElement);
+        }
+        
         // 사용자 메시지 버블 생성 함수
         function createUserBubble(message, fileName, fileType, fileData) {
             const userBubble = document.createElement("div");
-            userBubble.className = "user-message";
+            userBubble.className = "user-message"; // 사용자 메시지와 동일한 클래스 사용
 
             if (fileName) {
                 // 파일 디스플레이 영역
@@ -731,6 +812,18 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             console.error("signupForm 요소를 찾을 수 없습니다.");
         }
+
+        if (cancelSignupButton) {
+            cancelSignupButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                console.log("취소 버튼 클릭됨! 로그인 페이지 로드");
+                window.loadPage('login.html', 'login.css', 'page-style'); // 로그인 페이지로 이동
+            });
+        } else {
+            console.error("cancelSignupButton 요소를 찾을 수 없습니다.");
+        }
+
+
     }
     
     // Help 페이지 이벤트 초기화
@@ -929,9 +1022,50 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 사용자 공지 조회회
-    function initNoticeEvents(){
+    function initNoticeEvents() {
+        const noticeRows = document.querySelectorAll(".table tbody tr");
+        const noticeContent = document.getElementById("notice-content");
+        const noticeTitle = document.getElementById("notice-title");
+        const noticeBody = document.getElementById("notice-body");
+        const backButton = document.getElementById("back-button");
+        const noticeList = document.getElementById("notice-list");
 
+
+        // 공지사항 데이터 예시
+        const noticeData = [
+            { title: "공지", body: "챗봇 업데이트 안내 공사로 인한 명일선 해제 및 시스템 점검이 예정되어 있습니다." },
+            { title: "챗봇 기능 개선 공지", body: "챗봇 기능이 개선되어 사용자 경험이 더욱 향상되었습니다." },
+            { title: "포토후기 이벤트 당첨자 발표", body: "포토후기 이벤트 당첨자 명단이 발표되었습니다." },
+            { title: "시스템 점검 안내", body: "시스템 점검이 완료되었습니다. 감사합니다." },
+            { title: "배송 불가 지역 안내", body: "롯데택배 배송 불가 지역에 대한 안내입니다." },
+        ];
+
+        // 각 행 클릭 시 공지사항 내용 표시
+        noticeRows.forEach((row, index) => {
+            row.addEventListener("click", () => {
+                const data = noticeData[index];
+                if(data) {
+                    noticeTitle.textContent = data.title;
+                    noticeBody.textContent = data.body;
+
+                    noticeContent.classList.remove("hidden");
+                    noticeList.classList.add("hidden");
+                }
+            });
+        });
+
+        // 뒤로가기 버튼 클릭 이벤트
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                // 상세 내용 숨기고 테이블 다시 표시
+                noticeContent.classList.add("hidden");
+                noticeList.classList.remove("hidden");
+            });
+        }
     }
+
+
+
 
     //사용자 문의 전체 조회
     function initComplainListEvents(){
