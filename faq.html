@@ -2,7 +2,7 @@
     <div class="faq">
       <div class="overlap-wrapper">
         <div class="overlap">
-          <div class="div" style="margin-top: 70px">가장 많이 묻는 질문</div>
+          <div class="div" style="margin-top: 60px">가장 많이 묻는 질문</div>
           <!-- 카테고리 버튼 -->
           <div class="category-container">
             <div class="first-category selected" data-category="clean">청소</div>
@@ -15,102 +15,3 @@
       </div>
     </div>
 
-    <!-- <script>
-      let faqData = []; // JSON 데이터
-      let loadedCount = 0; // 현재까지 불러온 항목 수
-      const loadSize = 5; // 한 번에 불러올 항목 수
-      const faqContainer = document.getElementById("faq-container");
-      let currentCategory = "clean"; // 현재 선택된 카테고리 추적
-
-      // JSON 파일 경로 매핑
-      const fileMap = {
-        clean: "./json/faqClean.json",
-        tax: "./json/faqTax.json",
-        civil: "./json/faqComplain.json",
-      };
-
-      // JSON 데이터를 불러오는 함수
-      async function fetchFAQData(category) {
-        currentCategory = category; // 현재 카테고리 설정
-        try {
-          const response = await fetch(fileMap[category]);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          faqData = await response.json();
-          loadedCount = 0; // 불러온 항목 초기화
-          faqContainer.innerHTML = ""; // 기존 내용 비우기
-          loadMoreFAQs();
-        } catch (error) {
-          console.error("FAQ 데이터를 불러오는 중 오류 발생:", error);
-        }
-      }
-
-      // FAQ 항목 추가 함수
-      function loadMoreFAQs() {
-        const endIndex = loadedCount + loadSize;
-
-        for (let i = loadedCount; i < endIndex && i < faqData.length; i++) {
-          const item = faqData[i];
-          const groupDiv = document.createElement("div");
-          groupDiv.classList.add("faq-item");
-
-          // 카테고리 조건부 표시
-          const categoryText =
-            currentCategory === "civil"
-              ? item.first_category || "카테고리 없음"
-              : item.second_category || "카테고리 없음";
-
-          groupDiv.innerHTML = `
-            <div class="faq-header">
-              <span class="category">${categoryText}</span>
-              <p class="question">${item.question}</p>
-              <img src="./img/Expand Arrow.png" class="expand-arrow" alt="Expand Arrow" />
-            </div>
-            <div class="faq-content">
-              <p class="answer">${item.answer.replace(/\n/g, "<br>")}</p>
-            </div>
-          `;
-
-          faqContainer.appendChild(groupDiv);
-
-          // 클릭 이벤트 추가
-          const expandArrow = groupDiv.querySelector(".expand-arrow");
-          const faqContent = groupDiv.querySelector(".faq-content");
-
-          expandArrow.addEventListener("click", () => {
-            faqContent.classList.toggle("show");
-            expandArrow.classList.toggle("rotate");
-          });
-        }
-
-        loadedCount = Math.min(endIndex, faqData.length); // 항목 수 업데이트
-      }
-
-      // 무한 스크롤 이벤트
-      window.addEventListener("scroll", () => {
-        const scrollTop = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-
-        // 스크롤이 페이지 끝에 도달하면 더 많은 항목 불러오기
-        if (scrollTop + windowHeight >= documentHeight - 10) {
-          loadMoreFAQs();
-        }
-      });
-
-      // 카테고리 버튼 클릭 이벤트
-      const categoryButtons = document.querySelectorAll(".first-category");
-      categoryButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          categoryButtons.forEach((b) => b.classList.remove("selected"));
-          btn.classList.add("selected");
-          const category = btn.dataset.category;
-          fetchFAQData(category);
-        });
-      });
-
-      // 초기 데이터 로드
-      fetchFAQData("clean");
-    </script>
- -->

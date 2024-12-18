@@ -1,154 +1,314 @@
 /* Reset 기본 설정 */
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'SUITE-Regular', sans-serif;
-    box-sizing: border-box;
-  }
-  
-  /* 배경 컨테이너 */
-  .background-container {
-    background-image: url('img/background.png'); /* 배경 이미지 경로 */
-    background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
-    background-position: center; /* 이미지 위치를 중앙으로 */
-    background-repeat: no-repeat; /* 이미지 반복 방지 */
-    height: 100vh; /* 화면 높이를 100% 채움 */
-    display: flex; /* 중앙 정렬을 위한 Flexbox */
-    justify-content: center; /* 가로 중앙 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
-    padding-top: 60px;
-    box-sizing: border-box;
-  }
-  
-  /* 콘텐츠 박스 */
-  .content-box {
-    width: 90%; /* 기본 너비 90% */
-    max-width: 800px; /* 최대 너비 800px */
-    background: #ffffff; /* 흰색 배경 */
-    border-radius: 10px; /* 모서리 둥글게 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    padding: 20px 30px; /* 내부 여백 */
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
-    max-height: calc(100vh - 40px); /* 헤더와 하단 여백 포함한 최대 높이 설정 */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* 헤더 */
-  .help-header {
-    text-align: center;
-    margin-bottom: 20px;
-   
-  }
-  
-  .help-title {
-    font-size: 1.8em;
-    color: #5C5C5C;
-    margin: 0;
-  }
-  .chatbot-img {
-    width: 80px; /* 이미지 너비 */
-    height: 80px; /* 이미지 높이 */
-    object-fit: contain; /* 원본 비율 유지 */
-}
-  
-  .help-subtitle {
-    font-size: 1em;
-    color: #888;
-    margin-top: 5px;
-  }
-  
-  /* 공통 이미지 스타일 */
-.ui-image {
-    width: 50px; /* 너비 */
-    height: 50px; /* 높이 */
-    object-fit: contain; /* 이미지 비율 유지 */
-    margin-bottom: 10px; /* 아래 여백 */
-    display: block; /* 이미지가 줄바꿈되도록 */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'SUITE-Regular', sans-serif;
+  box-sizing: border-box;
 }
 
-  
-  /* 섹션 */
-  .help-section {
-    margin-bottom: 20px;
+
+
+/* 배경 컨테이너 */
+.background-container {
+  background-image: url('img/background.png');;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* 콘텐츠 박스 애니메이션 키프레임 */
+@keyframes fadeInScale {
+  0% {
+      opacity: 0;
+      transform: scale(0.95);
   }
-  
+  100% {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.content-box {
+  width: 90%; /* 기본 너비 90% */
+  max-width: 1000px; /* 최대 너비 800px */
+  background: rgba(255, 255, 255, 0.9); /* 흰색 배경과 약간의 투명도 */
+  border-radius: 15px; /* 모서리 둥글게 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 효과 강화 */
+  padding: 20px 40px; /* 내부 여백 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
+  max-height: calc(100vh - 80px); /* 헤더와 하단 여백 포함한 최대 높이 설정 */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  animation: fadeInScale 1s ease-out forwards;
+}
+
+/* 헤더 애니메이션 키프레임 */
+@keyframes fadeInSlideUp {
+  0% {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.help-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  opacity: 0;
+  animation: fadeInSlideUp 1s ease-out 0.5s forwards;
+}
+
+.help-title {
+  font-size: 2em;
+  color: #5C5C5C;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s ease-out 0.5s forwards;
+}
+
+.chatbot-img {
+  width: 100px; /* 이미지 너비 증가 */
+  height: 100px; /* 이미지 높이 증가 */
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeInScale 1s ease-out 0.5s forwards;
+}
+
+.help-subtitle {
+  font-size: 1.2em;
+  color: #888;
+  margin-top: 5px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s ease-out 0.9s forwards;
+}
+
+/* 공통 이미지 스타일 */
+.ui-image {
+  width: 40px; /* 너비 증가 */
+  height: 40px; /* 높이 증가 */
+  object-fit: contain;
+  margin-bottom: 10px;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeInScale 1s ease-out forwards;
+}
+
+/* 주요 버튼 섹션의 이미지 애니메이션 딜레이 설정 */
+.help-section.animated .ui-feature:nth-of-type(1) .ui-image {
+  animation-delay: 1s;
+}
+
+.help-section.animated .ui-feature:nth-of-type(2) .ui-image {
+  animation-delay: 1.2s;
+}
+
+.help-section.animated .ui-feature:nth-of-type(3) .ui-image {
+  animation-delay: 1.4s;
+}
+
+.help-section.animated .ui-feature:nth-of-type(4) .ui-image {
+  animation-delay: 1.6s;
+}
+
+.help-section.animated .ui-feature:nth-of-type(5) .ui-image {
+  animation-delay: 1.8s;
+}
+
+.ui-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+/* 섹션 */
+.help-section {
+  margin-bottom: 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s ease-out forwards;
+}
+
+.section-title {
+  font-size: 1.7em;
+  color: #5C5C5C;
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s ease-out 0.3s forwards;
+}
+
+.section-text {
+  font-size: 1.1em;
+  color: #929292;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s ease-out 0.5s forwards;
+}
+
+/* 리스트 스타일 */
+.features-list,
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-list li,
+.benefits-list li {
+  margin-bottom: 15px;
+  font-size: 1em;
+  color: #929292;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: fadeInSlideLeft 0.8s ease-out forwards;
+}
+
+/* 리스트 항목 순차 애니메이션 */
+.features-list li:nth-child(1) {
+  animation-delay: 1s;
+}
+.features-list li:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.features-list li:nth-child(3) {
+  animation-delay: 1.4s;
+}
+.features-list li:nth-child(4) {
+  animation-delay: 1.6s;
+}
+.features-list li:nth-child(5) {
+  animation-delay: 1.8s;
+}
+
+.benefits-list li:nth-child(1) {
+  animation-delay: 2s;
+}
+.benefits-list li:nth-child(2) {
+  animation-delay: 2.2s;
+}
+.benefits-list li:nth-child(3) {
+  animation-delay: 2.4s;
+}
+
+.benefits-list li {
+  animation: fadeInSlideLeft 0.8s ease-out forwards;
+}
+
+/* "메뉴 버튼: ~" 텍스트 진하게 */
+.ui-feature p {
+  color: #929292; /* 텍스트 색상 어둡게 */
+  font-weight: 600; /* 텍스트 굵게 */
+  transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+.ui-feature p strong {
+  color: #929292; /* "메뉴 버튼" 텍스트 색상 더욱 진하게 */
+  font-weight: 700; /* "메뉴 버튼" 텍스트 굵게 */
+}
+
+/* 애니메이션 키프레임 */
+@keyframes fadeInSlideUp {
+  0% {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes fadeInSlideLeft {
+  0% {
+      opacity: 0;
+      transform: translateX(-20px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+      opacity: 0;
+      transform: scale(0.8);
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .help-title {
+      font-size: 1.5em;
+  }
+
   .section-title {
-    font-size: 1.4em;
-    color: #5C5C5C;
-    margin-bottom: 10px;
+      font-size: 1.3em;
   }
-  
+
   .section-text {
-    font-size: 1em;
-    color: #555;
+      font-size: 1em;
   }
-  
-  /* 리스트 스타일 */
-  .features-list,
-  .benefits-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
+
   .features-list li,
   .benefits-list li {
-    margin-bottom: 10px;
-    font-size: 0.95em;
-  }
-  
-  .features-list li strong,
-  .benefits-list li strong {
-    color: #000;
-  }
-  
-  /* 반응형 스타일 */
-  @media (max-width: 768px) {
-    .help-title {
-      font-size: 1.5em;
-    }
-  
-    .section-title {
-      font-size: 1.2em;
-    }
-  
-    .section-text {
       font-size: 0.95em;
-    }
-  
-    .features-list li,
-    .benefits-list li {
-      font-size: 0.9em;
-    }
-  
-    .content-box {
+  }
+
+  .content-box {
       max-height: calc(100vh - 60px); /* 모바일에서 헤더와 하단 여백 포함 최대 높이 */
-    }
   }
-  
-  @media (max-width: 480px) {
-    .help-title {
+}
+
+@media (max-width: 480px) {
+  .help-title {
       font-size: 1.2em;
-    }
-  
-    .section-title {
-      font-size: 1em;
-    }
-  
-    .section-text {
-      font-size: 0.85em;
-    }
-  
-    .features-list li,
-    .benefits-list li {
-      font-size: 0.85em;
-    }
-  
-    .content-box {
-      max-height: calc(100vh - 40px); /* 작은 화면에서 헤더와 하단 여백 포함 최대 높이 */
-    }
   }
-  
+
+  .section-title {
+      font-size: 1.1em;
+  }
+
+  .section-text {
+      font-size: 0.9em;
+  }
+
+  .features-list li,
+  .benefits-list li {
+      font-size: 0.85em;
+  }
+
+  .content-box {
+      max-height: calc(100vh - 40px); /* 작은 화면에서 헤더와 하단 여백 포함 최대 높이 */
+  }
+}

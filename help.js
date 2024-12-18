@@ -8,4 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "help.html"; // Help 버튼 클릭 시 help.html로 이동
         });
     }
+
+ 
 });

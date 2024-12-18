@@ -1,153 +1,227 @@
+/* notice.css */
+
 /* Reset 기본 설정 */
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'SUITE-Regular', sans-serif;
-    box-sizing: border-box;
-  }
-  
-  /* 배경 컨테이너 */
-  .background-container {
-    background-image: url('img/background.png'); /* 배경 이미지 경로 */
-    background-size: cover; /* 배경 이미지가 화면 전체를 덮음 */
-    background-position: center; /* 이미지 위치를 중앙으로 */
-    background-repeat: no-repeat; /* 이미지 반복 방지 */
-    height: 100vh; /* 화면 높이를 100% 채움 */
-    display: flex; /* 중앙 정렬을 위한 Flexbox */
-    justify-content: center; /* 가로 중앙 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
-    padding-top: 60px;
-    box-sizing: border-box;
-  }
-  
-  /* 콘텐츠 박스 */
-  .content-box {
-    width: 90%; /* 기본 너비 90% */
-    max-width: 800px; /* 최대 너비 800px */
-    background: #ffffff; /* 흰색 배경 */
-    border-radius: 10px; /* 모서리 둥글게 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    padding: 20px 30px; /* 내부 여백 */
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
-    max-height: calc(100vh - 40px); /* 헤더와 하단 여백 포함한 최대 높이 설정 */
-    margin-top: 20px;
-  }
-  
-  /* 헤더 */
-  .help-header {
-    text-align: center;
-    margin-bottom: 20px;
-   
-  }
-  
-  .help-title {
-    font-size: 1.8em;
-    color: #5C5C5C;
-    margin: 0;
-  }
-  .chatbot-img {
-    width: 80px; /* 이미지 너비 */
-    height: 80px; /* 이미지 높이 */
-    object-fit: contain; /* 원본 비율 유지 */
-}
-  
-  .help-subtitle {
-    font-size: 1em;
-    color: #888;
-    margin-top: 5px;
-  }
-  
-  /* 공통 이미지 스타일 */
-.ui-image {
-    width: 50px; /* 너비 */
-    height: 50px; /* 높이 */
-    object-fit: contain; /* 이미지 비율 유지 */
-    margin-bottom: 10px; /* 아래 여백 */
-    display: block; /* 이미지가 줄바꿈되도록 */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'SUITE-Regular', sans-serif;
+  box-sizing: border-box;
 }
 
-  
-  /* 섹션 */
-  .help-section {
-    margin-bottom: 20px;
-  }
-  
-  .section-title {
-    font-size: 1.4em;
-    color: #5C5C5C;
-    margin-bottom: 10px;
-  }
-  
-  .section-text {
-    font-size: 1em;
-    color: #555;
-  }
-  
-  /* 리스트 스타일 */
-  .features-list,
-  .benefits-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .features-list li,
-  .benefits-list li {
-    margin-bottom: 10px;
-    font-size: 0.95em;
-  }
-  
-  .features-list li strong,
-  .benefits-list li strong {
-    color: #000;
-  }
-  
-  /* 반응형 스타일 */
-  @media (max-width: 768px) {
-    .help-title {
-      font-size: 1.5em;
-    }
-  
-    .section-title {
-      font-size: 1.2em;
-    }
-  
-    .section-text {
-      font-size: 0.95em;
-    }
-  
-    .features-list li,
-    .benefits-list li {
-      font-size: 0.9em;
-    }
-  
-    .content-box {
-      max-height: calc(100vh - 60px); /* 모바일에서 헤더와 하단 여백 포함 최대 높이 */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .help-title {
-      font-size: 1.2em;
-    }
-  
-    .section-title {
-      font-size: 1em;
-    }
-  
-    .section-text {
-      font-size: 0.85em;
-    }
-  
-    .features-list li,
-    .benefits-list li {
-      font-size: 0.85em;
-    }
-  
-    .content-box {
-      max-height: calc(100vh - 40px); /* 작은 화면에서 헤더와 하단 여백 포함 최대 높이 */
-    }
-  }
-  
+/* 배경 컨테이너 */
+.background-container {
+  background-image: url('img/background.png'); /* 배경 이미지 경로 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  flex-direction: column;
+}
+
+/* 콘텐츠 박스 */
+.content-box {
+  width: 90%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 30px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* 헤더 스타일 */
+.help-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.help-title {
+  font-size: 2.5em;
+  color: #5C5C5C;
+  font-family: 'SUITE-Regular';
+}
+
+.chatbot-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+/* 공지사항 테이블 스타일 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 1.2em;
+  color: #5C5C5C;
+}
+
+.table th {
+  background-color: #edcce5;
+  color: #5C5C5C;
+ 
+  font-weight: bold;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.notice-tag {
+  background-color: #edcce5;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 공지사항 상세 내용 스타일 */
+.notice-content {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+  border-radius: 5px;
+}
+
+.notice-content.hidden {
+  display: none;
+}
+
+.notice-content h3 {
+  margin: 0 0 10px;
+  color: #5a5a5a;
+  font-size: 1.5em;
+  font-family: 'SUITE-Regular';
+}
+
+.notice-content p {
+  margin: 0;
+  color: #333;
+  line-height: 1.5;
+  font-size: 1.1em;
+  font-family: 'SUITE-Regular';
+}
+
+.back-button {
+  background-color: #edcce5;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+.back-button:hover {
+  background-color: #d5a0e0;
+}
+
+.hidden {
+  display: none !important;
+}
+/* 기존의 notice.css 파일 내용... */
+
+/* 다크 모드 스타일 */
+.dark-theme .background-container {
+  background-image: none;
+  background-color: #1a252f;
+}
+
+.dark-theme .content-box {
+  background-color: #2c3e50;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .help-title {
+  color: #ecf0f1;
+}
+
+.dark-theme .table th {
+  background-color: #34495e;
+  color: #bdc3c7;
+}
+
+.dark-theme .table th,
+.dark-theme .table td {
+  color: #bdc3c7;
+}
+
+.dark-theme .table tbody tr:hover {
+  background-color: #3a5568;
+}
+
+.dark-theme .notice-tag {
+  background-color: #34495e;
+  color: #bdc3c7;
+}
+
+.dark-theme .notice-content {
+  background-color: #2c3e50;
+  color: #bdc3c7;
+  border-color: #34495e;
+}
+
+.dark-theme .notice-content h3 {
+  color: #ecf0f1; /* 제목 색상 변경 */
+}
+
+.dark-theme .notice-content p {
+  color: #bdc3c7; /* 본문 텍스트 색상 변경 */
+}
+
+.dark-theme .back-button {
+  background-color: #34495e;
+  color: #bdc3c7;
+}
+
+.dark-theme .back-button:hover {
+  background-color: #2c3e50;
+}
+
+/* 추가적인 다크 모드 스타일링 */
+
+/* 모달 창이 있는 경우, 모달 내용도 다크 모드에 맞게 스타일링 */
+.dark-theme .modal-content {
+  background-color: #2c3e50;
+  color: #bdc3c7;
+  border: 1px solid #34495e;
+}
+
+.dark-theme .modal-content input,
+.dark-theme .modal-content textarea {
+  background-color: #34495e;
+  border: 1px solid #2c3e50;
+  color: #ecf0f1;
+}
+
+.dark-theme .modal-content label {
+  color: #ecf0f1;
+}
+
+.dark-theme .modal-content button {
+  background-color: #34495e;
+  color: #bdc3c7;
+}
+
+.dark-theme .modal-content button:hover {
+  background-color: #2c3e50;
+}

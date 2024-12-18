@@ -74,7 +74,7 @@ function initHeader() {
                 });
             } else {
                 console.warn("로그인되지 않은 상태입니다.");
-                usernameBox.textContent = "Guest 님";
+                usernameBox.textContent = "";
                 logoutButton.textContent = "로그인/회원가입"; // 로그인되지 않은 상태일 경우
 
                 // 로그인 버튼 이벤트
@@ -124,7 +124,7 @@ function updateHeaderToLoggedOut() {
     const logoutButton = document.getElementById("logoutButton");
 
     // 사용자 이름을 "Guest 님"으로 변경
-    usernameBox.textContent = "Guest 님";
+    usernameBox.textContent = "";
     
     // 로그아웃 버튼 텍스트를 "로그인/회원가입"으로 변경
     logoutButton.textContent = "로그인/회원가입";
@@ -140,6 +140,8 @@ function updateHeaderToLoggedOut() {
         loadPage("login.html", "login.css", "page-style");
     });
 }
+
+
 
 // 페이지 로드 함수
 function loadPage(url, cssFile, cssId) {

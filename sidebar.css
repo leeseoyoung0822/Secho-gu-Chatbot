@@ -11,12 +11,13 @@
 .sidebar {
     width: 250px;
     height: 100%;
+    position: fixed;
     background-color: #edcce5;
     color: #5C5C5C;
     position: fixed;
     top: 0;
     left: -250px;
-    transition: 0.3s; /* 부드러운 열고 닫기 효과 */
+    transition: left 0.3s ease; 
     overflow-x: hidden; /* 가로 스크롤 방지 */
     z-index: 1000;
     display: flex; /* Flexbox 설정 */
