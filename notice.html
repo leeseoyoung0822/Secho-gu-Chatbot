@@ -1,58 +1,46 @@
 <!-- notice.html -->
-<div class="background-container">
-  <!-- 콘텐츠 박스 -->
-  <div class="content-box">
-    <!-- 헤더 -->
-    <header class="help-header mb-4">
-      <img src="img/chatbot.png" alt="Chatbot Logo" class="chatbot-img mb-2">
-      <h1 class="help-title">공지사항</h1>
-    </header>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+    <link rel="stylesheet" href="notice.css"> <!-- CSS 파일 링크 -->
+</head>
+<body>
+    <div class="background-container">
+        <!-- 콘텐츠 박스 -->
+        <div class="content-box">
+            <!-- 헤더 -->
+            <header class="help-header mb-4">
+                <img src="img/chatbot.png" alt="Chatbot Logo" class="chatbot-img mb-2">
+                <h1 class="help-title">공지사항</h1>
+            </header>
 
-    <!-- 공지사항 리스트 -->
-    <div id="notice-list" class="notice-list">
-      <table class="table">
-        <thead>
-          <tr>
-            <th class="text-center">번호</th>
-            <th>제목</th>
-            <th class="text-center">등록일</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-center"><span class="notice-tag">공지</span></td>
-            <td>챗봇 업데이트 안내</td>
-            <td class="text-center">2021.08.05</td>
-          </tr>
-          <tr>
-            <td class="text-center">1</td>
-            <td>챗봇 기능 개선 공지</td>
-            <td class="text-center">2022.01.11</td>
-          </tr>
-          <tr>
-            <td class="text-center">2</td>
-            <td>포토후기 이벤트 당첨자 발표</td>
-            <td class="text-center">2021.10.29</td>
-          </tr>
-          <tr>
-            <td class="text-center">3</td>
-            <td>시스템 점검 안내</td>
-            <td class="text-center">2021.10.14</td>
-          </tr>
-          <tr>
-            <td class="text-center">4</td>
-            <td>배송 불가 지역 안내</td>
-            <td class="text-center">2021.09.30</td>
-          </tr>
-        </tbody>
-      </table>
+            <!-- 공지사항 리스트 -->
+            <div id="notice-list" class="notice-list">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">번호</th>
+                            <th>제목</th>
+                            <th class="text-center">등록일</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notice-table-body">
+                        <!-- 공지사항 데이터가 여기에 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 공지사항 상세 내용 -->
+            <div id="notice-content" class="notice-content hidden">
+                <button id="back-button" class="back-button">← 뒤로가기</button>
+                <h3 id="notice-title"></h3>
+                <p id="notice-body"></p>
+            </div>
+        </div>
     </div>
 
-    <!-- 공지사항 상세 내용 -->
-    <div id="notice-content" class="notice-content hidden">
-      <button id="back-button" class="back-button">← </button>
-      <h3 id="notice-title"></h3>
-      <p id="notice-body"></p>
-    </div>
-  </div>
-</div>
+    <script src="notice.js"></script> <!-- JavaScript 파일 링크 -->
+</body>
+</html>

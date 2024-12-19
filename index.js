@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
-                initHeader();
+                //initHeader();
             } else {
                 console.error(`Failed to load ${url}: ${xhr.statusText}`);
             }
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(error => console.error("sidebar.html 로드 실패:", error));
 
     // 초기 페이지 로드 시 splash.html 로드
-    window.loadPage("splash.html", "splash.css", "page-style");
+    window.loadPage("splash.html", "index.css", "page-style");
 
     const SUPPORTED_FILE_TYPES = ["PDF", "DOCX", "DOC", "XLSX", "XLS", "HW"];
 
@@ -178,7 +178,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const themeToggle = document.getElementById("themeToggle");
         const fileInput = document.getElementById("fileInput");
         const fileList = document.getElementById("fileList");
-
+        const mainContent = document.getElementById("main-content"); 
+    
         // FAQ, Issue, Notice 버튼 초기화
         const faqButton = document.getElementById("faqButton");
         const issueButton = document.getElementById("issueButton");
@@ -187,9 +188,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 메뉴 버튼 클릭 이벤트
         menuToggle.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
+          sidebar.classList.toggle("open");
+          mainContent.classList.toggle("shifted"); // 메인 콘텐츠 이동
         });
-
+    
         // 로컬 스토리지에서 테마 상태 로드
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark") {
@@ -199,40 +201,55 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.classList.remove("dark-theme");
             themeToggle.checked = false; // 기본값 설정
         }
-
+      
         // 테마 전환 이벤트
         themeToggle.addEventListener("change", () => {
             const isDark = themeToggle.checked;
             document.body.classList.toggle("dark-theme", isDark);
             localStorage.setItem("theme", isDark ? "dark" : "light"); // 테마 상태 저장
         });
-
+      
+    
         // 파일 선택 이벤트
         fileInput.addEventListener("change", () => {
             const files = Array.from(fileInput.files);
-
+    
             files.forEach((file) => {
                 addFileToList(file);
             });
-
+    
             // 파일 입력 초기화
             fileInput.value = "";
         });
-
+    
         // FAQ 버튼 클릭 이벤트
         faqButton.addEventListener("click", () => {
             console.log("FAQ 버튼 클릭됨");
             window.loadPage("faq.html", "faq.css", "faq-style"); // faq.html 로드
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
+            
         });
-
+    
         issueButton.addEventListener("click", () => {
             console.log("서초이슈 버튼 클릭됨");
-            window.loadPage("issue.html", "issue.css", "issue-style"); // issue.html 로드
+            window.loadPage("issue.html", "issue.css", "issue-style"); // faq.html 로드
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
         });
-
-        noticeButton.addEventListener("click", () => {
+    
+        noticeButton.addEventListener("click", (e) => {
+            e.preventDefault();
             console.log("공지사항 버튼 클릭됨");
-            window.loadPage("notice.html", "notice.css", "notice-style"); // notice.html 로드
+            window.loadPage("notice.html", "notice.css", "issue-style"); // faq.html 로드
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
         });
 
         complainButton.addEventListener("click", () => {
@@ -244,63 +261,65 @@ document.addEventListener("DOMContentLoaded", function () {
         function addFileToList(file) {
             const fileItem = document.createElement("div");
             fileItem.classList.add("file-item");
-
+    
             const fileName = document.createElement("span");
             fileName.classList.add("file-name");
             fileName.textContent = file.name;
-
+    
             const fileActions = document.createElement("div");
             fileActions.classList.add("file-actions");
-
+    
             const saveButton = document.createElement("img");
             saveButton.src = "img/save.png"; // 저장 아이콘 이미지 경로
             saveButton.alt = "저장";
             saveButton.title = "저장";
-
+    
+    
             const deleteButton = document.createElement("img");
             deleteButton.src = "img/delete.png"; // 삭제 아이콘 이미지 경로
             deleteButton.alt = "삭제";
             deleteButton.title = "삭제";
-
+    
             // 선택 버튼 (이미지)
             const selectButton = document.createElement("img");
             selectButton.src = "img/upload.png"; // 선택 아이콘 이미지 경로
             selectButton.alt = "선택";
             selectButton.title = "선택";
-
+    
+    
             // 저장 버튼 클릭 이벤트
             saveButton.addEventListener("click", () => {
                 // 저장 기능 구현 (예: 서버로 전송)
-                console.log(`${file.name} 저장 버튼 클릭`);
-                alert(`${file.name} 파일을 저장했습니다.`);
+                console.log(`"${file.name}" 저장 버튼 클릭`);
+                alert(`"${file.name}" 파일을 저장했습니다.`);
             });
-
+    
             // 삭제 버튼 클릭 이벤트
             deleteButton.addEventListener("click", () => {
                 // 삭제 기능 구현 (예: 목록에서 제거)
-                console.log(`${file.name} 삭제 버튼 클릭`);
+                console.log(`"${file.name}" 삭제 버튼 클릭`);
                 fileList.removeChild(fileItem);
             });
-
-            // 선택 버튼 클릭 이벤트
+    
+             // 선택 버튼 클릭 이벤트
             selectButton.addEventListener("click", () => {
-                console.log(`${file.name} 선택 버튼 클릭`);
-                handleFileSelection(file); // 공통 함수 호출
+                console.log(`"${file.name}" 선택 버튼 클릭`);
+                moveToFileDisplay(file);
             });
-
+    
             fileActions.appendChild(saveButton);
             fileActions.appendChild(deleteButton);
             fileActions.appendChild(selectButton);
-
+    
             fileItem.appendChild(fileName);
             fileItem.appendChild(fileActions);
-
+    
             fileList.appendChild(fileItem);
         }
-
-       
+    
+      
     }
-
+      
     // Splash 이벤트 초기화 함수
     function initSplashEvents() {
         console.log("Splash 화면 이벤트 초기화");
@@ -715,6 +734,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const formData = new FormData();
                 formData.append('email', email);
                 formData.append('password', password);
+                //formData.append('userid', userid); 
     
                 // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
                 fetch('http://127.0.0.1:3000/login.php', {
@@ -861,7 +881,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (backButton) {
             backButton.addEventListener("click", function () {
                 console.log("Splash 화면으로 돌아가기");
-                loadPage("splash.html", "splash.css", "page-style");
+                loadPage("splash.html", "index.css", "page-style");
             });
         } else {
             console.error("backButton 요소를 찾을 수 없습니다.");
@@ -1047,38 +1067,85 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 사용자 공지 조회회
-    function initNoticeEvents() {
-        const noticeRows = document.querySelectorAll(".table tbody tr");
+    // 사용자 공지 조회
+    function initNoticeEvents(){
+        const noticeTableBody = document.getElementById("notice-table-body");
         const noticeContent = document.getElementById("notice-content");
         const noticeTitle = document.getElementById("notice-title");
         const noticeBody = document.getElementById("notice-body");
         const backButton = document.getElementById("back-button");
         const noticeList = document.getElementById("notice-list");
 
+        // 공지사항 데이터를 서버에서 가져오기
+        fetch('http://127.0.0.1:3000/notice.php')
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "success" && data.data.length > 0){
+                data.data.forEach(notice => {
+                    const row = document.createElement('tr');
 
-        // 공지사항 데이터 예시
-        const noticeData = [
-            { title: "공지", body: "챗봇 업데이트 안내 공사로 인한 명일선 해제 및 시스템 점검이 예정되어 있습니다." },
-            { title: "챗봇 기능 개선 공지", body: "챗봇 기능이 개선되어 사용자 경험이 더욱 향상되었습니다." },
-            { title: "포토후기 이벤트 당첨자 발표", body: "포토후기 이벤트 당첨자 명단이 발표되었습니다." },
-            { title: "시스템 점검 안내", body: "시스템 점검이 완료되었습니다. 감사합니다." },
-            { title: "배송 불가 지역 안내", body: "롯데택배 배송 불가 지역에 대한 안내입니다." },
-        ];
+                    // 번호 셀
+                    const numberCell = document.createElement('td');
+                    numberCell.classList.add('text-center');
+                    if(notice.title === "공지") {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.classList.add('notice-tag');
+                        tagSpan.textContent = '공지';
+                        numberCell.appendChild(tagSpan);
+                    } else {
+                        numberCell.textContent = notice.id;
+                    }
+                    row.appendChild(numberCell);
 
-        // 각 행 클릭 시 공지사항 내용 표시
-        noticeRows.forEach((row, index) => {
-            row.addEventListener("click", () => {
-                const data = noticeData[index];
-                if(data) {
-                    noticeTitle.textContent = data.title;
-                    noticeBody.textContent = data.body;
+                    // 제목 셀
+                    const titleCell = document.createElement('td');
+                    titleCell.textContent = notice.title;
+                    row.appendChild(titleCell);
 
-                    noticeContent.classList.remove("hidden");
-                    noticeList.classList.add("hidden");
-                }
-            });
+                    // 등록일 셀
+                    const dateCell = document.createElement('td');
+                    dateCell.classList.add('text-center');
+                    const date = new Date(notice.timestamp);
+                    dateCell.textContent = `${date.getFullYear()}.${('0' + (date.getMonth()+1)).slice(-2)}.${('0' + date.getDate()).slice(-2)}`;
+                    row.appendChild(dateCell);
+
+                    // 클릭 이벤트 추가
+                    row.addEventListener('click', () => {
+                        showNoticeDetail(notice);
+                    });
+
+                    noticeTableBody.appendChild(row);
+                });
+            } else {
+                const noDataRow = document.createElement('tr');
+                const noDataCell = document.createElement('td');
+                noDataCell.colSpan = 3;
+                noDataCell.classList.add('text-center');
+                noDataCell.textContent = "공지사항이 없습니다.";
+                noDataRow.appendChild(noDataCell);
+                noticeTableBody.appendChild(noDataRow);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching notices:', error);
+            // 에러 메시지 표시
+            const errorRow = document.createElement('tr');
+            const errorCell = document.createElement('td');
+            errorCell.colSpan = 3;
+            errorCell.classList.add('text-center');
+            errorCell.textContent = "공지사항을 불러오는 중 오류가 발생했습니다.";
+            errorRow.appendChild(errorCell);
+            noticeTableBody.appendChild(errorRow);
         });
+
+        // 공지사항 상세 내용 표시 함수
+        function showNoticeDetail(notice) {
+            noticeTitle.textContent = notice.title;
+            noticeBody.textContent = notice.content;
+
+            noticeContent.classList.remove("hidden");
+            noticeList.classList.add("hidden");
+        }
 
         // 뒤로가기 버튼 클릭 이벤트
         if (backButton) {
@@ -1668,6 +1735,172 @@ document.addEventListener("DOMContentLoaded", function () {
         temp.textContent = str;
         return temp.innerHTML;
     }
+
+    // 헤더 초기화 함수
+    function initHeader() {
+        console.log("Header 초기화");
+
+        const usernameBox = document.getElementById("usernameBox");
+        const logoutButton = document.getElementById("logoutButton");
+        const newChatButton = document.getElementById("newChatButton");
+        const helpButton = document.getElementById("helpButton");
+        const chatbotTitle = document.getElementById("chatbotTitle"); // 선언 순서 변경
+
+        // 모든 요소가 존재하는지 확인
+        if (!logoutButton) {
+            console.error("logoutButton 요소를 찾을 수 없습니다.");
+        }
+        if (!newChatButton) {
+            console.error("newChatButton 요소를 찾을 수 없습니다.");
+        }
+        if (!helpButton) {
+            console.error("helpButton 요소를 찾을 수 없습니다.");
+        }
+        if (!chatbotTitle) {
+            console.error("chatbotTitle 요소를 찾을 수 없습니다.");
+        }
+
+        // 서버에서 세션 정보를 가져와 닉네임 설정
+        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (usernameBox) {
+                        usernameBox.textContent = `${data.nickname}님`;
+                    }
+                    if (logoutButton) {
+                        logoutButton.textContent = "로그아웃"; // 로그인된 상태일 경우 로그아웃 버튼 표시
+                        console.log(`헤더 닉네임 설정됨: ${data.nickname}`);
+
+                        // 로그아웃 버튼 이벤트
+                        logoutButton.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            if (confirm("정말 로그아웃하시겠습니까?")) {
+                                // 로그아웃 요청 보내기
+                                fetch('http://127.0.0.1:3000/logout.php', {
+                                    method: 'POST',
+                                    credentials: 'include', // 쿠키 포함
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({}) // 필요한 경우 추가 데이터 전송
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        console.log(data.message);
+                                        // 로컬 스토리지 제거 (필요 시)
+                                        localStorage.removeItem("username");
+                                        // 헤더 업데이트
+                                        updateHeaderToLoggedOut();
+                                        // 로그인 페이지로 이동
+                                        loadPage("login.html", "login.css", "page-style");
+                                    } else {
+                                        console.error("로그아웃 실패:", data.message);
+                                        alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("로그아웃 요청 중 오류 발생:", error);
+                                    alert("로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.");
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    console.warn("로그인되지 않은 상태입니다.");
+                    if (usernameBox) {
+                        usernameBox.textContent = "";
+                    }
+                    if (logoutButton) {
+                        logoutButton.textContent = "로그인/회원가입"; // 로그인되지 않은 상태일 경우
+
+                        // 기존 이벤트 리스너 제거
+                        const newLogoutButton = logoutButton.cloneNode(true);
+                        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+                        // 로그인 버튼 이벤트 추가
+                        newLogoutButton.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            console.log("로그인 페이지 로드");
+                            loadPage("login.html", "login.css", "page-style", initLoginEvents);
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("세션 정보를 가져오는 중 오류 발생:", error);
+                if (usernameBox) {
+                    usernameBox.textContent = "Guest 님";
+                }
+                if (logoutButton) {
+                    logoutButton.textContent = "로그인/회원가입"; // 오류 발생 시 기본 상태
+
+                    // 기존 이벤트 리스너 제거
+                    const newLogoutButton = logoutButton.cloneNode(true);
+                    logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+                    // 로그인 버튼 이벤트 추가
+                    newLogoutButton.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        console.log("로그인 페이지 로드");
+                        loadPage("login.html", "login.css", "page-style", initLoginEvents);
+                    });
+                }
+            });
+
+        // Help 버튼 이벤트
+        if (helpButton) {
+            helpButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                console.log("Help 화면 로드");
+                loadPage("help.html", "help.css", "page-style", initHelpEvents);
+            });
+        }
+
+        // New Chat 버튼 이벤트
+        if (newChatButton) {
+            newChatButton.addEventListener("click", function () {
+                console.log("새로운 Splash 화면 로드");
+                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
+            });
+        }
+
+        // 챗봇 타이틀 클릭 이벤트
+        if (chatbotTitle) {
+            chatbotTitle.addEventListener("click", function () {
+                console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
+                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
+            });
+        }
+
+        // 헤더 업데이트 함수
+    function updateHeaderToLoggedOut() {
+        const usernameBox = document.getElementById("usernameBox");
+        const logoutButton = document.getElementById("logoutButton");
+
+        // 사용자 이름을 "Guest 님"으로 변경
+        usernameBox.textContent = "";
+        
+        // 로그아웃 버튼 텍스트를 "로그인/회원가입"으로 변경
+        logoutButton.textContent = "로그인/회원가입";
+
+        // 기존 이벤트 리스너 제거
+        const newLogoutButton = logoutButton.cloneNode(true);
+        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+        // 로그인 버튼 이벤트 추가
+        newLogoutButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            console.log("로그인 페이지 로드");
+            loadPage("login.html", "login.css", "page-style");
+        });
+    }
+
+    }
+
+
+
 }
 
 
