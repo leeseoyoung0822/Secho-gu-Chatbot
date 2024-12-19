@@ -1,6 +1,171 @@
 document.addEventListener("DOMContentLoaded", function () {
     const mainContent = document.getElementById("main-content");
 
+    // 헤더 초기화 함수
+    function initHeader() {
+        console.log("Header 초기화");
+
+        const usernameBox = document.getElementById("usernameBox");
+        const logoutButton = document.getElementById("logoutButton");
+        const newChatButton = document.getElementById("newChatButton");
+        const helpButton = document.getElementById("helpButton");
+        const chatbotTitle = document.getElementById("chatbotTitle"); // 선언 순서 변경
+
+        // 모든 요소가 존재하는지 확인
+        if (!logoutButton) {
+            console.error("logoutButton 요소를 찾을 수 없습니다.");
+        }
+        if (!newChatButton) {
+            console.error("newChatButton 요소를 찾을 수 없습니다.");
+        }
+        if (!helpButton) {
+            console.error("helpButton 요소를 찾을 수 없습니다.");
+        }
+        if (!chatbotTitle) {
+            console.error("chatbotTitle 요소를 찾을 수 없습니다.");
+        }
+
+        // 서버에서 세션 정보를 가져와 닉네임 설정
+        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (usernameBox) {
+                        usernameBox.textContent = `${data.nickname}님`;
+                    }
+                    if (logoutButton) {
+                        logoutButton.textContent = "로그아웃"; // 로그인된 상태일 경우 로그아웃 버튼 표시
+                        console.log(`헤더 닉네임 설정됨: ${data.nickname}`);
+
+                        // 로그아웃 버튼 이벤트
+                        logoutButton.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            if (confirm("정말 로그아웃하시겠습니까?")) {
+                                // 로그아웃 요청 보내기
+                                fetch('http://127.0.0.1:3000/logout.php', {
+                                    method: 'POST',
+                                    credentials: 'include', // 쿠키 포함
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({}) // 필요한 경우 추가 데이터 전송
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        console.log(data.message);
+                                        // 로컬 스토리지 제거 (필요 시)
+                                        localStorage.removeItem("username");
+                                        // 헤더 업데이트
+                                        updateHeaderToLoggedOut();
+                                        // 로그인 페이지로 이동
+                                        loadPage("login.html", "login.css", "page-style");
+                                    } else {
+                                        console.error("로그아웃 실패:", data.message);
+                                        alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("로그아웃 요청 중 오류 발생:", error);
+                                    alert("로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.");
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    console.warn("로그인되지 않은 상태입니다.");
+                    if (usernameBox) {
+                        usernameBox.textContent = "";
+                    }
+                    if (logoutButton) {
+                        logoutButton.textContent = "로그인/회원가입"; // 로그인되지 않은 상태일 경우
+
+                        // 기존 이벤트 리스너 제거
+                        const newLogoutButton = logoutButton.cloneNode(true);
+                        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+                        // 로그인 버튼 이벤트 추가
+                        newLogoutButton.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            console.log("로그인 페이지 로드");
+                            loadPage("login.html", "login.css", "page-style", initLoginEvents);
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("세션 정보를 가져오는 중 오류 발생:", error);
+                if (usernameBox) {
+                    usernameBox.textContent = "Guest 님";
+                }
+                if (logoutButton) {
+                    logoutButton.textContent = "로그인/회원가입"; // 오류 발생 시 기본 상태
+
+                    // 기존 이벤트 리스너 제거
+                    const newLogoutButton = logoutButton.cloneNode(true);
+                    logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+                    // 로그인 버튼 이벤트 추가
+                    newLogoutButton.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        console.log("로그인 페이지 로드");
+                        loadPage("login.html", "login.css", "page-style", initLoginEvents);
+                    });
+                }
+            });
+
+        // Help 버튼 이벤트
+        if (helpButton) {
+            helpButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                console.log("Help 화면 로드");
+                loadPage("help.html", "help.css", "page-style", initHelpEvents);
+            });
+        }
+
+        // New Chat 버튼 이벤트
+        if (newChatButton) {
+            newChatButton.addEventListener("click", function () {
+                console.log("새로운 Splash 화면 로드");
+                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
+            });
+        }
+
+        // 챗봇 타이틀 클릭 이벤트
+        if (chatbotTitle) {
+            chatbotTitle.addEventListener("click", function () {
+                console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
+                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
+            });
+        }
+
+        // 헤더 업데이트 함수
+    function updateHeaderToLoggedOut() {
+        const usernameBox = document.getElementById("usernameBox");
+        const logoutButton = document.getElementById("logoutButton");
+
+        // 사용자 이름을 "Guest 님"으로 변경
+        usernameBox.textContent = "";
+        
+        // 로그아웃 버튼 텍스트를 "로그인/회원가입"으로 변경
+        logoutButton.textContent = "로그인/회원가입";
+
+        // 기존 이벤트 리스너 제거
+        const newLogoutButton = logoutButton.cloneNode(true);
+        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+        // 로그인 버튼 이벤트 추가
+        newLogoutButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            console.log("로그인 페이지 로드");
+            loadPage("login.html", "login.css", "page-style");
+        });
+    }
+
+    }
+
+    
+
     // loadPage 함수
     window.loadPage = function (url, cssFile, cssId) {
         const xhr = new XMLHttpRequest();
@@ -881,7 +1046,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 카드 및 섹션 요소 가져오기
         const cards = document.querySelectorAll('.card');
-        console.log(cards); 
         const detailSections = document.querySelectorAll('.detail-section');
         const backButtons = document.querySelectorAll('.detail-section .back-button');
         const cardContainer = document.querySelector('.card-container');
@@ -1768,172 +1932,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return temp.innerHTML;
     }
 
-    // 헤더 초기화 함수
-    function initHeader() {
-        console.log("Header 초기화");
-
-        const usernameBox = document.getElementById("usernameBox");
-        const logoutButton = document.getElementById("logoutButton");
-        const newChatButton = document.getElementById("newChatButton");
-        const helpButton = document.getElementById("helpButton");
-        const chatbotTitle = document.getElementById("chatbotTitle"); // 선언 순서 변경
-
-        // 모든 요소가 존재하는지 확인
-        if (!logoutButton) {
-            console.error("logoutButton 요소를 찾을 수 없습니다.");
-        }
-        if (!newChatButton) {
-            console.error("newChatButton 요소를 찾을 수 없습니다.");
-        }
-        if (!helpButton) {
-            console.error("helpButton 요소를 찾을 수 없습니다.");
-        }
-        if (!chatbotTitle) {
-            console.error("chatbotTitle 요소를 찾을 수 없습니다.");
-        }
-
-        // 서버에서 세션 정보를 가져와 닉네임 설정
-        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    if (usernameBox) {
-                        usernameBox.textContent = `${data.nickname}님`;
-                    }
-                    if (logoutButton) {
-                        logoutButton.textContent = "로그아웃"; // 로그인된 상태일 경우 로그아웃 버튼 표시
-                        console.log(`헤더 닉네임 설정됨: ${data.nickname}`);
-
-                        // 로그아웃 버튼 이벤트
-                        logoutButton.addEventListener("click", (event) => {
-                            event.preventDefault();
-                            if (confirm("정말 로그아웃하시겠습니까?")) {
-                                // 로그아웃 요청 보내기
-                                fetch('http://127.0.0.1:3000/logout.php', {
-                                    method: 'POST',
-                                    credentials: 'include', // 쿠키 포함
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({}) // 필요한 경우 추가 데이터 전송
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.status === 'success') {
-                                        console.log(data.message);
-                                        // 로컬 스토리지 제거 (필요 시)
-                                        localStorage.removeItem("username");
-                                        // 헤더 업데이트
-                                        updateHeaderToLoggedOut();
-                                        // 로그인 페이지로 이동
-                                        loadPage("login.html", "login.css", "page-style");
-                                    } else {
-                                        console.error("로그아웃 실패:", data.message);
-                                        alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error("로그아웃 요청 중 오류 발생:", error);
-                                    alert("로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.");
-                                });
-                            }
-                        });
-                    }
-                } else {
-                    console.warn("로그인되지 않은 상태입니다.");
-                    if (usernameBox) {
-                        usernameBox.textContent = "";
-                    }
-                    if (logoutButton) {
-                        logoutButton.textContent = "로그인/회원가입"; // 로그인되지 않은 상태일 경우
-
-                        // 기존 이벤트 리스너 제거
-                        const newLogoutButton = logoutButton.cloneNode(true);
-                        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
-
-                        // 로그인 버튼 이벤트 추가
-                        newLogoutButton.addEventListener("click", (event) => {
-                            event.preventDefault();
-                            console.log("로그인 페이지 로드");
-                            loadPage("login.html", "login.css", "page-style", initLoginEvents);
-                        });
-                    }
-                }
-            })
-            .catch(error => {
-                console.error("세션 정보를 가져오는 중 오류 발생:", error);
-                if (usernameBox) {
-                    usernameBox.textContent = "Guest 님";
-                }
-                if (logoutButton) {
-                    logoutButton.textContent = "로그인/회원가입"; // 오류 발생 시 기본 상태
-
-                    // 기존 이벤트 리스너 제거
-                    const newLogoutButton = logoutButton.cloneNode(true);
-                    logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
-
-                    // 로그인 버튼 이벤트 추가
-                    newLogoutButton.addEventListener("click", (event) => {
-                        event.preventDefault();
-                        console.log("로그인 페이지 로드");
-                        loadPage("login.html", "login.css", "page-style", initLoginEvents);
-                    });
-                }
-            });
-
-        // Help 버튼 이벤트
-        if (helpButton) {
-            helpButton.addEventListener("click", function (event) {
-                event.preventDefault();
-                console.log("Help 화면 로드");
-                loadPage("help.html", "help.css", "page-style", initHelpEvents);
-            });
-        }
-
-        // New Chat 버튼 이벤트
-        if (newChatButton) {
-            newChatButton.addEventListener("click", function () {
-                console.log("새로운 Splash 화면 로드");
-                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
-            });
-        }
-
-        // 챗봇 타이틀 클릭 이벤트
-        if (chatbotTitle) {
-            chatbotTitle.addEventListener("click", function () {
-                console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
-                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
-            });
-        }
-
-        // 헤더 업데이트 함수
-    function updateHeaderToLoggedOut() {
-        const usernameBox = document.getElementById("usernameBox");
-        const logoutButton = document.getElementById("logoutButton");
-
-        // 사용자 이름을 "Guest 님"으로 변경
-        usernameBox.textContent = "";
-        
-        // 로그아웃 버튼 텍스트를 "로그인/회원가입"으로 변경
-        logoutButton.textContent = "로그인/회원가입";
-
-        // 기존 이벤트 리스너 제거
-        const newLogoutButton = logoutButton.cloneNode(true);
-        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
-
-        // 로그인 버튼 이벤트 추가
-        newLogoutButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            console.log("로그인 페이지 로드");
-            loadPage("login.html", "login.css", "page-style");
-        });
     }
-
-    }
-
-
-
-}
 
 
 });
