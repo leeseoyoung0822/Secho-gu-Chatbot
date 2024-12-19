@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => {
                 console.error("세션 정보를 가져오는 중 오류 발생:", error);
                 if (usernameBox) {
-                    usernameBox.textContent = "Guest 님";
+                    usernameBox.textContent = "";
                 }
                 if (logoutButton) {
                     logoutButton.textContent = "로그인/회원가입"; // 오류 발생 시 기본 상태
@@ -1133,6 +1133,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.status === 'success') {
                         e.preventDefault();
                          // 로그인 성공 시 index.html로 이동
+                        console.log("로그인 성공!");
                         window.loadPage('splash.html', 'index.css', 'page-style');
                         initHeader(); checkAdmin();
                     } else {

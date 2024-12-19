@@ -31,38 +31,6 @@
     margin: 75px auto 0 auto; /* 상단 여백과 중앙 정렬 */
 }
 
-
-/* 사용자 메시지 (오른쪽 정렬) */
-.user-message {
-    background-color: #ffffff;
-    color: rgb(121, 121, 121);
-    align-self: flex-end; /* 오른쪽 끝 정렬 */
-    margin-left: auto; /* 왼쪽 여백 자동으로 설정 */
-    padding: 10px 10px;
-    border-radius: 20px;
-    min-width: 50px;
-
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: 'SUITE-Regular';
-    text-align: center; 
-}
-
-
-
-/* 챗봇 메시지 (왼쪽 정렬) */
-.bot-message {
-    background-color: #ECECEC; /* 말풍선 색상 */
-    color: black;
-    align-self: flex-start; /* 왼쪽 정렬 */
-    padding: 10px 15px;
-    border-radius: 15px;
-    max-width: 60%; /* 최대 너비 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    word-wrap: break-word; /* 긴 단어 줄바꿈 */
-}
-
 /* 말풍선 꼬리 완전히 제거 */
 .user-message::after,
 .bot-message::after {
@@ -413,14 +381,15 @@ form {
 
 /* 챗봇 메시지 (왼쪽 정렬) */
 .bot-message {
-    background-color: #ECECEC; /* 말풍선 색상 */
-    color: black;
+    background-color: rgba(218, 182, 244, 0.5);/* 말풍선 색상 */
+    color: #333;
     align-self: flex-start; /* 왼쪽 정렬 */
     padding: 10px 15px;
     border-radius: 15px;
     max-width: 60%; /* 최대 너비 */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    font-family: 'SUITE-Regular';
 }
 
 /* 챗봇 메시지의 꼬리 */
@@ -439,16 +408,16 @@ form {
 .user-message {
     position: relative; /* 가상 요소를 위한 상대 위치 */
     background-color: #ffffff; /* 말풍선 색상 */
-    color: rgb(255, 255, 255);
+    color: #333;
     align-self: flex-end; /* 오른쪽 정렬 */
-    padding: 8px 8px; /* 내부 여백 */
-    border-radius: 20px;
+    padding: 10px 15px; /* 내부 여백 */
+    border-radius: 15px;
     max-width: 60%; /* 최대 너비 제한 */
     width: fit-content; /* 텍스트 길이에 따라 너비 조정 */
     word-wrap: break-word; /* 긴 단어 줄바꿈 */
     overflow-wrap: break-word;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    color: rgb(121, 121, 121);;
+    color: #333(121, 121, 121);;
 }
 
 /* 사용자 메시지의 꼬리 */
@@ -474,17 +443,18 @@ form {
 
 /* 평가 버튼 스타일 */
 .feedback {
-    background-color: #f0f0f0;
-    color: black;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background-color: #ffffff;
+    color: #5C5C5C;
+    border: none;
+    border-radius: 10px;
     padding: 5px 10px;
     cursor: pointer;
     font-size: 14px;
+    font-family: 'SUITE-Regular';
 }
 
 .feedback:hover {
-    background-color: #ddd;
+    transform: scale(1.1);
 }
 
 .feedback:active {
