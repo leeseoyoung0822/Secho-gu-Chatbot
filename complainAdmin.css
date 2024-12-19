@@ -12,7 +12,7 @@
 
 /* 메인 컨테이너 */
 .complainContainer {
-    width: 100%; /* 전체 화면 너비에 맞춤 */
+    width: 80vw; /* 전체 화면 너비에 맞춤 */
     max-width: 1000px; /* 최대 너비 설정 */
     padding: 20px; /* 양쪽 여백 추가 */
     box-sizing: border-box;

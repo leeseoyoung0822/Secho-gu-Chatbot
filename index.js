@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 서버에서 세션 정보를 가져와 닉네임 설정
-        fetch('http://localhost:3000/get_nickname.php', { credentials: 'include' })
+        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -1123,7 +1123,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append('password', password);
     
                 // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
-                fetch('http://localhost:3000/login.php', {
+                fetch('http://127.0.0.1:3000/login.php', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -1234,7 +1234,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append('email', email);
                 formData.append('password', password);
     
-                fetch('http://localhost:3000/signup.php', {
+                fetch('http://127.0.0.1:3000/signup.php', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -1598,7 +1598,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //사용자 문의 전체 조회
     function initComplainListEvents(){
 
-        fetchComplaints();
+        getComplain();
 
         //문의 작성 페이지로 이동
         const writeComplainButton = document.getElementById("writeComplain");
@@ -1610,8 +1610,80 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             console.error('writeComplainButton 요소를 찾을 수 없습니다.');
         }
+
+
+
     }
 
+    //일반 유저 문의 조회
+    function getComplain() {
+        fetch('http://127.0.0.1:3000/complain.php', {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답이 성공적이지 않습니다.');
+            }
+            return response.json(); // JSON 데이터로 변환
+        })
+        .then(data => {
+            console.log(data.data); // 데이터 구조 확인
+            const tableBody = document.getElementById('complaints-table-body');
+            
+            complains = data.data;
+        
+            // 데이터를 테이블에 렌더링
+            complains.forEach((item, index) => {
+                const row = document.createElement('tr');
+
+                // 클릭 이벤트 추가
+                row.addEventListener('click', () => {
+                    window.loadPage(`complainAdmin.html?complainId=${item.id}`, 'complainAdmin.css', 'complainCss');
+                });
+
+        
+                // 번호 열
+                const cellNumber = document.createElement('td');
+                cellNumber.className = 'text-center';
+                cellNumber.textContent = item.id;
+                row.appendChild(cellNumber);
+        
+                // 제목 열
+                const cellTitle = document.createElement('td');
+                cellTitle.textContent = item.title;
+                row.appendChild(cellTitle);
+        
+                // 등록일 열
+                const cellDate = document.createElement('td');
+                cellDate.className = 'text-center';
+                cellDate.textContent = formatDate(item.created_at);
+                row.appendChild(cellDate);
+        
+                // 테이블에 행 추가
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('데이터를 가져오는 동안 오류가 발생했습니다:', error);
+        });
+        
+
+    }
+    
+    // 등록일 포맷팅 함수
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+    
+    // 페이지 로드 시 getComplain 호출
+    document.addEventListener('DOMContentLoaded', () => {
+        getComplain();
+    });
+    
+
+    // 문의 조회
     function fetchComplaints() {
         fetch('http://127.0.0.1:3000/complain.php', { 
             method: 'GET',
@@ -1740,6 +1812,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.status === 'success') {
                     feedbackDiv.innerHTML = `<p style="color: green;">${sanitizeHTML(data.message)}</p>`;
                     complainForm.reset(); // 폼 초기화
+                    setTimeout(() => {
+                        writeFeedback.innerHTML = '';
+                        window.loadPage("complainList.html", "complainList.css", "complainListCss");
+                    }, 5000); // 5초 후 메시지 사라짐
                 } else {
                     feedbackDiv.innerHTML = `<p style="color: red;">${sanitizeHTML(data.message)}</p>`;
                 }
@@ -2153,8 +2229,15 @@ document.addEventListener("DOMContentLoaded", function () {
     //관리자화면으로 
     function BackAdmin(){
         window.loadPage('admin.html', 'admin.css', 'admin-style');
+    }   
+
+    function SplitBack(){
+        if(localStorage.getItem('isAdmin') === 'true'){
+            BackAdmin()
+        }else{
+            window.loadPage('complainList.html', 'complainList.css', 'complainList-style');
+        }
     }
-    
    // 관리자 - 문의
    function initAdminComplainEvents(complainId) {
     console.log(`initAdminComplainEvents 호출됨. complainId: ${complainId}`);
@@ -2234,7 +2317,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const backButton = document.getElementById('backButton');
                         if (backButton) {
-                        backButton.addEventListener('click', BackAdmin);
+                        backButton.addEventListener('click', SplitBack);
                     }
 
                     if (!hasAnswers && isAdmin) {
