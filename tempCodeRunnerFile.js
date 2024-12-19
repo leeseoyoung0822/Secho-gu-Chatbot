@@ -198,6 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
             window.loadPage("notice.html", "notice.css", "notice-style"); // notice.html 로드
         });
 
+        
+
         // 파일을 목록에 추가하는 함수
         function addFileToList(file) {
             const fileItem = document.createElement("div");

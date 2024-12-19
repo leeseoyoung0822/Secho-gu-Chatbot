@@ -53,8 +53,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     initIssueEvents();
                 }
                 else if (url === "notice.html") {
-                    console.log("공지사항 초기화 호출됨");
+                    console.log("공지사항 초기화 호출");
                     initNoticeEvents();
+                }else if(url === "admin.html"){
+                    console.log("관리자 페이지 초기화")
+                    initAdminEvents()
+                }else if(url === "noticeAdmin.html"){
+                    console.log("공지사항 리스트 - 관리자 초기화")
+                    initAdminNoticeEvents()
+                }else if(url.startsWith( "noticeDeatil.html")){
+                    const urlObj = new URL(url, window.location.origin);
+                    const noticeId = urlObj.searchParams.get('noticeId');
+                    console.log("공지사항 상세 페이지 초기화")
+                    initNoticeDetailEvents(noticeId)
+                }else if(url === "noticeWrite.html"){
+                    console.log("공지사항 작성 초기화")
+                    initAdminNoticeWriteEvents()
+                }else if(url === "complain.html"){
+                    console.log("컴플레인 작성 - 관리자 초기화")
+                    initComplainEvents()
+                }else if (url.startsWith("complainAdmin.html")){
+                    const urlObj = new URL(url, window.location.origin);
+                    const complainId = urlObj.searchParams.get('complainId');
+                    console.log("컴플레인 상세 초기화")
+                    initAdminComplainEvents(complainId)
+                }else if(url === "complainList.html"){
+                    console.log("컴플레인 리스트 초기화")
+                    initComplainListEvents()
                 }
 
                 // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
@@ -159,7 +184,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const faqButton = document.getElementById("faqButton");
         const issueButton = document.getElementById("issueButton");
         const noticeButton = document.getElementById("noticeButton");
-    
+        const complainButton = document.getElementById("complainButton");
+
         // 메뉴 버튼 클릭 이벤트
         menuToggle.addEventListener("click", () => {
           sidebar.classList.toggle("open");
@@ -225,8 +251,12 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebar.classList.remove("open");
             mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
         });
-    
-        
+
+        complainButton.addEventListener("click", () => {
+            console.log("문의하기기 버튼 클릭됨");
+            window.loadPage("complainList.html", "complainList.css", "complain-style"); // complain.html 로드
+        });
+
         // 파일을 목록에 추가하는 함수
         function addFileToList(file) {
             const fileItem = document.createElement("div");
@@ -688,6 +718,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    
     function initLoginEvents() {
         console.log("Login 이벤트 초기화");
         const loginForm = document.getElementById('loginForm');
@@ -714,21 +745,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        e.preventDefault();
-                         // 로그인 성공 시 index.html로 이동
-                        window.loadPage('splash.html', 'index.css', 'page-style');
-                        initHeader(); 
+                        console.log("로그인 성공! user_id 확인 중...");
+                        // 로그인 성공 후 user_id 확인을 위해 get_userId.php 호출
+                        fetch('http://127.0.0.1:3000/get_userId.php', {
+                            method: 'GET',
+                            credentials: 'include'
+                        })
+                        .then(response => response.json())
+                        .then(userData => {
+                            if (userData.status === 'success') {
+                                const userId = userData.user_id;
+                                console.log(`로그인한 사용자 ID: ${userId}`);
+    
+                                if (userId === 4) {
+                                    // 관리자 ID인 경우 admin.html 로드
+                                    localStorage.setItem('isAdmin', 'true');
+                                    window.loadPage('admin.html', 'admin.css', 'admin-style');
+                                } else {
+                                    // 일반 사용자 ID인 경우 index.html 로드
+                                    localStorage.setItem('isAdmin', 'false');
+                                    window.loadPage('index.html', 'index.css', 'page-style');
+                                    initHeader(); 
+                                }
+                            } else {
+                                // user_id를 가져오는 데 실패한 경우
+                                console.error(userData.message);
+                                loginError.textContent = '로그인 후 사용자 정보를 가져오는 데 실패했습니다.';
+                                loginError.style.display = 'block';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('user_id 요청 오류:', error);
+                            loginError.textContent = '사용자 정보를 가져오는 중 오류가 발생했습니다.';
+                            loginError.style.display = 'block';
+                        });
                     } else {
-                        // 에러 메시지 표시
-                         loginError.textContent = data.message;
-                         loginError.style.display = 'block';
+                        // 로그인 실패 시 에러 메시지 표시
+                        loginError.textContent = data.message;
+                        loginError.style.display = 'block';
                     }
-                  })
-                  .catch(error => {
-                    console.error('로그인 요청 오류:', error);
-                    loginError.textContent = '서버 오류가 발생했습니다.';
-                    loginError.style.display = 'block';
-                  });
+                })
                 
                 
             });
@@ -943,7 +999,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Issue 이벤트 초기화 함수
-
     function initIssueEvents() {
         // Issue 페이지 관련 이벤트 초기화
         console.log("issue 화면 이벤트 초기화");
@@ -1012,47 +1067,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function initNoticeEvents() {
-        const noticeRows = document.querySelectorAll(".table tbody tr");
-        const noticeContent = document.getElementById("notice-content");
-        const noticeTitle = document.getElementById("notice-title");
-        const noticeBody = document.getElementById("notice-body");
-        const backButton = document.getElementById("back-button");
-        const noticeList = document.getElementById("notice-list");
-
-
-        // 공지사항 데이터 예시
-        const noticeData = [
-            { title: "공지", body: "챗봇 업데이트 안내 공사로 인한 명일선 해제 및 시스템 점검이 예정되어 있습니다." },
-            { title: "챗봇 기능 개선 공지", body: "챗봇 기능이 개선되어 사용자 경험이 더욱 향상되었습니다." },
-            { title: "포토후기 이벤트 당첨자 발표", body: "포토후기 이벤트 당첨자 명단이 발표되었습니다." },
-            { title: "시스템 점검 안내", body: "시스템 점검이 완료되었습니다. 감사합니다." },
-            { title: "배송 불가 지역 안내", body: "롯데택배 배송 불가 지역에 대한 안내입니다." },
-        ];
-
-        // 각 행 클릭 시 공지사항 내용 표시
-        noticeRows.forEach((row, index) => {
-            row.addEventListener("click", () => {
-                const data = noticeData[index];
-                if(data) {
-                    noticeTitle.textContent = data.title;
-                    noticeBody.textContent = data.body;
-
-                    noticeContent.classList.remove("hidden");
-                    noticeList.classList.add("hidden");
-                }
-            });
-        });
-
-        // 뒤로가기 버튼 클릭 이벤트
-        if (backButton) {
-            backButton.addEventListener("click", () => {
-                // 상세 내용 숨기고 테이블 다시 표시
-                noticeContent.classList.add("hidden");
-                noticeList.classList.remove("hidden");
-            });
-        }
-    }
+    // 사용자 공지 조회
     function initNoticeEvents(){
         const noticeTableBody = document.getElementById("notice-table-body");
         const noticeContent = document.getElementById("notice-content");
@@ -1140,6 +1155,585 @@ document.addEventListener("DOMContentLoaded", function () {
                 noticeList.classList.remove("hidden");
             });
         }
+    }
+
+
+
+
+    //사용자 문의 전체 조회
+    function initComplainListEvents(){
+
+        fetchComplaints();
+
+        //문의 작성 페이지로 이동
+        const writeComplainButton = document.getElementById("writeComplain");
+        if (writeComplainButton) {
+            writeComplainButton.addEventListener("click", () => {
+                console.log("작성하기 버튼 클릭됨");
+                loadPage("complain.html", "complain.css", "complainWriteCss"); 
+            });
+        } else {
+            console.error('writeComplainButton 요소를 찾을 수 없습니다.');
+        }
+    }
+
+    function fetchComplaints() {
+        fetch('http://127.0.0.1:3000/complain.php', { 
+            method: 'GET',
+            credentials: 'include' 
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const complaints = data.data;
+                console.log(`받은 컴플레인 수: ${complaints.length}`);
+                renderComplaints(complaints);
+            } else {
+                console.error(`컴플레인 가져오기 실패: ${data.message}`);
+                displayError(`컴플레인 가져오기 실패: ${data.message}`);
+            }
+        })
+        .catch(error => {
+            console.error('컴플레인 요청 오류:', error);
+            displayError('컴플레인을 가져오는 중 오류가 발생했습니다.');
+        });
+    }
+
+    function renderComplaints(complaints) {
+        const container = document.getElementById('complaintsContainer');
+        container.innerHTML = ''; // 기존 내용 초기화
+    
+        if (complaints.length === 0) {
+            container.innerHTML = '<p>현재 처리할 컴플레인이 없습니다.</p>';
+            return;
+        }
+    
+        complaints.forEach(complaint => {
+            // 컴플레인 요소 생성
+            const complaintElem = document.createElement('div');
+            complaintElem.classList.add('complaint');
+            complaintElem.style.cursor = 'pointer'; // 클릭 가능한 요소임을 시각적으로 표시
+    
+            // 컴플레인 제목
+            const title = document.createElement('h4');
+            title.textContent = complaint.title || '제목 없음';
+            complaintElem.appendChild(title);
+    
+            // 컴플레인 내용
+            const content = document.createElement('p');
+            content.textContent = complaint.content;
+            complaintElem.appendChild(content);
+    
+            // 메타 정보 (작성자, 작성일)
+            const meta = document.createElement('p');
+            meta.classList.add('meta');
+            meta.textContent = `작성자: ${complaint.nickname} | 작성일: ${complaint.created_at}`;
+            complaintElem.appendChild(meta);
+    
+            // 클릭 이벤트 추가
+            complaintElem.addEventListener('click', () => {
+                const complainId = complaint.id; // 혹은 해당하는 ID 필드명
+                // complain.html에 complainId를 쿼리 파라미터로 전달
+                window.loadPage(`complainAdmin.html?complainId=${complainId}`, 'complainAdmin.css', 'complainCss');
+            });
+    
+            // 컴플레인 요소를 컨테이너에 추가
+            container.appendChild(complaintElem);
+        });
+
+    }
+    
+
+    // 사용자 문의작성  페이지 초기화
+    function initComplainEvents(){
+        const complainForm = document.getElementById("complainForm");
+        const feedbackDiv = document.getElementById("feedback");
+
+        if (!complainForm) {
+            console.error("complainForm 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 문의 작성 폼 제출 이벤트 리스너
+        complainForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // 기본 폼 제출 동작 방지
+            submitComplain();
+        });
+
+        // 문의 제출 함수
+        function submitComplain() {
+            const title = document.getElementById("title").value.trim();
+            const content = document.getElementById("content").value.trim();
+
+            // 입력 검증
+            if (!title || !content) {
+                feedbackDiv.innerHTML = '<p style="color: red;">제목과 내용을 모두 입력해주세요.</p>';
+                return;
+            }
+
+            // 문의 데이터 준비
+            const complainData = {
+                flag: false, // 질문 작성이므로 flag는 false
+                title: title,
+                content: content
+                // q_id는 질문 작성 시 필요하지 않으므로 제외
+            };
+
+            // POST 요청 보내기
+            fetch('http://127.0.0.1:3000/complain.php', {
+                method: 'POST',
+                credentials: 'include', // 세션 쿠키 포함
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(complainData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    feedbackDiv.innerHTML = `<p style="color: green;">${sanitizeHTML(data.message)}</p>`;
+                    complainForm.reset(); // 폼 초기화
+                } else {
+                    feedbackDiv.innerHTML = `<p style="color: red;">${sanitizeHTML(data.message)}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting complain:', error);
+                feedbackDiv.innerHTML = '<p style="color: red;">문의 제출 중 오류가 발생했습니다.</p>';
+            });
+        }
+
+        // 간단한 HTML 인젝션 방지 함수
+        function sanitizeHTML(str) {
+            const temp = document.createElement("div");
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+    }
+
+    
+    //관리자 페이지 초기화 함수
+    function initAdminEvents(){
+
+        fetchComplaints();
+        fetchNotices();
+
+
+        // 공지사항
+        const noticeContainer = document.getElementById("noticeContent");
+        let notices = [];
+        let currentIndex = 0;
+    
+        // 공지사항 데이터를 가져오는 함수
+        async function fetchNotices() {
+            try {
+                const response = await fetch("http://127.0.0.1:3000/notice.php", {
+                    method: "GET",
+                    credentials: "include" // 필요 시 인증 정보 포함
+                });
+    
+                const result = await response.json();
+    
+                if (result.status === "success") {
+                    notices = result.data;
+                    if (notices.length > 0) {
+                        displayNotice(notices[currentIndex]);
+                        // 8초 간격으로 다음 공지사항 표시
+                        setInterval(() => {
+                            currentIndex = (currentIndex + 1) % notices.length;
+                            displayNotice(notices[currentIndex]);
+                        }, 5000);
+                    } else {
+                        noticeContainer.innerHTML = "<p>공지사항이 없습니다.</p>";
+                    }
+                } else {
+                    noticeContainer.innerHTML = `<p>${result.message}</p>`;
+                }
+            } catch (error) {
+                console.error("공지사항 로드 실패:", error);
+                noticeContainer.innerHTML = "<p>공지사항을 불러오는 중 오류가 발생했습니다.</p>";
+            }
+        }
+    
+        // 공지사항을 표시하는 함수
+        function displayNotice(notice) {
+            noticeContainer.innerHTML = `
+                <div class="notice-item">
+                    <h3>${sanitizeHTML(notice.title)}</h3>
+                    <p>${sanitizeHTML(notice.content)}</p>
+                    <span class="notice-date">${formatDate(notice.timestamp)}</span>
+                </div>
+            `;
+        }
+    
+    
+        // 간단한 HTML 인젝션 방지 함수
+        function sanitizeHTML(str) {
+            const temp = document.createElement("div");
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        //공지사항 페이지로 이동
+         const noticeHeader = document.getElementById("noticeContainer");
+        if (noticeHeader) {
+            noticeHeader.addEventListener("click", () => {
+                console.log("공지사항 헤더 클릭됨");
+                loadPage("noticeAdmin.html", "noticeAdmin.css", "noticeAdminCss"); // 적절한 CSS 파일과 ID 사용
+            });
+        } else {
+            console.error("noticeHeader 요소를 찾을 수 없습니다.");
+        }
+      
+        
+
+    }
+
+     // 날짜 형식 변경 함수
+     function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}.${month}.${day}`;
+    }
+
+    // 관리자 공지사항 (전체 list)
+    function initAdminNoticeEvents() {
+        console.log("공지사항 화면 이벤트 초기화");
+    
+        //공지사항 데이터
+        fetch('http://127.0.0.1:3000/notice.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === "success" && data.data.length > 0) {
+                    renderNoticeList(data.data);
+                } else {
+                    renderEmptyNotice();
+                }
+            })
+            .catch(error => {
+                console.error("공지사항 데이터 불러오기 실패:", error);
+                alert("공지사항 데이터를 불러오지 못했습니다. 다시 시도해 주세요.");
+            });
+    
+        // 공지사항 목록 렌더링
+        function renderNoticeList(notices) {
+            const noticeContainer = document.getElementById("noticeContainer");
+            noticeContainer.innerHTML = ""; 
+        
+            notices.forEach(notice => {
+                const noticeItem = document.createElement("div");
+                noticeItem.className = "notice-item";
+                noticeItem.innerHTML = `
+                    <div class="notice-number">${sanitizeHTML(notice.id)}</div>
+                    <div class="notice-content">
+                        <div class="notice-header" style="cursor: pointer; color: blue; text-decoration: underline;">
+                            ${sanitizeHTML(notice.title)}
+                        </div>
+                        <div class="notice-date">${formatDate(notice.timestamp)}</div>
+                    </div>
+                    <button class="notice-delete" style="color: red; background: none; border: none; cursor: pointer;">
+                        &times;
+                    </button>
+                `;
+        
+                // 삭제 버튼 이벤트 리스너
+                const deleteButton = noticeItem.querySelector(".notice-delete");
+                deleteButton.addEventListener("click", (event) => {
+                    event.stopPropagation(); // 클릭 이벤트 전파 방지
+                    deleteNotice(notice.id);
+                });
+        
+                // 공지사항 상세 페이지로 이동 이벤트 리스너
+                const noticeHeader = noticeItem.querySelector(".notice-header");
+                noticeHeader.addEventListener("click", () => {
+                    console.log(`공지사항 ID ${notice.id} 클릭됨`);
+                    loadPage(`noticeDetail.html?noticeId=${notice.id}`, 'noticeDetail.css', 'noticeDetailCss');
+                });
+
+                function sanitizeHTML(str) {
+                    const temp = document.createElement("div");
+                    temp.textContent = String(str); // 숫자를 문자열로 변환
+                    return temp.innerHTML;
+                }
+                
+        
+                noticeContainer.appendChild(noticeItem);
+            });
+        }
+    
+        // 공지사항이 없을 때 메시지 표시
+        function renderEmptyNotice() {
+            const noticeContainer = document.getElementById("noticeContainer");
+            noticeContainer.innerHTML = `
+                <p style="text-align:center; color:#777;">현재 공지사항이 없습니다.</p>
+            `;
+        }
+
+
+        //공지사항 작성 페이지로 이동
+        const writeNoticeButton = document.getElementById("writeNoticeButton");
+        if (writeNoticeButton) {
+            writeNoticeButton.addEventListener("click", () => {
+                console.log("작성하기 버튼 클릭됨");
+                loadPage("noticeWrite.html", "noticeWrite.css", "noticeWriteCss"); 
+            });
+        } else {
+            console.error('"writeNoticeButton" 요소를 찾을 수 없습니다.');
+        }
+    }
+
+    
+    // 공지사항 삭제 함수
+    function deleteNotice(id) {
+        if (!confirm("정말 이 공지사항을 삭제하시겠습니까?")) return;
+
+        fetch('http://127.0.0.1:3000/notice.php', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+        })
+        .then(response => response.json())
+        .then(data => {
+        if (data.status === "success") {
+            alert(data.message);
+            initAdminNoticeEvents(); // 삭제 후 목록 새로 불러오기
+        } else {
+            alert("삭제 실패: " + data.message);
+        }
+        })
+        .catch(error => {
+            console.error("공지사항 삭제 중 오류 발생:", error);
+            alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        });
+    }
+
+    //관리자 공지 작성 
+    function initAdminNoticeWriteEvents(){
+        const noticeWriteForm = document.getElementById("noticeWriteForm");
+        const writeFeedback = document.getElementById("writeFeedback");
+    
+        if (noticeWriteForm) {
+            noticeWriteForm.addEventListener("submit", function(event) {
+                event.preventDefault(); // 기본 폼 제출 방지
+                submitNotice();
+            });
+        } else {
+            console.error("noticeWriteForm 요소를 찾을 수 없습니다.");
+        }
+    
+        function submitNotice() {
+            const title = document.getElementById("noticeTitle").value.trim();
+            const content = document.getElementById("noticeContent").value.trim();
+    
+            if (!title || !content) {
+                writeFeedback.innerHTML = '<p style="color: red;">제목과 내용을 모두 입력해주세요.</p>';
+                return;
+            }
+    
+            const noticeData = {
+                title: title,
+                content: content
+            };
+    
+            fetch('http://127.0.0.1:3000/notice.php', { // PHP 백엔드 스크립트 경로
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(noticeData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    writeFeedback.innerHTML = `<p style="color: #DAB6F4;">${sanitizeHTML(data.message)}</p>`;
+                    noticeWriteForm.reset();
+                    setTimeout(() => {
+                        writeFeedback.innerHTML = '';
+                    }, 5000); // 5초 후 메시지 사라짐
+                } else {
+                    writeFeedback.innerHTML = `<p style="color: #DAB6F4;">${sanitizeHTML(data.message)}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting notice:', error);
+                writeFeedback.innerHTML = '<p style="color: #DAB6F4;">공지사항 제출 중 오류가 발생했습니다.</p>';
+            });
+        }
+    
+        function sanitizeHTML(str) {
+            const temp = document.createElement("div");
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+    };
+    
+    //공지 상세 
+    function initNoticeDetailEvents(noticeId){
+        fetch(`http://127.0.0.1:3000/notice.php?noticeId=${noticeId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === "success" && data.data) {
+                    const notice = data.data;
+                    document.getElementById('noticeDetailContent').innerHTML = `
+                        <h3>${sanitizeHTML(notice.title)}</h3>
+                        <p>${sanitizeHTML(notice.content)}</p>
+                        <p><em>${formatDate(notice.timestamp)}</em></p>
+                    `;
+                } else {
+                    document.getElementById('noticeDetailContent').innerHTML = '<p>해당 공지사항을 찾을 수 없습니다.</p>';
+                }
+            })
+            .catch(error => {
+                console.error("공지사항 상세 데이터 불러오기 실패:", error);
+                document.getElementById('noticeDetailContent').innerHTML = '<p>공지사항 데이터를 불러오지 못했습니다.</p>';
+            });
+    }
+
+    // 간단한 HTML 인젝션 방지 함수
+    function sanitizeHTML(str) {
+        const temp = document.createElement("div");
+        temp.textContent = str;
+        return temp.innerHTML;
+    }
+    
+
+
+   // 관리자 - 문의
+   function initAdminComplainEvents(complainId) {
+    console.log(`initAdminComplainEvents 호출됨. complainId: ${complainId}`);
+    loadComplainDetail(complainId);
+
+    // 컴플레인 상세 내용을 가져와서 표시
+    function loadComplainDetail(complainId) {
+        if (!complainId) {
+            document.getElementById('complainDetail').innerHTML = '<p>유효한 컴플레인 ID가 제공되지 않았습니다.</p>';
+            return;
+        }
+
+        // 서버에 GET 요청을 보내서 컴플레인 상세 내용 가져오기
+        fetch(`http://127.0.0.1:3000/complain.php?complainId=${complainId}`, { 
+            method: 'GET',
+            credentials: 'include' // 세션 쿠키 포함
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('컴플레인 데이터 성공적으로 가져옴');
+                    const complaint = data.data[0]; // 단일 컴플레인이라 가정
+                    const hasAnswers = complaint.answers && complaint.answers.length > 0;
+
+                    const isAdmin = localStorage.getItem('isAdmin') === 'true'; // isAdmin 상태 확인
+
+                    const detailHtml = `
+                        <h2>${sanitizeHTML(complaint.title) || '제목 없음'}</h2>
+                        <p>${sanitizeHTML(complaint.content)}</p>
+                        <p class="meta">작성자: ${sanitizeHTML(complaint.nickname)} | 작성일: ${sanitizeHTML(complaint.created_at)}</p>
+                        <h3>답변</h3>
+                        ${hasAnswers ? complaint.answers.map(answer => `
+                            <div class="answer">
+                                <p>${sanitizeHTML(answer.content)}</p>
+                                <p class="meta">작성자: ${sanitizeHTML(answer.nickname)} | 작성일: ${sanitizeHTML(answer.created_at)}</p>
+                            </div>
+                        `).join('') : '<p>답변이 없습니다.</p>'}
+                        ${!hasAnswers && isAdmin ? `
+                            <h3>답변 작성</h3>
+                            <form id="answerForm">
+                                <textarea id="answerContent" rows="4" cols="50" placeholder="답변 내용을 입력하세요." required></textarea><br>
+                                <button type="submit">답변 작성</button>
+                            </form>
+                            <div id="answerFeedback"></div>
+                        ` : ''}
+                    `;
+                    document.getElementById('complainDetail').innerHTML = detailHtml;
+
+                    if (!hasAnswers && isAdmin) {
+                        // 답변 작성 
+                        document.getElementById('answerForm').addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            submitAnswer(complainId);
+                        });
+                    }
+                } else {
+                    document.getElementById('complainDetail').innerHTML = `<p>${sanitizeHTML(data.message)}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching complaint details:', error);
+                document.getElementById('complainDetail').innerHTML = '<p>컴플레인 상세 내용을 가져오는 중 오류가 발생했습니다.</p>';
+            });
+    }
+
+    // 답변 제출 함수
+    function submitAnswer(complainId) {
+        const answerContent = document.getElementById('answerContent').value.trim();
+        const feedbackDiv = document.getElementById('answerFeedback');
+
+        if (!answerContent) {
+            feedbackDiv.innerHTML = '<p style="color: red;">답변 내용을 입력해주세요.</p>';
+            return;
+        }
+
+        // 답변 데이터 준비
+        const answerData = {
+            flag: true,
+            content: answerContent,
+            q_id: complainId
+        };
+
+        // POST 요청 보내기
+        fetch('http://127.0.0.1:3000/complain.php', {
+            method: 'POST',
+            credentials: 'include', // 세션 쿠키 포함
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answerData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                feedbackDiv.innerHTML = '<p style="color: green;">답변이 성공적으로 등록되었습니다.</p>';
+                // 답변을 다시 로드하여 표시
+                loadComplainDetail(complainId);
+            } else {
+                feedbackDiv.innerHTML = `<p style="color: red;">${sanitizeHTML(data.message)}</p>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting answer:', error);
+            feedbackDiv.innerHTML = '<p style="color: red;">답변을 제출하는 중 오류가 발생했습니다.</p>';
+        });
+    }
+
+    // 간단한 HTML 인젝션 방지 함수 (재사용)
+    function sanitizeHTML(str) {
+        const temp = document.createElement("div");
+        temp.textContent = str;
+        return temp.innerHTML;
     }
 
     // 헤더 초기화 함수
@@ -1306,6 +1900,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-        
+
+}
+
 
 });
