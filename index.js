@@ -250,6 +250,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("도움말 초기화 호출됨");
                     initHelpEvents();
                 }
+                else if (url === "complainList.html") {
+                    console.log("문의사항 리스트 초기화 호출됨");
+                    initComplainListEvents();
+                }
+                else if (url === "complain.html") {
+                    console.log("문의사항 작성 초기화 호출됨");
+                    initComplainEvents();
+                }
 
                 // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
                 //initHeader();
