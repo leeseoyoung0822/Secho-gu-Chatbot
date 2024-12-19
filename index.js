@@ -55,6 +55,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 else if (url === "notice.html") {
                     console.log("공지사항 초기화 호출");
                     initNoticeEvents();
+                }else if(url === "admin.html"){
+                    console.log("관리자 페이지 초기화")
+                    initAdminEvents()
+                }else if(url === "noticeAdmin.html"){
+                    console.log("공지사항 리스트 - 관리자 초기화")
+                    initAdminNoticeEvents()
+                }else if(url.startsWith( "noticeDeatil.html")){
+                    const urlObj = new URL(url, window.location.origin);
+                    const noticeId = urlObj.searchParams.get('noticeId');
+                    console.log("공지사항 상세 페이지 초기화")
+                    initNoticeDetailEvents(noticeId)
+                }else if(url === "noticeWrite.html"){
+                    console.log("공지사항 작성 초기화")
+                    initAdminNoticeWriteEvents()
+                }else if(url === "complain.html"){
+                    console.log("컴플레인 작성 - 관리자 초기화")
+                    initComplainEvents()
+                }else if (url.startsWith("complainAdmin.html")){
+                    const urlObj = new URL(url, window.location.origin);
+                    const complainId = urlObj.searchParams.get('complainId');
+                    console.log("컴플레인 상세 초기화")
+                    initAdminComplainEvents(complainId)
+                }else if(url === "complainList.html"){
+                    console.log("컴플레인 리스트 초기화")
+                    initComplainListEvents()
                 }
 
                 // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
@@ -211,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         complainButton.addEventListener("click", () => {
-            console.log("공지사항 버튼 클릭됨");
+            console.log("문의하기기 버튼 클릭됨");
             window.loadPage("complainList.html", "complainList.css", "complain-style"); // complain.html 로드
         });
 
