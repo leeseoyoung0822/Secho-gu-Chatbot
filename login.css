@@ -22,7 +22,7 @@
 
 .login-container h2 {
   color: #5c5c5c; /* 원하는 색상 코드 */
-  font-size: 1.5rem; /* 텍스트 크기 */
+  font-size: 2rem; /* 텍스트 크기 */
   font-weight: bold; /* 굵은 글씨 */
   text-align: center; /* 중앙 정렬 */
   font-family: 'SUITE-Regular';
@@ -64,6 +64,12 @@
 .input-field::placeholder {
   color: #a4a4a4; /* 플레이스홀더 색상 */
 }
+
+.input-field:focus {
+  border-color: #888;
+  box-shadow: none;
+}
+
 
 .button-group {
   display: flex;
