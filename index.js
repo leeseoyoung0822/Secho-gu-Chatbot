@@ -747,7 +747,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
         
             try {
-                const response = await fetch("http://127.0.0.1:5000/ask", {
+                const response = await fetch("http://127.0.0.1:5001/ask", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -897,13 +897,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (loginForm) {
             loginForm.addEventListener('submit', function (e) {
                 e.preventDefault();
+
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
     
                 const formData = new FormData();
                 formData.append('email', email);
                 formData.append('password', password);
-                //formData.append('userid', userid); 
     
                 // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
                 fetch('http://127.0.0.1:3000/login.php', {
@@ -914,51 +914,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        console.log("로그인 성공! user_id 확인 중...");
-                        // 로그인 성공 후 user_id 확인을 위해 get_userId.php 호출
-                        fetch('http://127.0.0.1:3000/get_userId.php', {
-                            method: 'GET',
-                            credentials: 'include'
-                        })
-                        .then(response => response.json())
-                        .then(userData => {
-                            if (userData.status === 'success') {
-                                const userId = userData.user_id;
-                                console.log(`로그인한 사용자 ID: ${userId}`);
-    
-                                if (userId === 4) {
-                                    // 관리자 ID인 경우 admin.html 로드
-                                    localStorage.setItem('isAdmin', 'true');
-                                    window.loadPage('admin.html', 'admin.css', 'admin-style');
-                                } else {
-                                    // 일반 사용자 ID인 경우 index.html 로드
-                                    localStorage.setItem('isAdmin', 'false');
-                                    window.loadPage('index.html', 'index.css', 'page-style');
-                                    initHeader(); 
-                                }
-                            } else {
-                                // user_id를 가져오는 데 실패한 경우
-                                console.error(userData.message);
-                                loginError.textContent = '로그인 후 사용자 정보를 가져오는 데 실패했습니다.';
-                                loginError.style.display = 'block';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('user_id 요청 오류:', error);
-                            loginError.textContent = '사용자 정보를 가져오는 중 오류가 발생했습니다.';
-                            loginError.style.display = 'block';
-                        });
+                        e.preventDefault();
+                         // 로그인 성공 시 index.html로 이동
+                        window.loadPage('splash.html', 'index.css', 'page-style');
+                        initHeader(); 
                     } else {
-                        // 로그인 실패 시 에러 메시지 표시
-                        loginError.textContent = data.message;
-                        loginError.style.display = 'block';
+                        // 에러 메시지 표시
+                         loginError.textContent = data.message;
+                         loginError.style.display = 'block';
                     }
-                })
-                
-                
+                  })
+                  .catch(error => {
+                    console.error('로그인 요청 오류:', error);
+                    loginError.textContent = '서버 오류가 발생했습니다.';
+                    loginError.style.display = 'block';
+                  });
+
             });
         }
-    
+
         if (signupButton) {
             console.log("signupButton 존재");
             signupButton.addEventListener("click", function (event) {
@@ -969,7 +943,57 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             console.error("signupButton 요소를 찾을 수 없습니다.");
         }
-    }
+    }   
+            
+
+                       
+                        
+                        // // 로그인 성공 후 user_id 확인을 위해 get_userId.php 호출
+                        // fetch('http://127.0.0.1:3000/get_userId.php', {
+                        //     method: 'GET',
+                        //     credentials: 'include'
+                        // })
+                        // .then(response => response.json())
+                        // .then(userData => {
+                        //     if (userData.status === 'success') {
+                        //         const userId = userData.user_id;
+                        //         console.log(`로그인한 사용자 ID: ${userId}`);
+    
+                //                 if (userId === 4) {
+                //                     // 관리자 ID인 경우 admin.html 로드
+                //                     localStorage.setItem('isAdmin', 'true');
+                //                     window.loadPage('admin.html', 'admin.css', 'admin-style');
+                //                 } else {
+                //                     // 일반 사용자 ID인 경우 index.html 로드
+                //                     localStorage.setItem('isAdmin', 'false');
+                //                     window.loadPage('index.html', 'index.css', 'page-style');
+                //                     initHeader(); 
+                //                 }
+                //             } else {
+                //                 // user_id를 가져오는 데 실패한 경우
+                //                 console.error(userData.message);
+                //                 loginError.textContent = '로그인 후 사용자 정보를 가져오는 데 실패했습니다.';
+                //                 loginError.style.display = 'block';
+                //             }
+                //         })
+                //         .catch(error => {
+                //             console.error('user_id 요청 오류:', error);
+                //             loginError.textContent = '사용자 정보를 가져오는 중 오류가 발생했습니다.';
+                //             loginError.style.display = 'block';
+                //         });
+                //     } else {
+                //         // 로그인 실패 시 에러 메시지 표시
+                //         loginError.textContent = data.message;
+                //         loginError.style.display = 'block';
+                //     }
+                // })
+                
+                
+            
+        
+    
+        
+    
     
 
     
