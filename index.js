@@ -795,24 +795,69 @@ document.addEventListener("DOMContentLoaded", function () {
             resetInputs();
         });
         
-        // 메시지 추가 함수
         function addMessageToChatArea(message, sender) {
             const chatArea = document.getElementById('chatArea');
             const messageElement = document.createElement('div');
-            
+
             // 사용자 메시지와 GPT 메시지 구분
             if (sender === 'user') {
                 messageElement.classList.add('user-message'); // 사용자 메시지 스타일
             } else if (sender === 'bot') {
                 messageElement.classList.add('bot-message'); // GPT 메시지 스타일
             }
-        
+
             // 메시지 텍스트 추가
             const messageText = document.createElement('p');
             messageText.textContent = message;
             messageElement.appendChild(messageText);
-        
+
+            // GPT 메시지일 경우 평가 버튼 추가
+            if (sender === 'bot') {
+                const feedbackContainer = document.createElement('div');
+                feedbackContainer.classList.add('feedback-buttons');
+
+                // 평가 버튼 데이터 생성
+                const feedbackValues = [
+                    { value: 1, label: "😡 매우 불만족" },
+                    { value: 2, label: "😠 불만족" },
+                    { value: 3, label: "😐 보통" },
+                    { value: 4, label: "🙂 만족" },
+                    { value: 5, label: "😃 매우 만족" },
+                ];
+
+                // 버튼 생성 및 추가
+                feedbackValues.forEach(({ value, label }) => {
+                    const feedbackButton = document.createElement('button');
+                    feedbackButton.classList.add('feedback');
+                    feedbackButton.setAttribute('data-value', value);
+                    feedbackButton.textContent = label;
+
+                    // 클릭 이벤트 추가
+                    feedbackButton.addEventListener('click', () => {
+                        alert(`평가를 제출하셨습니다: ${value}점`);
+                        saveFeedback(value); // 평가 데이터 저장
+                    });
+
+                    feedbackContainer.appendChild(feedbackButton);
+                });
+
+                // 메시지 아래에 평가 버튼 컨테이너 추가
+                messageElement.appendChild(feedbackContainer);
+            }
+
+            // 메시지 요소를 채팅 영역에 추가
             chatArea.appendChild(messageElement);
+
+            // 채팅 영역 스크롤 하단으로 이동
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // 평가 데이터를 저장하는 함수
+        function saveFeedback(value) {
+            const feedbackData = JSON.parse(localStorage.getItem('feedbackData')) || [];
+            feedbackData.push(Number(value));
+            localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
+            console.log('현재 평가 데이터:', feedbackData);
         }
         
         // 사용자 메시지 버블 생성 함수

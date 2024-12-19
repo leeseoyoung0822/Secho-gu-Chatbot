@@ -463,3 +463,30 @@ form {
     border-width: 20px 20px 0 0; /* 삼각형의 크기와 방향 */
     border-color: #ffffff transparent transparent transparent; /* 사용자 말풍선 색상 */
 }
+
+/* 평가 버튼 컨테이너 */
+.feedback-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start; /* 버튼 왼쪽 정렬 */
+}
+
+/* 평가 버튼 스타일 */
+.feedback {
+    background-color: #f0f0f0;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.feedback:hover {
+    background-color: #ddd;
+}
+
+.feedback:active {
+    background-color: #ccc;
+}
