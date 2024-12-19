@@ -164,6 +164,171 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+    
+
+    // 헤더 초기화 함수
+    function initHeader() {
+        console.log("Header 초기화");
+
+        const usernameBox = document.getElementById("usernameBox");
+        const logoutButton = document.getElementById("logoutButton");
+        const newChatButton = document.getElementById("newChatButton");
+        const helpButton = document.getElementById("helpButton");
+        const chatbotTitle = document.getElementById("chatbotTitle"); // 선언 순서 변경
+
+        // 모든 요소가 존재하는지 확인
+        if (!logoutButton) {
+            console.error("logoutButton 요소를 찾을 수 없습니다.");
+        }
+        if (!newChatButton) {
+            console.error("newChatButton 요소를 찾을 수 없습니다.");
+        }
+        if (!helpButton) {
+            console.error("helpButton 요소를 찾을 수 없습니다.");
+        }
+        if (!chatbotTitle) {
+            console.error("chatbotTitle 요소를 찾을 수 없습니다.");
+        }
+
+        // 서버에서 세션 정보를 가져와 닉네임 설정
+        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (usernameBox) {
+                        usernameBox.textContent = `${data.nickname}님`;
+                    }
+                    if (logoutButton) {
+                        logoutButton.textContent = "로그아웃"; // 로그인된 상태일 경우 로그아웃 버튼 표시
+                        console.log(`헤더 닉네임 설정됨: ${data.nickname}`);
+
+                        // 로그아웃 버튼 이벤트
+                        logoutButton.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            if (confirm("정말 로그아웃하시겠습니까?")) {
+                                // 로그아웃 요청 보내기
+                                fetch('http://127.0.0.1:3000/logout.php', {
+                                    method: 'POST',
+                                    credentials: 'include', // 쿠키 포함
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({}) // 필요한 경우 추가 데이터 전송
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        console.log(data.message);
+                                        // 로컬 스토리지 제거 (필요 시)
+                                        localStorage.removeItem("username");
+                                        // 헤더 업데이트
+                                        updateHeaderToLoggedOut();
+                                        // 로그인 페이지로 이동
+                                        loadPage("login.html", "login.css", "page-style");
+                                    } else {
+                                        console.error("로그아웃 실패:", data.message);
+                                        alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("로그아웃 요청 중 오류 발생:", error);
+                                    alert("로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.");
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    console.warn("로그인되지 않은 상태입니다.");
+                    if (usernameBox) {
+                        usernameBox.textContent = "";
+                    }
+                    if (logoutButton) {
+                        logoutButton.textContent = "로그인/회원가입"; // 로그인되지 않은 상태일 경우
+
+                        // 기존 이벤트 리스너 제거
+                        const newLogoutButton = logoutButton.cloneNode(true);
+                        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+                        // 로그인 버튼 이벤트 추가
+                        newLogoutButton.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            console.log("로그인 페이지 로드");
+                            loadPage("login.html", "login.css", "page-style", initLoginEvents);
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("세션 정보를 가져오는 중 오류 발생:", error);
+                if (usernameBox) {
+                    usernameBox.textContent = "Guest 님";
+                }
+                if (logoutButton) {
+                    logoutButton.textContent = "로그인/회원가입"; // 오류 발생 시 기본 상태
+
+                    // 기존 이벤트 리스너 제거
+                    const newLogoutButton = logoutButton.cloneNode(true);
+                    logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+                    // 로그인 버튼 이벤트 추가
+                    newLogoutButton.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        console.log("로그인 페이지 로드");
+                        loadPage("login.html", "login.css", "page-style", initLoginEvents);
+                    });
+                }
+            });
+
+        // Help 버튼 이벤트
+        if (helpButton) {
+            helpButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                console.log("Help 화면 로드");
+                loadPage("help.html", "help.css", "page-style", initHelpEvents);
+            });
+        }
+
+        // New Chat 버튼 이벤트
+        if (newChatButton) {
+            newChatButton.addEventListener("click", function () {
+                console.log("새로운 Splash 화면 로드");
+                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
+            });
+        }
+
+        // 챗봇 타이틀 클릭 이벤트
+        if (chatbotTitle) {
+            chatbotTitle.addEventListener("click", function () {
+                console.log("챗봇 타이틀 클릭됨! Splash 페이지 로드");
+                loadPage("splash.html", "index.css", "page-style", initSplashEvents);
+            });
+        }
+
+        // 헤더 업데이트 함수
+    function updateHeaderToLoggedOut() {
+        const usernameBox = document.getElementById("usernameBox");
+        const logoutButton = document.getElementById("logoutButton");
+
+        // 사용자 이름을 "Guest 님"으로 변경
+        usernameBox.textContent = "";
+        
+        // 로그아웃 버튼 텍스트를 "로그인/회원가입"으로 변경
+        logoutButton.textContent = "로그인/회원가입";
+
+        // 기존 이벤트 리스너 제거
+        const newLogoutButton = logoutButton.cloneNode(true);
+        logoutButton.parentNode.replaceChild(newLogoutButton, logoutButton);
+
+        // 로그인 버튼 이벤트 추가
+        newLogoutButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            console.log("로그인 페이지 로드");
+            loadPage("login.html", "login.css", "page-style");
+        });
+    }
+
+    }
+
 
     // loadPage 함수
     window.loadPage = function (url, cssFile, cssId) {
@@ -244,6 +409,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 }else if(url === "complainList.html"){
                     console.log("컴플레인 리스트 초기화")
                     initComplainListEvents()
+                }
+                else if (url === "help.html") {
+                    console.log("도움말 초기화 호출됨");
+                    initHelpEvents();
+                }
+                else if (url === "complainList.html") {
+                    console.log("문의사항 리스트 초기화 호출됨");
+                    initComplainListEvents();
+                }
+                else if (url === "complain.html") {
+                    console.log("문의사항 작성 초기화 호출됨");
+                    initComplainEvents();
                 }
 
                 // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
@@ -742,7 +919,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
         
             try {
-                const response = await fetch("http://127.0.0.1:5000/ask", {
+                const response = await fetch("http://172.17.124.18:5001/ask", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -782,24 +959,69 @@ document.addEventListener("DOMContentLoaded", function () {
             resetInputs();
         });
         
-        // 메시지 추가 함수
         function addMessageToChatArea(message, sender) {
             const chatArea = document.getElementById('chatArea');
             const messageElement = document.createElement('div');
-            
+
             // 사용자 메시지와 GPT 메시지 구분
             if (sender === 'user') {
                 messageElement.classList.add('user-message'); // 사용자 메시지 스타일
             } else if (sender === 'bot') {
                 messageElement.classList.add('bot-message'); // GPT 메시지 스타일
             }
-        
+
             // 메시지 텍스트 추가
             const messageText = document.createElement('p');
             messageText.textContent = message;
             messageElement.appendChild(messageText);
-        
+
+            // GPT 메시지일 경우 평가 버튼 추가
+            if (sender === 'bot') {
+                const feedbackContainer = document.createElement('div');
+                feedbackContainer.classList.add('feedback-buttons');
+
+                // 평가 버튼 데이터 생성
+                const feedbackValues = [
+                    { value: 1, label: "😡 매우 불만족" },
+                    { value: 2, label: "😠 불만족" },
+                    { value: 3, label: "😐 보통" },
+                    { value: 4, label: "🙂 만족" },
+                    { value: 5, label: "😃 매우 만족" },
+                ];
+
+                // 버튼 생성 및 추가
+                feedbackValues.forEach(({ value, label }) => {
+                    const feedbackButton = document.createElement('button');
+                    feedbackButton.classList.add('feedback');
+                    feedbackButton.setAttribute('data-value', value);
+                    feedbackButton.textContent = label;
+
+                    // 클릭 이벤트 추가
+                    feedbackButton.addEventListener('click', () => {
+                        alert(`평가를 제출하셨습니다: ${value}점`);
+                        saveFeedback(value); // 평가 데이터 저장
+                    });
+
+                    feedbackContainer.appendChild(feedbackButton);
+                });
+
+                // 메시지 아래에 평가 버튼 컨테이너 추가
+                messageElement.appendChild(feedbackContainer);
+            }
+
+            // 메시지 요소를 채팅 영역에 추가
             chatArea.appendChild(messageElement);
+
+            // 채팅 영역 스크롤 하단으로 이동
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // 평가 데이터를 저장하는 함수
+        function saveFeedback(value) {
+            const feedbackData = JSON.parse(localStorage.getItem('feedbackData')) || [];
+            feedbackData.push(Number(value));
+            localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
+            console.log('현재 평가 데이터:', feedbackData);
         }
         
         // 사용자 메시지 버블 생성 함수
@@ -892,13 +1114,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (loginForm) {
             loginForm.addEventListener('submit', function (e) {
                 e.preventDefault();
+
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
     
                 const formData = new FormData();
                 formData.append('email', email);
                 formData.append('password', password);
-                //formData.append('userid', userid); 
     
                 // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
                 fetch('http://127.0.0.1:3000/login.php', {
@@ -909,51 +1131,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        console.log("로그인 성공! user_id 확인 중...");
-                        // 로그인 성공 후 user_id 확인을 위해 get_userId.php 호출
-                        fetch('http://127.0.0.1:3000/get_userId.php', {
-                            method: 'GET',
-                            credentials: 'include'
-                        })
-                        .then(response => response.json())
-                        .then(userData => {
-                            if (userData.status === 'success') {
-                                const userId = userData.user_id;
-                                console.log(`로그인한 사용자 ID: ${userId}`);
-    
-                                if (userId === 4) {
-                                    // 관리자 ID인 경우 admin.html 로드
-                                    localStorage.setItem('isAdmin', 'true');
-                                    window.loadPage('admin.html', 'admin.css', 'admin-style');
-                                } else {
-                                    // 일반 사용자 ID인 경우 index.html 로드
-                                    localStorage.setItem('isAdmin', 'false');
-                                    window.loadPage('index.html', 'index.css', 'page-style');
-                                    initHeader(); 
-                                }
-                            } else {
-                                // user_id를 가져오는 데 실패한 경우
-                                console.error(userData.message);
-                                loginError.textContent = '로그인 후 사용자 정보를 가져오는 데 실패했습니다.';
-                                loginError.style.display = 'block';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('user_id 요청 오류:', error);
-                            loginError.textContent = '사용자 정보를 가져오는 중 오류가 발생했습니다.';
-                            loginError.style.display = 'block';
-                        });
+                        e.preventDefault();
+                         // 로그인 성공 시 index.html로 이동
+                        window.loadPage('splash.html', 'index.css', 'page-style');
+                        initHeader(); checkAdmin();
                     } else {
-                        // 로그인 실패 시 에러 메시지 표시
-                        loginError.textContent = data.message;
-                        loginError.style.display = 'block';
+                        // 에러 메시지 표시
+                         loginError.textContent = data.message;
+                         loginError.style.display = 'block';
                     }
-                })
-                
-                
+                  })
+                  .catch(error => {
+                    console.error('로그인 요청 오류:', error);
+                    loginError.textContent = '서버 오류가 발생했습니다.';
+                    loginError.style.display = 'block';
+                  });
+
             });
         }
-    
+
         if (signupButton) {
             console.log("signupButton 존재");
             signupButton.addEventListener("click", function (event) {
@@ -964,10 +1160,58 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             console.error("signupButton 요소를 찾을 수 없습니다.");
         }
+    }   
+            
+    function checkAdmin() {
+        // 로그인 성공 후 user_id 확인을 위해 get_userId.php 호출
+        fetch('http://127.0.0.1:3000/get_userId.php', {
+            method: 'GET',
+            credentials: 'include', // 쿠키와 인증 정보를 포함
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((userData) => {
+                if (userData.status === 'success') {
+                    const userId = userData.user_id;
+                    console.log(`로그인한 사용자 ID: ${userId}`);
+    
+                    if (userId === 4) {
+                        // 관리자 ID인 경우 admin.html 로드
+                        localStorage.setItem('isAdmin', 'true');
+                        window.loadPage("admin.html", "admin.css", "page-style");
+                    } else {
+                        // 일반 사용자 ID인 경우 index.html 로드
+                        localStorage.setItem('isAdmin', 'false');
+                        window.loadPage("signup.html", "signup.css", "page-style");
+                    }
+                } else {
+                    // user_id를 가져오는 데 실패한 경우
+                    console.error(`사용자 정보 가져오기 실패: ${userData.message}`);
+                    displayLoginError('로그인 후 사용자 정보를 가져오는 데 실패했습니다.');
+                }
+            })
+            .catch((error) => {
+                console.error('user_id 요청 오류:', error);
+                displayLoginError('사용자 정보를 가져오는 중 오류가 발생했습니다.');
+            });
     }
     
-
+    // 에러 메시지 표시 함수
+    function displayLoginError(message) {
+        const loginError = document.getElementById('loginError'); // loginError 요소가 있어야 함
+        if (loginError) {
+            loginError.textContent = message;
+            loginError.style.display = 'block';
+        } else {
+            console.error('loginError 요소를 찾을 수 없습니다.');
+        }
+    }
     
+ 
 
 
     // Signup 이벤트 초기화 함수
@@ -1035,22 +1279,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     }
-    
-    // Help 페이지 이벤트 초기화
     function initHelpEvents() {
         console.log("Help 화면 이벤트 초기화");
 
-        const backButton = document.getElementById("backButton");
 
-        if (backButton) {
-            backButton.addEventListener("click", function () {
-                console.log("Splash 화면으로 돌아가기");
-                loadPage("splash.html", "index.css", "page-style");
+        // 카드 및 섹션 요소 가져오기
+        const cards = document.querySelectorAll('.card');
+        const detailSections = document.querySelectorAll('.detail-section');
+        const backButtons = document.querySelectorAll('.detail-section .back-button');
+        const cardContainer = document.querySelector('.card-container');
+
+
+        // 카드 클릭 시 해당 섹션 표시
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetId = card.dataset.target;
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    // 카드 리스트 숨기기
+                    cardContainer.style.display = 'none';
+
+                    // 모든 상세 섹션 숨기기
+                    detailSections.forEach(section => section.classList.add('hidden'));
+
+                    // 선택된 섹션 보이기
+                    targetSection.classList.remove('hidden');
+                }
             });
-        } else {
-            console.error("backButton 요소를 찾을 수 없습니다.");
-        }
-    }
+        });
+
+        // 뒤로가기 버튼 클릭 시 카드 목록으로 돌아가기
+        backButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 상세 섹션 숨기기
+                detailSections.forEach(section => section.classList.add('hidden'));
+
+                // 카드 리스트 보이기
+                cardContainer.style.display = 'flex';
+            });
+        });
+
+       
+      }
+    
 
     function initFaqEvents() {
         console.log("FAQ 화면 이벤트 초기화");
@@ -1231,7 +1503,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 사용자 공지 조회
     function initNoticeEvents(){
         const noticeTableBody = document.getElementById("notice-table-body");
         const noticeContent = document.getElementById("notice-content");

@@ -1,14 +1,26 @@
-  <div id="complainContainer">
-        <h1>문의 작성</h1>
-        <form id="complainForm">
-            <label for="title">제목:</label><br>
-            <input type="text" id="title" name="title" required><br><br>
-            
-            <label for="content">내용:</label><br>
-            <textarea id="content" name="content" rows="5" cols="50" required></textarea><br><br>
-            
-            <button type="submit">문의 제출</button>
-        </form>
-        <div id="feedback"></div>
-    </div>
+<div class="background-container">
+    <!-- 콘텐츠 박스 -->
+    <div class="content-box">
+        <!-- 헤더 -->
+        <header class="help-header">
+            <img src="img/chatbot.png" alt="Chatbot Logo" class="chatbot-img">
+            <h1 class="help-title">문의 작성</h1>
+        </header>
 
+        <!-- 문의 작성 폼 -->
+        <div id="complainContainer">
+            <form id="complainForm">
+                <label for="title">제목:</label>
+                <textarea id="title" name="title" rows="1" placeholder="문의 제목을 입력하세요" required></textarea>
+        
+                <label for="content">내용:</label>
+                <textarea id="content" name="content" rows="5" placeholder="문의 내용을 입력하세요" required></textarea>
+        
+                <button type="submit" class="submit-button">문의 제출</button>
+            </form>
+            <div id="feedback"></div>
+        </div>
+        
+       
+    </div>
+</div>

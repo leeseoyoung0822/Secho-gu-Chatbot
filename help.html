@@ -1,88 +1,93 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>서초구청 챗봇 서비스 소개</title>
-  <link rel="stylesheet" href="help.css">
-</head>
-<body>
-  <div class="background-container">
-    <div class="content-box">
+<div class="background-container">
+  <!-- 콘텐츠 박스 -->
+  <div class="content-box">
       <header class="help-header">
-        <img src="img/chatbot.png" alt="Chatbot Logo" class="chatbot-img animated">
-        <h1 class="help-title animated">서초구청 민원 챗봇 서비스</h1>
-        <p class="help-subtitle animated">편리하고 정확한 민원 서비스를 위한 AI 기반 챗봇</p>
+          <img src="img/chatbot.png" alt="Chatbot Logo" class="chatbot-img animated">
+          <h1 class="help-title animated">서초구청 민원 챗봇 서비스</h1>
+          <p class="help-subtitle animated">편리하고 정확한 민원 서비스를 위한 AI 기반 챗봇</p>
       </header>
-      
-      <!-- 서비스 소개 -->
-      <section class="help-section animated">
-        <h2 class="section-title animated">서비스 소개</h2>
-        <p class="section-text animated-text">
-          서초구청 민원 챗봇은 주민들의 다양한 민원 및 행정 서비스에 대한 신속하고 정확한 정보를 제공하기 위해 설계된 
-          AI 기반 질의응답 시스템입니다. 사용자는 간단한 대화만으로 필요한 정보를 찾거나 민원 접수를 진행할 수 있어, 
-          시간과 장소에 구애받지 않는 편리한 민원 서비스를 경험할 수 있습니다.
-        </p>
-      </section>
-      
-      <!-- 주요 기능 -->
-      <section class="help-section animated">
-        <h2 class="section-title animated">주요 기능</h2>
-        <ul class="features-list">
-          <li class="animated-item">
-            <strong>민원 정보 제공</strong>: 서초구청 웹사이트의 모든 콘텐츠를 기반으로 민원 처리 절차, 필요 서류, 접수 방법 등 관련 정보를 안내합니다.
-          </li>
-          <li class="animated-item">
-            <strong>민원 서류 준비 지원</strong>: 사용자가 업로드한 PDF, DOCS 파일에 기반해 적합한 답변 제공 및 민원 준비를 지원합니다.
-          </li>
-          <li class="animated-item">
-            <strong>인터랙티브 Q&A</strong>: 사용자가 업로드한 파일에 기반한 질의응답을 통해 맞춤형 정보를 제공합니다.
-          </li>
-          <li class="animated-item">
-            <strong>분리형 데이터 저장</strong>: 업로드된 파일과 관련된 메타데이터 저장 및 사용자 파일별 대화 관리.
-          </li>
-          <li class="animated-item">
-            <strong>사용자 친화적 인터페이스</strong>: 간단하고 직관적인 UI를 통해 누구나 쉽게 사용할 수 있는 웹 기반 챗봇 서비스.
-          </li>
-        </ul>
-      </section>
-      
-      <!-- 버튼 및 주요 UI 설명 -->
-      <section class="help-section animated">
-        <h2 class="section-title animated">주요 버튼 및 UI 설명</h2>
-        <div class="ui-feature animated">
-          <img src="img/menu.png" alt="Menu 버튼" class="ui-image animated">
-          <p><strong>메뉴 버튼</strong>: 좌측 상단의 메뉴 버튼을 눌러 사이드바를 열고 FAQ, 이슈 등의 추가 기능에 접근할 수 있습니다.</p>
-        </div>
-        <div class="ui-feature animated">
-          <img src="img/newpage.png" alt="New Chat 버튼" class="ui-image animated">
-          <p><strong>새 대화 버튼</strong>: 우측 상단의 버튼을 눌러 새로운 대화를 시작할 수 있습니다. 이전 대화는 초기화됩니다.</p>
-        </div>
-        <div class="ui-feature animated">
-          <img src="img/question.png" alt="Help 버튼" class="ui-image animated">
-          <p><strong>도움말 버튼</strong>: 타이틀 옆의 도움말 버튼을 눌러 이 화면으로 이동해 서비스 설명과 사용법을 확인할 수 있습니다.</p>
-        </div>
-        <div class="ui-feature animated">
-          <img src="img/save.png" alt="Save 버튼" class="ui-image animated">
-          <p><strong>저장 버튼</strong>: 사이드바 안에서 선택된 파일을 저장하여 이후 작업에 사용할 수 있습니다.</p>
-        </div>
-        <div class="ui-feature animated">
-          <img src="img/upload.png" alt="Upload 버튼" class="ui-image animated">
-          <p><strong>업로드 버튼</strong>: 사이드바 안에서 특정 파일을 선택하여 챗봇 입력창에 넣어 질문할 수 있습니다.</p>
-        </div>
+
+      <!-- 초기 카드 버튼 섹션 -->
+      <section class="initial-section">
+          <div class="card-container">
+              <div class="card" data-target="service-intro">
+                  <img src="img/service.png" alt="서비스 소개" class="card-image">
+                  <h3>서비스 소개</h3>
+              </div>
+              <div class="card" data-target="key-features">
+                  <img src="img/features.png" alt="주요 기능" class="card-image">
+                  <h3>주요 기능</h3>
+              </div>
+              <div class="card" data-target="ui-description">
+                  <img src="img/ui.png" alt="주요 버튼" class="card-image">
+                  <h3>주요 버튼</h3>
+              </div>
+              <div class="card" data-target="expected-benefits">
+                  <img src="img/effect.png" alt="기대 효과" class="card-image">
+                  <h3>기대 효과</h3>
+              </div>
+          </div>
       </section>
 
-      <!-- 기대 효과 -->
-      <section class="help-section animated">
-        <h2 class="section-title animated">기대 효과</h2>
-        <ul class="benefits-list">
-          <li class="animated-item"><strong>편리성 증대</strong>: 사용자는 대면 방문이나 전화 상담 없이도 민원 해결이 가능하여 시간을 절약할 수 있습니다.</li>
-          <li class="animated-item"><strong>정확한 정보 제공</strong>: 서초구청에서 제공하는 최신 정보와 AI 기술을 결합하여 민원 처리에 필요한 신뢰할 수 있는 답변을 제공합니다.</li>
-          <li class="animated-item"><strong>업무 효율화</strong>: 민원 상담 업무의 부담을 줄이고, 공무원이 복잡한 민원 처리에 집중할 수 있도록 지원합니다.</li>
-        </ul>
+      <!-- 서비스 소개 상세 내용 -->
+      <section id="service-intro" class="detail-section hidden">
+          <button class="back-button">←</button>
+          <h2>서비스 소개</h2>
+          <p>
+              서초구청 민원 챗봇은 주민들의 다양한 민원 및 행정 서비스에 대한 신속하고 정확한 정보를 제공하기 위해 설계된 
+              AI 기반 질의응답 시스템입니다. 사용자는 간단한 대화만으로 필요한 정보를 찾거나 민원 접수를 진행할 수 있어, 
+              시간과 장소에 구애받지 않는 편리한 민원 서비스를 경험할 수 있습니다.
+          </p>
       </section>
-    </div>
+
+      <!-- 주요 기능 상세 내용 -->
+      <section id="key-features" class="detail-section hidden">
+          <button class="back-button">←</button>
+          <h2>주요 기능</h2>
+          <ul class="features-list">
+              <li><strong>민원 정보 제공</strong>: 서초구청 웹사이트의 모든 콘텐츠를 기반으로 민원 처리 절차, 필요 서류, 접수 방법 등 관련 정보를 안내합니다.</li>
+              <li><strong>민원 서류 준비 지원</strong>: 사용자가 업로드한 PDF, DOCS 파일에 기반해 적합한 답변 제공 및 민원 준비를 지원합니다.</li>
+              <li><strong>인터랙티브 Q&A</strong>: 사용자가 업로드한 파일에 기반한 질의응답을 통해 맞춤형 정보를 제공합니다.</li>
+              <li><strong>분리형 데이터 저장</strong>: 업로드된 파일과 관련된 메타데이터 저장 및 사용자 파일별 대화 관리.</li>
+              <li><strong>사용자 친화적 인터페이스</strong>: 간단하고 직관적인 UI를 통해 누구나 쉽게 사용할 수 있는 웹 기반 챗봇 서비스.</li>
+          </ul>
+      </section>
+
+      <!-- 주요 버튼 상세 내용 -->
+      <section id="ui-description" class="detail-section hidden">
+          <button class="back-button">←</button>
+          <h2>주요 버튼 및 UI 설명</h2>
+          <div class="ui-feature">
+              <img src="img/menu.png" alt="Menu 버튼" class="ui-image">
+              <p><strong>메뉴 버튼</strong>: 좌측 상단의 메뉴 버튼을 눌러 사이드바를 열고 FAQ, 이슈 등의 추가 기능에 접근할 수 있습니다.</p>
+          </div>
+          <div class="ui-feature">
+              <img src="img/newpage.png" alt="New Chat 버튼" class="ui-image">
+              <p><strong>새 대화 버튼</strong>: 우측 상단의 버튼을 눌러 새로운 대화를 시작할 수 있습니다. 이전 대화는 초기화됩니다.</p>
+          </div>
+          <div class="ui-feature">
+              <img src="img/question.png" alt="Help 버튼" class="ui-image">
+              <p><strong>도움말 버튼</strong>: 타이틀 옆의 도움말 버튼을 눌러 이 화면으로 이동해 서비스 설명과 사용법을 확인할 수 있습니다.</p>
+          </div>
+          <div class="ui-feature">
+              <img src="img/save.png" alt="Save 버튼" class="ui-image">
+              <p><strong>저장 버튼</strong>: 사이드바 안에서 선택된 파일을 저장하여 이후 작업에 사용할 수 있습니다.</p>
+          </div>
+          <div class="ui-feature">
+              <img src="img/upload.png" alt="Upload 버튼" class="ui-image">
+              <p><strong>업로드 버튼</strong>: 사이드바 안에서 특정 파일을 선택하여 챗봇 입력창에 넣어 질문할 수 있습니다.</p>
+          </div>
+      </section>
+
+      <!-- 기대 효과 상세 내용 -->
+      <section id="expected-benefits" class="detail-section hidden">
+          <button class="back-button">←</button>
+          <h2>기대 효과</h2>
+          <ul class="benefits-list">
+              <li><strong>편리성 증대</strong>: 사용자는 대면 방문이나 전화 상담 없이도 민원 해결이 가능하여 시간을 절약할 수 있습니다.</li>
+              <li><strong>정확한 정보 제공</strong>: 서초구청에서 제공하는 최신 정보와 AI 기술을 결합하여 민원 처리에 필요한 신뢰할 수 있는 답변을 제공합니다.</li>
+              <li><strong>업무 효율화</strong>: 민원 상담 업무의 부담을 줄이고, 공무원이 복잡한 민원 처리에 집중할 수 있도록 지원합니다.</li>
+          </ul>
+      </section>
   </div>
-  <script src="help.js"></script>
-</body>
-</html>
+</div>
