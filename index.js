@@ -755,7 +755,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
         
             try {
-                const response = await fetch("http://127.0.0.1:5001/ask", {
+                const response = await fetch("http://172.17.124.18:5001/ask", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
