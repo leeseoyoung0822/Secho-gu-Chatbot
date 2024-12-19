@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 서버에서 세션 정보를 가져와 닉네임 설정
-        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+        fetch('http://localhost:3000/get_nickname.php', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
