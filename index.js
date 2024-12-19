@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 서버에서 세션 정보를 가져와 닉네임 설정
-        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+        fetch('http://localhost:3000/get_nickname.php', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             event.preventDefault();
                             if (confirm("정말 로그아웃하시겠습니까?")) {
                                 // 로그아웃 요청 보내기
-                                fetch('http://127.0.0.1:3000/logout.php', {
+                                fetch('http://localhost:3000/logout.php', {
                                     method: 'POST',
                                     credentials: 'include', // 쿠키 포함
                                     headers: {
@@ -745,7 +745,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
         
             const message = messageInput.value.trim();
-            const uploadedFilename = '1._2025년_상반기_배드민턴_정기배정_안내문.pdf'; // 파일명 하드코딩
+            const uploadedFilename = '/Users/seoyoung/web2/Front-end/uploads/1._2025년_상반기_배드민턴_정기배정_안내문.pdf'; // 파일명 하드코딩
         
             if (!message) {
                 alert("메시지를 입력해주세요.");
@@ -959,7 +959,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append('password', password);
     
                 // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
-                fetch('http://127.0.0.1:3000/login.php', {
+                fetch('http://localhost:3000/login.php', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -1072,7 +1072,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append('email', email);
                 formData.append('password', password);
     
-                fetch('http://127.0.0.1:3000/signup.php', {
+                fetch('http://localhost:3000/signup.php', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
