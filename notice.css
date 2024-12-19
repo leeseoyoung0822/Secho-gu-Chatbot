@@ -33,6 +33,7 @@ body, html {
   padding: 20px 30px;
   overflow-y: auto;
   max-height: 100vh;
+  margin-top: 70px;
 }
 
 /* 헤더 스타일 */

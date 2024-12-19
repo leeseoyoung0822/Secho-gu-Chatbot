@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 서버에서 세션 정보를 가져와 닉네임 설정
-        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+        fetch('http://localhost:3000/get_nickname.php', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 서버에서 세션 정보를 가져와 닉네임 설정
-        fetch('http://127.0.0.1:3000/get_nickname.php', { credentials: 'include' })
+        fetch('http://localhost:3000/get_nickname.php', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             event.preventDefault();
                             if (confirm("정말 로그아웃하시겠습니까?")) {
                                 // 로그아웃 요청 보내기
-                                fetch('http://127.0.0.1:3000/logout.php', {
+                                fetch('http://localhost:3000/logout.php', {
                                     method: 'POST',
                                     credentials: 'include', // 쿠키 포함
                                     headers: {
@@ -596,6 +596,10 @@ document.addEventListener("DOMContentLoaded", function () {
         complainButton.addEventListener("click", () => {
             console.log("문의하기기 버튼 클릭됨");
             window.loadPage("complainList.html", "complainList.css", "complain-style"); // complain.html 로드
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
+            sidebar.classList.remove("open");
+            mainContent.classList.remove("shifted"); // 메인 콘텐츠 원위치
         });
 
         // 파일을 목록에 추가하는 함수
@@ -909,7 +913,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
         
             const message = messageInput.value.trim();
-            const uploadedFilename = '/Users/seoyoung/web2/Front-end/uploads/1._2025년_상반기_배드민턴_정기배정_안내문.pdf'; // 파일명 하드코딩
+            const uploadedFilename = '/Users/seoyoung/web/Front-end-1/uploads/1._2025년_상반기_배드민턴_정기배정_안내문.pdf'; // 파일명 하드코딩
         
             if (!message) {
                 alert("메시지를 입력해주세요.");
@@ -919,7 +923,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
         
             try {
-                const response = await fetch("http://172.17.124.18:5001/ask", {
+                const response = await fetch("http://172.17.124.18:5002/ask", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -1123,7 +1127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append('password', password);
     
                 // login.php가 JSON이 아닌 HTML 형태로 응답하므로, text 형태로 처리
-                fetch('http://127.0.0.1:3000/login.php', {
+                fetch('http://localhost:3000/login.php', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -1165,7 +1169,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
     function checkAdmin() {
         // 로그인 성공 후 user_id 확인을 위해 get_userId.php 호출
-        fetch('http://127.0.0.1:3000/get_userId.php', {
+        fetch('http://localhost:3000/get_userId.php', {
             method: 'GET',
             credentials: 'include', // 쿠키와 인증 정보를 포함
         })
@@ -1187,7 +1191,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         // 일반 사용자 ID인 경우 index.html 로드
                         localStorage.setItem('isAdmin', 'false');
-                        window.loadPage("signup.html", "signup.css", "page-style");
+                        window.loadPage("splash.html", "splash.css", "page-style");
                     }
                 } else {
                     // user_id를 가져오는 데 실패한 경우
@@ -1235,7 +1239,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append('email', email);
                 formData.append('password', password);
     
-                fetch('http://127.0.0.1:3000/signup.php', {
+                fetch('http://localhost:3000/signup.php', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -1513,7 +1517,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const noticeList = document.getElementById("notice-list");
 
         // 공지사항 데이터를 서버에서 가져오기
-        fetch('http://127.0.0.1:3000/notice.php')
+        fetch('http://localhost:3000/notice.php')
         .then(response => response.json())
         .then(data => {
             if(data.status === "success" && data.data.length > 0){
@@ -1618,7 +1622,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //일반 유저 문의 조회
     function getComplain() {
-        fetch('http://127.0.0.1:3000/complain.php', {
+        fetch('http://localhost:3000/complain.php', {
             method: 'GET',
             credentials: 'include'
         })
@@ -1686,7 +1690,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 문의 조회
     function fetchComplaints() {
-        fetch('http://127.0.0.1:3000/complain.php', { 
+        fetch('http://localhost:3000/complain.php', { 
             method: 'GET',
             credentials: 'include' 
         })
@@ -1795,7 +1799,7 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             // POST 요청 보내기
-            fetch('http://127.0.0.1:3000/complain.php', {
+            fetch('http://localhost:3000/complain.php', {
                 method: 'POST',
                 credentials: 'include', // 세션 쿠키 포함
                 headers: {
@@ -1857,7 +1861,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 공지사항 데이터를 가져오는 함수
         async function fetchNotices() {
             try {
-                const response = await fetch("http://127.0.0.1:3000/notice.php", {
+                const response = await fetch("http://localhost:3000/notice.php", {
                     method: "GET",
                     credentials: "include" // 필요 시 인증 정보 포함
                 });
@@ -1943,7 +1947,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const writeNoticeButton = document.getElementById("writeNoticeButton"); // 작성하기 버튼
     
         // 공지사항 데이터를 서버에서 가져오기
-        fetch('http://127.0.0.1:3000/notice.php')
+        fetch('http://localhost:3000/notice.php')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
@@ -2080,7 +2084,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function deleteNotice(id) {
             if (!confirm("정말 이 공지사항을 삭제하시겠습니까?")) return;
     
-            fetch('http://127.0.0.1:3000/notice.php', {
+            fetch('http://localhost:3000/notice.php', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -2159,7 +2163,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 content: content
             };
     
-            fetch('http://127.0.0.1:3000/notice.php', { // PHP 백엔드 스크립트 경로
+            fetch('http://localhost:3000/notice.php', { // PHP 백엔드 스크립트 경로
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -2194,7 +2198,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     //공지 상세 
     function initNoticeDetailEvents(noticeId){
-        fetch(`http://127.0.0.1:3000/notice.php?noticeId=${noticeId}`)
+        fetch(`http://localhost:3000/notice.php?noticeId=${noticeId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
@@ -2252,7 +2256,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 서버에 GET 요청을 보내서 컴플레인 상세 내용 가져오기
-        fetch(`http://127.0.0.1:3000/complain.php?complainId=${complainId}`, { 
+        fetch(`http://localhost:3000/complain.php?complainId=${complainId}`, { 
             method: 'GET',
             credentials: 'include' // 세션 쿠키 포함
         })
@@ -2356,7 +2360,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // POST 요청 보내기
-        fetch('http://127.0.0.1:3000/complain.php', {
+        fetch('http://localhost:3000/complain.php', {
             method: 'POST',
             credentials: 'include', // 세션 쿠키 포함
             headers: {

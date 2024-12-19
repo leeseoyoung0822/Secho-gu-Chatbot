@@ -731,6 +731,27 @@ form {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
 }
 
+
+/* 다크 모드 스타일 */
+.dark-theme .floating-button {
+    background-color: #2c3e50; /* 다크 배경색 */
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* 밝은 그림자 효과 */
+}
+
+.dark-theme .floating-text {
+    color: #ecf0f1; /* 다크 모드에서 텍스트 색상 변경 */
+}
+
+.dark-theme .floating-icon {
+    border: 2px solid #ecf0f1; /* 아이콘 테두리 색상 변경 */
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2); /* 밝은 그림자 효과 */
+}
+
+/* 다크 모드 호버 효과 */
+.dark-theme .floating-icon:hover {
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3); /* 밝은 그림자 강화 */
+}
+
 /* 애니메이션 키프레임 정의 */
 @keyframes fadeIn {
     from {
