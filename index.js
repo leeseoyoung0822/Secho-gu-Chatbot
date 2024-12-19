@@ -56,6 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("공지사항 초기화 호출됨");
                     initNoticeEvents();
                 }
+                else if (url === "help.html") {
+                    console.log("도움말 초기화 호출됨");
+                    initHelpEvents();
+                }
 
                 // 헤더 초기화 함수 호출하여 로그인 상태에 따른 헤더 업데이트
                 //initHeader();
@@ -815,22 +819,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     }
-    
-    // Help 페이지 이벤트 초기화
     function initHelpEvents() {
         console.log("Help 화면 이벤트 초기화");
 
-        const backButton = document.getElementById("backButton");
 
-        if (backButton) {
-            backButton.addEventListener("click", function () {
-                console.log("Splash 화면으로 돌아가기");
-                loadPage("splash.html", "index.css", "page-style");
+        // 카드 및 섹션 요소 가져오기
+        const cards = document.querySelectorAll('.card');
+        console.log(cards); 
+        const detailSections = document.querySelectorAll('.detail-section');
+        const backButtons = document.querySelectorAll('.detail-section .back-button');
+        const cardContainer = document.querySelector('.card-container');
+
+
+        // 카드 클릭 시 해당 섹션 표시
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetId = card.dataset.target;
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    // 카드 리스트 숨기기
+                    cardContainer.style.display = 'none';
+
+                    // 모든 상세 섹션 숨기기
+                    detailSections.forEach(section => section.classList.add('hidden'));
+
+                    // 선택된 섹션 보이기
+                    targetSection.classList.remove('hidden');
+                }
             });
-        } else {
-            console.error("backButton 요소를 찾을 수 없습니다.");
-        }
-    }
+        });
+
+        // 뒤로가기 버튼 클릭 시 카드 목록으로 돌아가기
+        backButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 상세 섹션 숨기기
+                detailSections.forEach(section => section.classList.add('hidden'));
+
+                // 카드 리스트 보이기
+                cardContainer.style.display = 'flex';
+            });
+        });
+
+       
+      }
+    
 
     function initFaqEvents() {
         console.log("FAQ 화면 이벤트 초기화");
@@ -1012,47 +1045,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function initNoticeEvents() {
-        const noticeRows = document.querySelectorAll(".table tbody tr");
-        const noticeContent = document.getElementById("notice-content");
-        const noticeTitle = document.getElementById("notice-title");
-        const noticeBody = document.getElementById("notice-body");
-        const backButton = document.getElementById("back-button");
-        const noticeList = document.getElementById("notice-list");
-
-
-        // 공지사항 데이터 예시
-        const noticeData = [
-            { title: "공지", body: "챗봇 업데이트 안내 공사로 인한 명일선 해제 및 시스템 점검이 예정되어 있습니다." },
-            { title: "챗봇 기능 개선 공지", body: "챗봇 기능이 개선되어 사용자 경험이 더욱 향상되었습니다." },
-            { title: "포토후기 이벤트 당첨자 발표", body: "포토후기 이벤트 당첨자 명단이 발표되었습니다." },
-            { title: "시스템 점검 안내", body: "시스템 점검이 완료되었습니다. 감사합니다." },
-            { title: "배송 불가 지역 안내", body: "롯데택배 배송 불가 지역에 대한 안내입니다." },
-        ];
-
-        // 각 행 클릭 시 공지사항 내용 표시
-        noticeRows.forEach((row, index) => {
-            row.addEventListener("click", () => {
-                const data = noticeData[index];
-                if(data) {
-                    noticeTitle.textContent = data.title;
-                    noticeBody.textContent = data.body;
-
-                    noticeContent.classList.remove("hidden");
-                    noticeList.classList.add("hidden");
-                }
-            });
-        });
-
-        // 뒤로가기 버튼 클릭 이벤트
-        if (backButton) {
-            backButton.addEventListener("click", () => {
-                // 상세 내용 숨기고 테이블 다시 표시
-                noticeContent.classList.add("hidden");
-                noticeList.classList.remove("hidden");
-            });
-        }
-    }
+    
     function initNoticeEvents(){
         const noticeTableBody = document.getElementById("notice-table-body");
         const noticeContent = document.getElementById("notice-content");
