@@ -699,6 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    
     function initLoginEvents() {
         console.log("Login 이벤트 초기화");
         const loginForm = document.getElementById('loginForm');
