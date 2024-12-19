@@ -4,18 +4,24 @@
     background-repeat: no-repeat;
     justify-content: center;
     padding: 40px 0;
+    height: 100vh;
 
 }
 
 .count-container {
     background-color:#FFFAFC ;
-    width: 75%;
-    margin-top: 140px;
-    margin-left: 40px;
+    width: 70%;
+    margin-top: 100px;
+    margin-left: 30px;
     border-radius: 10px;
     color: #5C5C5C;
     font-size: 20px;
     padding: 20px 30px;
+}
+
+.bar{
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 .rating {
@@ -32,7 +38,7 @@
     height: 20px;
     background-color: #DAB6F4;
     text-align: right;
-    line-height: 40px;
+    line-height: 60px;
     color: white;
 }
 
@@ -44,11 +50,47 @@ span {
 .alret-container{
     color: #5C5C5C;
     background-color:#FFFAFC ;
-    margin-top: 140px;
-    margin-left: 40px;
+    margin-top: 100px;
+    margin-left: 20px;
     border-radius: 10px;
-    width: 200px;   
+    width: 200px;
+    height: 450px;
+    overflow: scroll;
+    padding: 0px 20px;
 
+}
+
+.complaint{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.complain-text{
+    color: #5C5C5C;
+    font-size: 20px;
+    font-weight: 700;
+    position: sticky; 
+    top: 0; 
+    background-color: #FFFAFC; 
+    z-index: 1000; 
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.complaintsContainer{
+    padding-top: 40px;
+}
+
+
+.complaint-title{
+    color: #5C5C5C;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.complaint-meta{
+    color: #5C5C5C;
 }
 
 
@@ -58,25 +100,26 @@ span {
     background-color: #FFFAFC;
     color:#5C5C5C;
     width: 40%;
-    margin-top: 70px;
+    margin-top: 50px;
     margin-left: 40px;
     border-radius: 10px;
-    padding: 15px;
+    padding: 20px 20px 25px 20px;
 }
 
 .notice-header {
     display: flex;
     align-items: center; /* 수직 중앙 정렬 */
     font-size: 24px;
+    font-weight: 600;
 }
 
 .notice-header img {
-    margin-right: 10px; /* 이미지와 텍스트 사이에 간격 추가 */
+    margin-right: 10px; 
 }
 
 .notice-content{
     margin-left: 30px;
-    margin-top: 20px;
+    margin-top: 10px;
     padding-right: 30px;
 
 }
@@ -85,6 +128,7 @@ span {
 .notice-item {
     opacity: 1;
     transition: opacity 1s ease-in-out; /* 1초 동안의 전환 효과 */
+    margin-left: 10px;
 }
 
 /* 숨김 상태 클래스 */
@@ -93,40 +137,39 @@ span {
 }
 
 /* 추가 스타일 (필요에 따라 수정 가능) */
-.notice-item h3 {
-    margin: 0;
+.notice-item .noticeL-title {
     font-size: 18px;
+    color: #5C5C5C;
+    margin-bottom: 5px;
 }
-.notice-item p {
-    margin: 5px 0;
+.notice-item .noticeL-content {
     font-size: 16px;
+    color: #5C5C5C;
+    margin-bottom: 5px;
 }
 .notice-date {
     font-size: 14px;
-    color: #666;
+    color: #5C5C5C;
 }
-
-
-
-
 
 
 
 /*봇 알림*/
 
 .bot-alret{
-    margin-top: 90px;
+    margin-top: 70px;
     color:#FFFFFF;
     display: flex;
-    margin-left: px;
+    margin-left: 60px;
 }
 
 .bot-bubble {
     background-image: url('./img/Pbubble.png');
-    background-size: contain; /* 이미지가 컨테이너 내에 전체적으로 맞추어지도록 */
-    background-repeat: no-repeat; /* 이미지 반복 없음 */
-    padding: 30px 50px; /* 텍스트와 경계 사이에 여유 공간 추가 */
-    color: white; /* 글자 색상 변경, 필요에 따라 조정 */
-    font-size: 20px; /* 글자 크기 설정, 필요에 따라 조정 */
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    padding: 40px 50px; 
+    color: white; 
+    font-size: 18px; 
     margin-left: 30px;
+
 }

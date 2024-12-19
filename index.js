@@ -1334,7 +1334,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (writeComplainButton) {
             writeComplainButton.addEventListener("click", () => {
                 console.log("작성하기 버튼 클릭됨");
-                loadPage("complain.html", "complain.css", "complainWriteCss"); 
+                window.loadPage("complain.html", "complain.css", "complainWriteCss"); 
             });
         } else {
             console.error('writeComplainButton 요소를 찾을 수 없습니다.');
@@ -1350,7 +1350,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.status === 'success') {
                 const complaints = data.data;
+                document.getElementById("complain-count").textContent = complaints.length;
+                document.getElementById("today-count").textContent = data.total_today;
+                console.log(data.total_today)
                 console.log(`받은 컴플레인 수: ${complaints.length}`);
+                
                 renderComplaints(complaints);
             } else {
                 console.error(`컴플레인 가져오기 실패: ${data.message}`);
@@ -1377,34 +1381,37 @@ document.addEventListener("DOMContentLoaded", function () {
             const complaintElem = document.createElement('div');
             complaintElem.classList.add('complaint');
             complaintElem.style.cursor = 'pointer'; // 클릭 가능한 요소임을 시각적으로 표시
-    
+        
             // 컴플레인 제목
-            const title = document.createElement('h4');
-            title.textContent = complaint.title || '제목 없음';
+            const title = document.createElement('div'); 
+            title.className = 'complaint-title'; // className 추가
+            title.textContent = (complaint.title || '제목 없음').length > 10 
+            ? (complaint.title.substring(0, 10) + '...') 
+            : complaint.title || '제목 없음'; // 제목 처음 10자 + ...
             complaintElem.appendChild(title);
-    
-            // 컴플레인 내용
-            const content = document.createElement('p');
-            content.textContent = complaint.content;
-            complaintElem.appendChild(content);
-    
+        
+            // // 컴플레인 내용
+            // const content = document.createElement('div'); 
+            // content.className = 'complaint-content'; 
+            // content.textContent = complaint.content;
+            // complaintElem.appendChild(content);
+        
             // 메타 정보 (작성자, 작성일)
-            const meta = document.createElement('p');
-            meta.classList.add('meta');
-            meta.textContent = `작성자: ${complaint.nickname} | 작성일: ${complaint.created_at}`;
+            const meta = document.createElement('div'); 
+            meta.className = 'complaint-meta'; 
+            meta.textContent = `${complaint.nickname} | ${formatDate(complaint.created_at)}`;
             complaintElem.appendChild(meta);
-    
+        
             // 클릭 이벤트 추가
             complaintElem.addEventListener('click', () => {
                 const complainId = complaint.id; // 혹은 해당하는 ID 필드명
                 // complain.html에 complainId를 쿼리 파라미터로 전달
                 window.loadPage(`complainAdmin.html?complainId=${complainId}`, 'complainAdmin.css', 'complainCss');
             });
-    
+        
             // 컴플레인 요소를 컨테이너에 추가
             container.appendChild(complaintElem);
         });
-
     }
     
 
@@ -1492,6 +1499,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const noticeContainer = document.getElementById("noticeContent");
         let notices = [];
         let currentIndex = 0;
+
+        const noticeItem = document.querySelector('.notice-item');
+        if (noticeItem) {
+            noticeItem.querySelector('.noticeL-title').textContent = newTitle;
+            noticeItem.querySelector('.noticeL-content').textContent = newContent;
+        }
     
         // 공지사항 데이터를 가져오는 함수
         async function fetchNotices() {
@@ -1528,12 +1541,14 @@ document.addEventListener("DOMContentLoaded", function () {
         function displayNotice(notice) {
             noticeContainer.innerHTML = `
                 <div class="notice-item">
-                    <h3>${sanitizeHTML(notice.title)}</h3>
-                    <p>${sanitizeHTML(notice.content)}</p>
+                    <div class="noticeL-title">${sanitizeHTML(notice.title)}</div>
+                    <div class="noticeL-content">${sanitizeHTML(notice.content)}</div>
                     <span class="notice-date">${formatDate(notice.timestamp)}</span>
                 </div>
             `;
         }
+
+        
     
     
         // 간단한 HTML 인젝션 방지 함수
@@ -1548,7 +1563,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (noticeHeader) {
             noticeHeader.addEventListener("click", () => {
                 console.log("공지사항 헤더 클릭됨");
-                loadPage("noticeAdmin.html", "noticeAdmin.css", "noticeAdminCss"); // 적절한 CSS 파일과 ID 사용
+                window.loadPage("noticeAdmin.html", "noticeAdmin.css", "noticeAdminCss"); 
             });
         } else {
             console.error("noticeHeader 요소를 찾을 수 없습니다.");
@@ -1559,20 +1574,171 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
      // 날짜 형식 변경 함수
-     function formatDate(timestamp) {
+    function formatDate(timestamp) {
         const date = new Date(timestamp);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         return `${year}.${month}.${day}`;
     }
+    
 
     // 관리자 공지사항 (전체 list)
-    function initAdminNoticeEvents() {
-        console.log("공지사항 화면 이벤트 초기화");
+    function initAdminNoticeEvents(){
+        const noticeTableBody = document.getElementById("notice-table-body");
+        const noticeContent = document.getElementById("notice-content");
+        const noticeTitle = document.getElementById("notice-title");
+        const noticeBody = document.getElementById("notice-body");
+        const backButton = document.getElementById("back-button");
+        const back = document.getElementById("backbtt");
+        const noticeContainer = document.getElementById("notice-list"); 
+        const writeNoticeButton = document.getElementById("writeNoticeButton"); // 작성하기 버튼
     
-        //공지사항 데이터
+        // 공지사항 데이터를 서버에서 가져오기
         fetch('http://127.0.0.1:3000/notice.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("서버 응답 데이터:", data); // 디버깅용 로그
+            if(data.status === "success" && Array.isArray(data.data) && data.data.length > 0){
+                renderNoticeList(data.data);
+            } else {
+                renderEmptyNotice();
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching notices:', error);
+            // 에러 메시지 표시
+            const errorRow = document.createElement('tr');
+            const errorCell = document.createElement('td');
+            errorCell.colSpan = 4; // 삭제 열 추가로 colspan을 4로 설정
+            errorCell.classList.add('text-center');
+            errorCell.textContent = "공지사항을 불러오는 중 오류가 발생했습니다.";
+            errorRow.appendChild(errorCell);
+            noticeTableBody.appendChild(errorRow);
+        });
+    
+        // 공지사항 목록 렌더링
+        function renderNoticeList(notices) {
+            noticeTableBody.innerHTML = ""; // 기존 내용 초기화
+    
+            notices.forEach(notice => {
+                const tr = document.createElement('tr');
+    
+                // 번호 셀
+                const numberCell = document.createElement('td');
+                numberCell.classList.add('text-center');
+                if(notice.title === "공지") {
+                    const tagSpan = document.createElement('span');
+                    tagSpan.classList.add('notice-tag');
+                    tagSpan.textContent = '공지';
+                    numberCell.appendChild(tagSpan);
+                } else {
+                    numberCell.textContent = notice.id;
+                }
+                tr.appendChild(numberCell);
+    
+                // 제목 셀
+                const titleCell = document.createElement('td');
+                const titleSpan = document.createElement('span');
+                titleSpan.classList.add('notice-header');
+                titleSpan.style.cursor = 'pointer';
+                //titleSpan.style.color = 'blue';
+                //titleSpan.style.textDecoration = 'underline';
+                titleSpan.textContent = sanitizeHTML(notice.title);
+                titleCell.appendChild(titleSpan);
+                tr.appendChild(titleCell);
+    
+                // 등록일 셀
+                const dateCell = document.createElement('td');
+                dateCell.classList.add('text-center');
+                const date = new Date(notice.timestamp);
+                dateCell.textContent = formatDate(date);
+                tr.appendChild(dateCell);
+    
+                // 삭제 버튼 셀
+                const deleteCell = document.createElement('td');
+                deleteCell.classList.add('text-center');
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('notice-delete');
+                deleteButton.innerHTML = "&times;";
+                deleteButton.title = "삭제하기";
+                deleteCell.appendChild(deleteButton);
+                tr.appendChild(deleteCell);
+    
+                // 삭제 버튼 이벤트 리스너
+                deleteButton.addEventListener('click', (event) => {
+                    event.stopPropagation(); // 클릭 이벤트 전파 방지
+                    deleteNotice(notice.id);
+                });
+    
+                // 공지사항 상세 내용 표시 이벤트 리스너
+                titleSpan.addEventListener('click', () => {
+                    showNoticeDetail(notice);
+                });
+    
+                noticeTableBody.appendChild(tr);
+            });
+        }
+    
+        // 공지사항이 없을 때 메시지 표시
+        function renderEmptyNotice() {
+            noticeTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center">현재 공지사항이 없습니다.</td>
+                </tr>
+            `;
+        }
+    
+        // 공지사항 상세 내용 표시 함수
+        function showNoticeDetail(notice) {
+            noticeTitle.textContent = notice.title;
+            noticeBody.textContent = notice.content;
+    
+            noticeContent.classList.remove("hidden");
+            noticeContainer.classList.add("hidden");
+        }
+    
+        // 뒤로가기 버튼 클릭 이벤트
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                // 상세 내용 숨기고 테이블 다시 표시
+                noticeContent.classList.add("hidden");
+                noticeContainer.classList.remove("hidden");
+            });
+        }
+
+        if(back){
+            back.addEventListener("click", ()=>{
+                BackAdmin();
+            });
+
+        }
+
+   
+    
+        // 작성하기 버튼 클릭 이벤트
+        if (writeNoticeButton) {
+            writeNoticeButton.addEventListener("click", () => {
+                window.loadPage("noticeWrite.html", "noticeWrite.css", "noticeWriteCss"); 
+            });
+        }
+    
+        // 공지사항 삭제 함수
+        function deleteNotice(id) {
+            if (!confirm("정말 이 공지사항을 삭제하시겠습니까?")) return;
+    
+            fetch('http://127.0.0.1:3000/notice.php', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            })
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
@@ -1580,115 +1746,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(data => {
-                if (data.status === "success" && data.data.length > 0) {
-                    renderNoticeList(data.data);
+                if (data.status === "success") {
+                    alert(data.message);
+                    // 삭제 후 목록 새로 불러오기
+                    initAdminNoticeEvents();
                 } else {
-                    renderEmptyNotice();
+                    alert("삭제 실패: " + data.message);
                 }
             })
             .catch(error => {
-                console.error("공지사항 데이터 불러오기 실패:", error);
-                alert("공지사항 데이터를 불러오지 못했습니다. 다시 시도해 주세요.");
-            });
-    
-        // 공지사항 목록 렌더링
-        function renderNoticeList(notices) {
-            const noticeContainer = document.getElementById("noticeContainer");
-            noticeContainer.innerHTML = ""; 
-        
-            notices.forEach(notice => {
-                const noticeItem = document.createElement("div");
-                noticeItem.className = "notice-item";
-                noticeItem.innerHTML = `
-                    <div class="notice-number">${sanitizeHTML(notice.id)}</div>
-                    <div class="notice-content">
-                        <div class="notice-header" style="cursor: pointer; color: blue; text-decoration: underline;">
-                            ${sanitizeHTML(notice.title)}
-                        </div>
-                        <div class="notice-date">${formatDate(notice.timestamp)}</div>
-                    </div>
-                    <button class="notice-delete" style="color: red; background: none; border: none; cursor: pointer;">
-                        &times;
-                    </button>
-                `;
-        
-                // 삭제 버튼 이벤트 리스너
-                const deleteButton = noticeItem.querySelector(".notice-delete");
-                deleteButton.addEventListener("click", (event) => {
-                    event.stopPropagation(); // 클릭 이벤트 전파 방지
-                    deleteNotice(notice.id);
-                });
-        
-                // 공지사항 상세 페이지로 이동 이벤트 리스너
-                const noticeHeader = noticeItem.querySelector(".notice-header");
-                noticeHeader.addEventListener("click", () => {
-                    console.log(`공지사항 ID ${notice.id} 클릭됨`);
-                    loadPage(`noticeDetail.html?noticeId=${notice.id}`, 'noticeDetail.css', 'noticeDetailCss');
-                });
-
-                function sanitizeHTML(str) {
-                    const temp = document.createElement("div");
-                    temp.textContent = String(str); // 숫자를 문자열로 변환
-                    return temp.innerHTML;
-                }
-                
-        
-                noticeContainer.appendChild(noticeItem);
+                console.error("공지사항 삭제 중 오류 발생:", error);
+                alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
             });
         }
     
-        // 공지사항이 없을 때 메시지 표시
-        function renderEmptyNotice() {
-            const noticeContainer = document.getElementById("noticeContainer");
-            noticeContainer.innerHTML = `
-                <p style="text-align:center; color:#777;">현재 공지사항이 없습니다.</p>
-            `;
+        // HTML 이스케이프 함수
+        function sanitizeHTML(str) {
+            const temp = document.createElement("div");
+            temp.textContent = str;
+            return temp.innerHTML;
         }
-
-
-        //공지사항 작성 페이지로 이동
-        const writeNoticeButton = document.getElementById("writeNoticeButton");
-        if (writeNoticeButton) {
-            writeNoticeButton.addEventListener("click", () => {
-                console.log("작성하기 버튼 클릭됨");
-                loadPage("noticeWrite.html", "noticeWrite.css", "noticeWriteCss"); 
-            });
-        } else {
-            console.error('"writeNoticeButton" 요소를 찾을 수 없습니다.');
+    
+        // 날짜 포맷 함수
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth()+1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            return `${year}.${month}.${day}`;
         }
     }
-
     
-    // 공지사항 삭제 함수
-    function deleteNotice(id) {
-        if (!confirm("정말 이 공지사항을 삭제하시겠습니까?")) return;
-
-        fetch('http://127.0.0.1:3000/notice.php', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id })
-        })
-        .then(response => response.json())
-        .then(data => {
-        if (data.status === "success") {
-            alert(data.message);
-            initAdminNoticeEvents(); // 삭제 후 목록 새로 불러오기
-        } else {
-            alert("삭제 실패: " + data.message);
-        }
-        })
-        .catch(error => {
-            console.error("공지사항 삭제 중 오류 발생:", error);
-            alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        });
-    }
-
     //관리자 공지 작성 
     function initAdminNoticeWriteEvents(){
         const noticeWriteForm = document.getElementById("noticeWriteForm");
         const writeFeedback = document.getElementById("writeFeedback");
+        const backButton = document.getElementById("backbutton");
+
+        backButton.addEventListener("click", () => {
+            console.log("뒤로가기 버튼 클릭됨");
+            window.loadPage("noticeAdmin.html", "noticeAdmin.css", "noticeAdminCss");
+        });
+            
     
         if (noticeWriteForm) {
             noticeWriteForm.addEventListener("submit", function(event) {
@@ -1727,6 +1825,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     noticeWriteForm.reset();
                     setTimeout(() => {
                         writeFeedback.innerHTML = '';
+                        window.loadPage("noticeAdmin.html", "noticeAdmin.css", "noticeAdminCss");
                     }, 5000); // 5초 후 메시지 사라짐
                 } else {
                     writeFeedback.innerHTML = `<p style="color: #DAB6F4;">${sanitizeHTML(data.message)}</p>`;
@@ -1780,7 +1879,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
 
-
+    //관리자화면으로 
+    function BackAdmin(){
+        window.loadPage('admin.html', 'admin.css', 'admin-style');
+    }
+    
    // 관리자 - 문의
    function initAdminComplainEvents(complainId) {
     console.log(`initAdminComplainEvents 호출됨. complainId: ${complainId}`);
@@ -1809,30 +1912,59 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log('컴플레인 데이터 성공적으로 가져옴');
                     const complaint = data.data[0]; // 단일 컴플레인이라 가정
                     const hasAnswers = complaint.answers && complaint.answers.length > 0;
-
+                    console.log(complaint);
                     const isAdmin = localStorage.getItem('isAdmin') === 'true'; // isAdmin 상태 확인
 
                     const detailHtml = `
-                        <h2>${sanitizeHTML(complaint.title) || '제목 없음'}</h2>
-                        <p>${sanitizeHTML(complaint.content)}</p>
-                        <p class="meta">작성자: ${sanitizeHTML(complaint.nickname)} | 작성일: ${sanitizeHTML(complaint.created_at)}</p>
-                        <h3>답변</h3>
+                        <div class="compalinContainer">
+                            <div class="question">
+                                <div class="question-header">
+                                    <div class="catagory">문의</div>
+                                     <div class="q">
+                                        <div class="question-title">${sanitizeHTML(complaint.title) || '제목 없음'}</div>
+                                        <div class="meta"">작성자: ${sanitizeHTML(complaint.nickname)} <br/>
+                                        ${formatDate(complaint.created_at)}}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="question-content">${sanitizeHTML(complaint.content)}</div>
+                            </div>
+
                         ${hasAnswers ? complaint.answers.map(answer => `
                             <div class="answer">
-                                <p>${sanitizeHTML(answer.content)}</p>
-                                <p class="meta">작성자: ${sanitizeHTML(answer.nickname)} | 작성일: ${sanitizeHTML(answer.created_at)}</p>
+                                <div class="answer-header">
+                                    <div class="catagory">답변</div>
+                                     <div class="a">
+                                        <div class="question-title">서초봇</div>
+                                        <div class="meta">${formatDate(answer.created_at)}}</div>
+                                    </div>
+                                </div>
+                               
+                                <div class="answer-content">${sanitizeHTML(answer.content)}</div>
                             </div>
-                        `).join('') : '<p>답변이 없습니다.</p>'}
+                            <button id="backButton" class="back-button">뒤로가기</button>
+                        `).join('') : ''}
                         ${!hasAnswers && isAdmin ? `
-                            <h3>답변 작성</h3>
+                            <div class="answerWriteContainer">
+                            <div class="no-reply">답변이 없습니다.</div>
                             <form id="answerForm">
                                 <textarea id="answerContent" rows="4" cols="50" placeholder="답변 내용을 입력하세요." required></textarea><br>
                                 <button type="submit">답변 작성</button>
                             </form>
                             <div id="answerFeedback"></div>
-                        ` : ''}
+                            </div>
+
+                            <button id="backButton" class="back-button">뒤로가기</button>
+                        
+                        <div>    ` : ''}
                     `;
                     document.getElementById('complainDetail').innerHTML = detailHtml;
+
+
+                    const backButton = document.getElementById('backButton');
+                        if (backButton) {
+                        backButton.addEventListener('click', BackAdmin);
+                    }
 
                     if (!hasAnswers && isAdmin) {
                         // 답변 작성 
