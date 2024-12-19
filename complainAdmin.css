@@ -1,0 +1,160 @@
+/* 배경 컨테이너 */
+#complainDetail {
+    background-image: url('img/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    min-height: 100vh;
+}
+
+/* 메인 컨테이너 */
+.complainContainer {
+    width: 80vw; /* 전체 화면 너비에 맞춤 */
+    max-width: 1000px; /* 최대 너비 설정 */
+    padding: 20px; /* 양쪽 여백 추가 */
+    box-sizing: border-box;
+}
+
+/* 질문 섹션 */
+.question, .answer, .answerWriteContainer {
+    background-color: #ffffff;
+    width: 100%; /* 모바일에서도 화면 너비에 맞춤 */
+    max-width: 1000px; /* 최대 너비 설정 */
+    margin: 20px 0; /* 위아래 간격 조정 */
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* 질문 헤더 */
+.question-header, .answer-header {
+    display: flex;
+}
+
+/* 카테고리 스타일 */
+.catagory {
+    background-color: #DAB6F4;
+    color: white;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    border-radius: 70px;
+    padding: 10px;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+/* 제목 스타일 */
+.question-title {
+    font-size: 30px;
+    color: #5c5c5c;
+}
+
+/* 메타 정보 */
+.meta {
+    margin-top: 10px;
+    color: #5c5c5c;
+}
+
+/* 내용 섹션 */
+.question-content, .answer-content {
+    margin-top: 30px;
+    font-size: 20px;
+    color: #5c5c5c;
+}
+
+/* 답변 없을 때 표시 */
+.no-reply {
+    font-size: 20px;
+    color: #5c5c5c;
+}
+
+/* 입력 폼 */
+#answerForm {
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 10px;
+    padding-top: 20px;
+    box-shadow: none;
+}
+
+#answerContent {
+    resize: none;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: #ffffff;
+    width: 100%; /* 모바일에서도 전체 너비 사용 */
+}
+
+/* 입력 폼 포커스 */
+#answerContent:focus {
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+}
+
+/* 버튼 스타일 */
+button[type="submit"], #backButton {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #DAB6F4;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    width: 100%; /* 모바일에서도 버튼 너비를 맞춤 */
+    max-width: 200px; /* 최대 버튼 크기 설정 */
+    margin: 20px auto; /* 중앙 정렬 */
+}
+
+/* 버튼 호버 효과 */
+button[type="submit"]:hover, #backButton:hover {
+    background-color: #0056b3;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    #complainDetail {
+        padding: 60px 0; /* 상단에 추가 여백 */
+        align-items: flex-start; /* 모바일에서 컨테이너 시작 위치 조정 */
+    }
+
+    .complainContainer {
+        margin-top: 50px; /* 추가 여백 */
+    }
+
+    .question, .answer, .answerWriteContainer {
+        padding: 20px; /* 모바일에서 내부 여백 축소 */
+        margin: 20px 0; /* 간격 축소 */
+    }
+
+    .question-title {
+        font-size: 24px; /* 제목 크기 축소 */
+    }
+
+    .question-content, .answer-content {
+        font-size: 16px; /* 내용 크기 축소 */
+    }
+
+    .catagory {
+        font-size: 14px; /* 카테고리 크기 축소 */
+        padding: 5px 8px; /* 여백 축소 */
+    }
+
+    button[type="submit"], #backButton {
+        font-size: 14px; /* 버튼 폰트 크기 축소 */
+    }
+
+    #answerContent {
+        font-size: 14px; /* 입력 칸 폰트 크기 축소 */
+    }
+}
