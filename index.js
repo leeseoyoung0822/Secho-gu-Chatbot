@@ -682,7 +682,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const messageInput = document.getElementById("messageInput");
 
         // 타이핑 애니메이션
-        const text = "안녕하세요 서초구청 챗봇 '서봇'입니다.<br> 무엇을 도와드릴까요?";
+        const text = "안녕하세요 서초구청 챗봇 '서초봇'입니다.<br> 무엇을 도와드릴까요?";
         let i = 0;
 
         function typeWriter() {
@@ -923,7 +923,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("전송할 데이터:", { question: message, filename: uploadedFilename });
         
             try {
-                const response = await fetch("http://172.17.124.18:5002/ask", {
+                const response = await fetch("http://192.168.194.33:5002/ask", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

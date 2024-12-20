@@ -173,3 +173,16 @@ span {
     margin-left: 30px;
 
 }
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bot-alret img {
+    animation: float 2s infinite ease-in-out;
+}
